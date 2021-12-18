@@ -10,14 +10,15 @@
 
             <div class="sheet__content dough">
               <label
-                :class="getDoughThickness(item.name)"
+                class="dough__input"
+                :class="' dough__input--' + getDoughThickness(item.name)"
                 v-for="item in pizza.dough"
                 :key="item.id"
               >
                 <input
                   type="radio"
                   name="dough"
-                  value="light"
+                  :value="getDoughThickness(item.name)"
                   class="visually-hidden"
                   checked
                 />
@@ -36,12 +37,15 @@
               <label
                 v-for="size in pizza.sizes"
                 :key="size.id"
-                :class="getPizzaDiameterClassName(size.name)"
+                class="diameter__input"
+                :class="
+                  ' diameter__input--' + getPizzaDiameterClassName(size.name)
+                "
               >
                 <input
                   type="radio"
                   name="diameter"
-                  value="small"
+                  :value="getPizzaDiameterClassName(size.name)"
                   class="visually-hidden"
                 />
                 <span>{{ size.name }}</span>
@@ -65,7 +69,12 @@
                   :key="sauce.id"
                   class="radio ingredients__input"
                 >
-                  <input type="radio" name="sauce" value="tomato" checked />
+                  <input
+                    type="radio"
+                    name="sauce"
+                    :value="getSauceValue(sauce.name)"
+                    checked
+                  />
                   <span>{{ sauce.name }}</span>
                 </label>
               </div>
@@ -79,9 +88,13 @@
                     :key="ingredient.id"
                     class="ingredients__item"
                   >
-                    <span class="filling filling--mushrooms">{{
-                      ingredient.name
-                    }}</span>
+                    <span
+                      class="filling"
+                      :class="
+                        ' filling--' + getIngredientClassName(ingredient.name)
+                      "
+                      >{{ ingredient.name }}
+                    </span>
 
                     <div class="counter counter--orange ingredients__counter">
                       <button
@@ -151,18 +164,58 @@ export default {
   },
   methods: {
     getDoughThickness(doughName) {
-      return doughName === "Тонкое"
-        ? `dough__input dough__input--light`
-        : `dough__input dough__input--large`;
+      return doughName === "Тонкое" ? `light` : `large`;
     },
     getPizzaDiameterClassName(diametr) {
       switch (diametr) {
         case "23 см":
-          return "diameter__input diameter__input--small";
+          return "small";
         case "32 см":
-          return "diameter__input diameter__input--normal";
+          return "normal";
         default:
-          return "diameter__input diameter__input--big";
+          return "big";
+      }
+    },
+    getSauceValue(name) {
+      switch (name) {
+        case "Томатный":
+          return "tomato";
+        default:
+          return "creamy";
+      }
+    },
+    getIngredientClassName(name) {
+      switch (name) {
+        case "Грибы":
+          return "mushrooms";
+        case "Чеддер":
+          return "cheddar";
+        case "Салями":
+          return "salami";
+        case "Ветчина":
+          return "ham";
+        case "Ананас":
+          return "ananas";
+        case "Бекон":
+          return "bacon";
+        case "Лук":
+          return "onion";
+        case "Чили":
+          return "chile";
+        case "Халапеньо":
+          return "jalapeno";
+        case "Маслины":
+          return "olives";
+        case "Томаты":
+          return "tomatoes";
+        case "Лосось":
+          return "salmon";
+        case "Моцарелла":
+          return "mozzarella";
+        case "Пармезан":
+          return "parmesan";
+        case "Блю чиз":
+          return "blue_cheese";
       }
     },
   },
