@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Header />
-    <Main />
+    <app-layout></app-layout>
+    <Main></Main>
   </div>
 </template>
 
@@ -9,8 +9,8 @@
 import misc from "../static/misc.json";
 import user from "../static/user.json";
 
-import Header from "./Header";
 import Main from "./Main";
+import AppLayout from "../layouts/AppLayout";
 
 export default {
   name: "Index",
@@ -18,7 +18,7 @@ export default {
     return { misc, user };
   },
   components: {
-    Header,
+    AppLayout,
     Main,
   },
 };
