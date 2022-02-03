@@ -9,13 +9,14 @@
           :class="' dough__input--' + getDoughThickness(item.name)"
           v-for="item in pizza.dough"
           :key="item.id"
+          @click="$emit('onDoughSizeClick', getDoughThickness(item.name))"
         >
           <input
             type="radio"
             name="dough"
             :value="getDoughThickness(item.name)"
+            v-model="doughSize"
             class="visually-hidden"
-            checked
           />
           <b>{{ item.name }}</b>
           <span>{{ item.description }}</span>
@@ -30,8 +31,13 @@ import pizza from "../../../static/pizza.json";
 
 export default {
   name: "BuilderDoughSelector",
+  props: {
+    doughSize: String,
+  },
   data() {
-    return { pizza };
+    return {
+      pizza,
+    };
   },
   methods: {
     getDoughThickness(doughName) {

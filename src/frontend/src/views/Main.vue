@@ -3,10 +3,24 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <builder-dough-selector></builder-dough-selector>
+        <builder-dough-selector
+          @onDoughSizeClick="onDoughSizeClick"
+          :doughSize="doughSize"
+        ></builder-dough-selector>
         <builder-size-selector></builder-size-selector>
-        <builder-ingredients-selector></builder-ingredients-selector>
-        <builder-content-pizza></builder-content-pizza>
+        <builder-ingredients-selector
+          @onSauceClick="onSauceClick"
+          @onIncrementIngredientClick="onIncrementIngredientClick"
+          @onDecrementIngredientClick="onDecrementIngredientClick"
+          :sauceInfo="sauceInfo"
+          :doughSize="doughSize"
+          :ingredients="ingredients"
+        ></builder-ingredients-selector>
+        <builder-content-pizza
+          :doughSize="doughSize"
+          :sauceInfo="sauceInfo"
+          :ingredients="ingredients"
+        ></builder-content-pizza>
       </div>
     </form>
   </main>
@@ -21,8 +35,27 @@ import BuilderContentPizza from "../modules/builder/components/BuilderContentPiz
 
 export default {
   name: "Main",
+  props: {
+    doughSize: String,
+    sauceInfo: String,
+    ingredients: Array,
+  },
   data() {
     return { pizza };
+  },
+  methods: {
+    onDoughSizeClick(data) {
+      this.$emit("onDoughSizeClick", data);
+    },
+    onSauceClick(data) {
+      this.$emit("onSauceClick", data);
+    },
+    onIncrementIngredientClick(idx) {
+      this.$emit("onIncrementIngredientClick", "increment", idx);
+    },
+    onDecrementIngredientClick(idx) {
+      this.$emit("onDecrementIngredientClick", "decrement", idx);
+    },
   },
   components: {
     BuilderDoughSelector,

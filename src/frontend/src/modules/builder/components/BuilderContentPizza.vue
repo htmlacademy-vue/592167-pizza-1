@@ -8,7 +8,11 @@
         placeholder="Введите название пиццы"
       />
     </label>
-    <builder-pizza-view></builder-pizza-view>
+    <builder-pizza-view
+      :doughSize="doughSize"
+      :sauceInfo="sauceInfo"
+      :ingredients="ingredients"
+    ></builder-pizza-view>
     <builder-price-counter></builder-price-counter>
   </div>
 </template>
@@ -19,6 +23,11 @@ import BuilderPriceCounter from "./BuilderPriceCounter";
 
 export default {
   name: "BuilderContentPizza",
+  props: {
+    doughSize: String,
+    sauceInfo: String,
+    ingredients: Array,
+  },
   components: {
     BuilderPizzaView,
     BuilderPriceCounter,

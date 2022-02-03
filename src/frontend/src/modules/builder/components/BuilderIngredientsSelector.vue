@@ -11,12 +11,13 @@
             v-for="sauce in pizza.sauces"
             :key="sauce.id"
             class="radio ingredients__input"
+            @click="$emit('onSauceClick', getSauceValue(sauce.name))"
           >
             <input
               type="radio"
               name="sauce"
               :value="getSauceValue(sauce.name)"
-              checked
+              v-model="sauceInfo"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -27,37 +28,24 @@
 
           <ul class="ingredients__list">
             <li
-              v-for="ingredient in pizza.ingredients"
+              v-for="(ingredient, idx) in ingredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
               <span
                 class="filling"
-                :class="' filling--' + getIngredientClassName(ingredient.name)"
-                >{{ ingredient.name }}
+                :class="
+                  ' filling--' + getIngredientClassName(ingredient.rusName)
+                "
+                >{{ ingredient.rusName }}
               </span>
 
-              <div class="counter counter--orange ingredients__counter">
-                <button
-                  type="button"
-                  class="counter__button counter__button--minus"
-                  disabled
-                >
-                  <span class="visually-hidden">Меньше</span>
-                </button>
-                <input
-                  type="text"
-                  name="counter"
-                  class="counter__input"
-                  value="0"
-                />
-                <button
-                  type="button"
-                  class="counter__button counter__button--plus"
-                >
-                  <span class="visually-hidden">Больше</span>
-                </button>
-              </div>
+              <app-item-counter
+                :idx="idx"
+                :ingredientCount="ingredient.count"
+                @onIncrementIngredientClick="onIncrementIngredientClick"
+                @onDecrementIngredientClick="onDecrementIngredientClick"
+              ></app-item-counter>
             </li>
           </ul>
         </div>
@@ -68,9 +56,14 @@
 
 <script>
 import pizza from "../../../static/pizza.json";
+import AppItemCounter from "../../../common/components/AppItemCounter";
 
 export default {
   name: "BuilderIngredientsSelector",
+  props: {
+    sauceInfo: String,
+    ingredients: Array,
+  },
   data() {
     return { pizza };
   },
@@ -117,7 +110,14 @@ export default {
           return "blue_cheese";
       }
     },
+    onIncrementIngredientClick(idx) {
+      this.$emit("onIncrementIngredientClick", idx);
+    },
+    onDecrementIngredientClick(idx) {
+      this.$emit("onDecrementIngredientClick", idx);
+    },
   },
+  components: { AppItemCounter },
 };
 </script>
 
