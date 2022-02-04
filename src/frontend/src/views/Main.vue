@@ -17,6 +17,7 @@
           :ingredients="ingredients"
         ></builder-ingredients-selector>
         <builder-content-pizza
+          @dragNDropIngredient="onIncrementIngredientClick"
           :doughSize="doughSize"
           :sauceInfo="sauceInfo"
           :ingredients="ingredients"

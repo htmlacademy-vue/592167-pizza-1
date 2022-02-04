@@ -25,21 +25,19 @@
 
         <div class="ingredients__filling">
           <p>Начинка:</p>
-
           <ul class="ingredients__list">
             <li
               v-for="(ingredient, idx) in ingredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
-              <span
-                class="filling"
-                :class="
-                  ' filling--' + getIngredientClassName(ingredient.rusName)
-                "
-                >{{ ingredient.rusName }}
-              </span>
-
+              <AppDrop @drop="$emit('drop', $event)">
+                <AppDrag :transfer-data="ingredient">
+                  <builder-ingredient-picture
+                    :ingredient="ingredient"
+                  ></builder-ingredient-picture>
+                </AppDrag>
+              </AppDrop>
               <app-item-counter
                 :idx="idx"
                 :ingredientCount="ingredient.count"
@@ -57,6 +55,9 @@
 <script>
 import pizza from "../../../static/pizza.json";
 import AppItemCounter from "../../../common/components/AppItemCounter";
+import AppDrag from "../../../common/components/AppDrag";
+import AppDrop from "../../../common/components/AppDrop";
+import BuilderIngredientPicture from "./BuilderIngredientPicture";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -117,7 +118,7 @@ export default {
       this.$emit("onDecrementIngredientClick", idx);
     },
   },
-  components: { AppItemCounter },
+  components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
 };
 </script>
 

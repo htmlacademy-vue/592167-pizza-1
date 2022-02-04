@@ -9,6 +9,7 @@
       />
     </label>
     <builder-pizza-view
+      @dragNDropIngredient="dragNDropIngredient"
       :doughSize="doughSize"
       :sauceInfo="sauceInfo"
       :ingredients="ingredients"
@@ -27,6 +28,11 @@ export default {
     doughSize: String,
     sauceInfo: String,
     ingredients: Array,
+  },
+  methods: {
+    dragNDropIngredient(idx) {
+      this.$emit("dragNDropIngredient", idx);
+    },
   },
   components: {
     BuilderPizzaView,

@@ -1,6 +1,6 @@
 <template>
   <div
-    :draggable="true"
+    :draggable="onDraggable"
     @dragstart.self="onDrag"
     @dragover.prevent
     @dragenter.prevent
@@ -28,6 +28,11 @@ export default {
         DATA_TRANSFER_PAYLOAD,
         JSON.stringify(this.transferData)
       );
+    },
+  },
+  computed: {
+    onDraggable() {
+      return this.transferData.count < 3;
     },
   },
 };
