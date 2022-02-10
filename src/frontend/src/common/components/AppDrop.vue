@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { DATA_TRANSFER_PAYLOAD } from "../constants";
+import { DATA_TRANSFER_PAYLOAD } from "@/constants";
 
 export default {
   name: "AppDrop",

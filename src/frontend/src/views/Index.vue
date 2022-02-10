@@ -1,14 +1,17 @@
 <template>
   <div>
-    <app-layout></app-layout>
+    <app-layout :sum="sum"></app-layout>
     <Main
       @onDoughSizeClick="changeDoughSize"
       @onSauceClick="changeSauce"
       @onIncrementIngredientClick="changeIngredientCount"
       @onDecrementIngredientClick="changeIngredientCount"
+      @onPizzaDiameterClick="changePizzaDiameter"
       :doughSize="doughSize"
       :sauceInfo="sauceInfo"
       :ingredients="ingredients"
+      :pizzaDiameter="pizzaDiameter"
+      :sum="sum"
     ></Main>
   </div>
 </template>
@@ -16,6 +19,7 @@
 <script>
 import misc from "../static/misc.json";
 import user from "../static/user.json";
+import { DOUGH_PRICE, SAUCES_PRICE, SIZE_MULTIPLIER } from "../constants";
 
 import Main from "./Main";
 import AppLayout from "../layouts/AppLayout";
@@ -28,6 +32,8 @@ export default {
       user,
       doughSize: "light",
       sauceInfo: "tomato",
+      pizzaDiameter: "small",
+      sum: 0,
       ingredients: [
         {
           id: 1,
@@ -155,13 +161,36 @@ export default {
   methods: {
     changeDoughSize(data) {
       this.doughSize = data;
+      this.changeSum();
     },
     changeSauce(data) {
       this.sauceInfo = data;
+      this.changeSum();
     },
     changeIngredientCount(direction, idx) {
-      const ingredient = this.ingredients.find((it) => it.id === idx + 1);
+      const ingredient = this.ingredients.find((it) => it.id === idx);
       direction === "increment" ? ingredient.count++ : ingredient.count--;
+      this.changeSum();
+    },
+    changePizzaDiameter(data) {
+      this.pizzaDiameter = data;
+      this.changeSum();
+    },
+    changeSum() {
+      // мультипликатор размера х (стоимость теста + соус + ингредиенты)
+      let sum = 0;
+      let ingredientsPrice = 0;
+      this.ingredients
+        .filter((it) => it.count > 0)
+        .map((it) => {
+          ingredientsPrice += it.count * it.price;
+        });
+      sum =
+        SIZE_MULTIPLIER[this.pizzaDiameter] *
+        (DOUGH_PRICE[this.doughSize] +
+          SAUCES_PRICE[this.sauceInfo] +
+          ingredientsPrice);
+      this.sum = sum;
     },
   },
   components: {

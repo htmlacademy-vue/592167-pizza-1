@@ -17,7 +17,7 @@
               type="radio"
               name="sauce"
               :value="getSauceValue(sauce.name)"
-              v-model="sauceInfo"
+              :checked="isChecked(getSauceValue(sauce.name))"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -27,19 +27,20 @@
           <p>Начинка:</p>
           <ul class="ingredients__list">
             <li
-              v-for="(ingredient, idx) in ingredients"
+              v-for="ingredient in ingredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
               <AppDrop @drop="$emit('drop', $event)">
                 <AppDrag :transfer-data="ingredient">
                   <builder-ingredient-picture
-                    :ingredient="ingredient"
+                    :ingredientName="ingredient.name"
+                    :ingredientRusName="ingredient.rusName"
                   ></builder-ingredient-picture>
                 </AppDrag>
               </AppDrop>
               <app-item-counter
-                :idx="idx"
+                :idx="ingredient.id"
                 :ingredientCount="ingredient.count"
                 @onIncrementIngredientClick="onIncrementIngredientClick"
                 @onDecrementIngredientClick="onDecrementIngredientClick"
@@ -53,10 +54,10 @@
 </template>
 
 <script>
-import pizza from "../../../static/pizza.json";
-import AppItemCounter from "../../../common/components/AppItemCounter";
-import AppDrag from "../../../common/components/AppDrag";
-import AppDrop from "../../../common/components/AppDrop";
+import pizza from "@/static/pizza.json";
+import AppItemCounter from "@/common/components/AppItemCounter";
+import AppDrag from "@/common/components/AppDrag";
+import AppDrop from "@/common/components/AppDrop";
 import BuilderIngredientPicture from "./BuilderIngredientPicture";
 
 export default {
@@ -77,45 +78,14 @@ export default {
           return "creamy";
       }
     },
-    getIngredientClassName(name) {
-      switch (name) {
-        case "Грибы":
-          return "mushrooms";
-        case "Чеддер":
-          return "cheddar";
-        case "Салями":
-          return "salami";
-        case "Ветчина":
-          return "ham";
-        case "Ананас":
-          return "ananas";
-        case "Бекон":
-          return "bacon";
-        case "Лук":
-          return "onion";
-        case "Чили":
-          return "chile";
-        case "Халапеньо":
-          return "jalapeno";
-        case "Маслины":
-          return "olives";
-        case "Томаты":
-          return "tomatoes";
-        case "Лосось":
-          return "salmon";
-        case "Моцарелла":
-          return "mozzarella";
-        case "Пармезан":
-          return "parmesan";
-        case "Блю чиз":
-          return "blue_cheese";
-      }
-    },
     onIncrementIngredientClick(idx) {
       this.$emit("onIncrementIngredientClick", idx);
     },
     onDecrementIngredientClick(idx) {
       this.$emit("onDecrementIngredientClick", idx);
+    },
+    isChecked(sauceName) {
+      return sauceName === this.sauceInfo;
     },
   },
   components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },

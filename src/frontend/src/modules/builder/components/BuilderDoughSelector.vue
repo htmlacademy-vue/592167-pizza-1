@@ -15,7 +15,7 @@
             type="radio"
             name="dough"
             :value="getDoughThickness(item.name)"
-            v-model="doughSize"
+            :checked="isChecked(getDoughThickness(item.name))"
             class="visually-hidden"
           />
           <b>{{ item.name }}</b>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import pizza from "../../../static/pizza.json";
+import pizza from "@/static/pizza.json";
 
 export default {
   name: "BuilderDoughSelector",
@@ -42,6 +42,9 @@ export default {
   methods: {
     getDoughThickness(doughName) {
       return doughName === "Тонкое" ? `light` : `large`;
+    },
+    isChecked(data) {
+      return data === this.doughSize;
     },
   },
 };

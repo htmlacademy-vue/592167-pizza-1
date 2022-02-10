@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import AppDrop from "../../../common/components/AppDrop";
+import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderPizzaView",
@@ -39,7 +39,7 @@ export default {
       }
     },
     moveIngredient(active) {
-      this.$emit("dragNDropIngredient", active.id - 1);
+      this.$emit("dragNDropIngredient", active.id);
     },
   },
   computed: {

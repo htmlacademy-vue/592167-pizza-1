@@ -7,7 +7,10 @@
           @onDoughSizeClick="onDoughSizeClick"
           :doughSize="doughSize"
         ></builder-dough-selector>
-        <builder-size-selector></builder-size-selector>
+        <builder-size-selector
+          :pizzaDiameter="pizzaDiameter"
+          @onPizzaDiameterClick="onPizzaDiameterClick"
+        ></builder-size-selector>
         <builder-ingredients-selector
           @onSauceClick="onSauceClick"
           @onIncrementIngredientClick="onIncrementIngredientClick"
@@ -21,6 +24,7 @@
           :doughSize="doughSize"
           :sauceInfo="sauceInfo"
           :ingredients="ingredients"
+          :sum="sum"
         ></builder-content-pizza>
       </div>
     </form>
@@ -40,6 +44,8 @@ export default {
     doughSize: String,
     sauceInfo: String,
     ingredients: Array,
+    pizzaDiameter: String,
+    sum: Number,
   },
   data() {
     return { pizza };
@@ -56,6 +62,9 @@ export default {
     },
     onDecrementIngredientClick(idx) {
       this.$emit("onDecrementIngredientClick", "decrement", idx);
+    },
+    onPizzaDiameterClick(data) {
+      this.$emit("onPizzaDiameterClick", data);
     },
   },
   components: {

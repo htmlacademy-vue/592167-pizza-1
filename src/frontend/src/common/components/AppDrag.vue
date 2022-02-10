@@ -5,12 +5,12 @@
     @dragover.prevent
     @dragenter.prevent
   >
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
 <script>
-import { MOVE, DATA_TRANSFER_PAYLOAD } from "../constants";
+import { MOVE, DATA_TRANSFER_PAYLOAD } from "@/constants";
 
 export default {
   name: "AppDrag",

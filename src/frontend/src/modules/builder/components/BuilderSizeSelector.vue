@@ -9,12 +9,16 @@
           :key="size.id"
           class="diameter__input"
           :class="' diameter__input--' + getPizzaDiameterClassName(size.name)"
+          @click="
+            $emit('onPizzaDiameterClick', getPizzaDiameterClassName(size.name))
+          "
         >
           <input
             type="radio"
             name="diameter"
             :value="getPizzaDiameterClassName(size.name)"
             class="visually-hidden"
+            :checked="isChecked(size.name)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -24,10 +28,13 @@
 </template>
 
 <script>
-import pizza from "../../../static/pizza.json";
+import pizza from "@/static/pizza.json";
 
 export default {
   name: "BuilderSizeSelector",
+  props: {
+    pizzaDiameter: String,
+  },
   data() {
     return { pizza };
   },
@@ -41,6 +48,9 @@ export default {
         default:
           return "big";
       }
+    },
+    isChecked(size) {
+      return this.getPizzaDiameterClassName(size) === this.pizzaDiameter;
     },
   },
 };

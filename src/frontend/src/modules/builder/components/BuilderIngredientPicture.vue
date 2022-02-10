@@ -1,6 +1,6 @@
 <template>
-  <span class="filling" :class="' filling--' + ingredient.name">
-    {{ ingredient.rusName }}
+  <span class="filling" :class="' filling--' + ingredientName">
+    {{ ingredientRusName }}
   </span>
 </template>
 
@@ -8,7 +8,8 @@
 export default {
   name: "BuilderIngredientPicture",
   props: {
-    ingredient: Object,
+    ingredientName: String,
+    ingredientRusName: String,
   },
 };
 </script>

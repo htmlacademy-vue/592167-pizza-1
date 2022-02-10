@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/constants";
+
 export default {
   name: "AppItemCounter",
   props: {
@@ -48,10 +50,10 @@ export default {
   },
   computed: {
     isDisabledButtonPlus() {
-      return this.ingredientCount >= 3;
+      return this.ingredientCount >= MAX_INGREDIENT_COUNT;
     },
     isDisabledButtonMinus() {
-      return this.ingredientCount === 0;
+      return this.ingredientCount === MIN_INGREDIENT_COUNT;
     },
   },
 };

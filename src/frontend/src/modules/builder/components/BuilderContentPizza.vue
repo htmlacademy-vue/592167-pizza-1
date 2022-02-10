@@ -14,7 +14,7 @@
       :sauceInfo="sauceInfo"
       :ingredients="ingredients"
     ></builder-pizza-view>
-    <builder-price-counter></builder-price-counter>
+    <builder-price-counter :sum="sum"></builder-price-counter>
   </div>
 </template>
 
@@ -28,6 +28,7 @@ export default {
     doughSize: String,
     sauceInfo: String,
     ingredients: Array,
+    sum: Number,
   },
   methods: {
     dragNDropIngredient(idx) {
