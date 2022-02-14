@@ -20,6 +20,11 @@ export default {
       required: true,
     },
   },
+  computed: {
+    onDraggable() {
+      return this.transferData.count < 3;
+    },
+  },
   methods: {
     onDrag({ dataTransfer }) {
       dataTransfer.effectAllowed = MOVE;
@@ -28,11 +33,6 @@ export default {
         DATA_TRANSFER_PAYLOAD,
         JSON.stringify(this.transferData)
       );
-    },
-  },
-  computed: {
-    onDraggable() {
-      return this.transferData.count < 3;
     },
   },
 };

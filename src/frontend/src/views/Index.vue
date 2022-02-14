@@ -1,18 +1,18 @@
 <template>
   <div>
-    <app-layout :sum="sum"></app-layout>
+    <app-layout :sum="sum" />
     <Main
+      :dough-size="doughSize"
+      :sauce-info="sauceInfo"
+      :ingredients="ingredients"
+      :pizza-diameter="pizzaDiameter"
+      :sum="sum"
       @onDoughSizeClick="changeDoughSize"
       @onSauceClick="changeSauce"
       @onIncrementIngredientClick="changeIngredientCount"
       @onDecrementIngredientClick="changeIngredientCount"
       @onPizzaDiameterClick="changePizzaDiameter"
-      :doughSize="doughSize"
-      :sauceInfo="sauceInfo"
-      :ingredients="ingredients"
-      :pizzaDiameter="pizzaDiameter"
-      :sum="sum"
-    ></Main>
+    />
   </div>
 </template>
 
@@ -26,6 +26,10 @@ import AppLayout from "../layouts/AppLayout";
 
 export default {
   name: "Index",
+  components: {
+    AppLayout,
+    Main,
+  },
   data() {
     return {
       misc,
@@ -192,10 +196,6 @@ export default {
           ingredientsPrice);
       this.sum = sum;
     },
-  },
-  components: {
-    AppLayout,
-    Main,
   },
 };
 </script>

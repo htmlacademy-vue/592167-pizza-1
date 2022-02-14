@@ -33,7 +33,10 @@ import pizza from "@/static/pizza.json";
 export default {
   name: "BuilderSizeSelector",
   props: {
-    pizzaDiameter: String,
+    pizzaDiameter: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return { pizza };

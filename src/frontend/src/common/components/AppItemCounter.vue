@@ -3,22 +3,22 @@
     <button
       type="button"
       class="counter__button counter__button--minus"
-      @click="decrementValue"
       :disabled="isDisabledButtonMinus"
+      @click="decrementValue"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
     <input
+      v-model="ingredientCount"
       type="text"
       name="counter"
       class="counter__input"
-      v-model="ingredientCount"
     />
     <button
       type="button"
       class="counter__button counter__button--plus"
-      @click="incrementValue"
       :disabled="isDisabledButtonPlus"
+      @click="incrementValue"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -31,8 +31,14 @@ import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/constants";
 export default {
   name: "AppItemCounter",
   props: {
-    idx: Number,
-    ingredientCount: Number,
+    idx: {
+      type: Number,
+      default: 0,
+    },
+    ingredientCount: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -40,20 +46,20 @@ export default {
       isIngredients: false,
     };
   },
-  methods: {
-    incrementValue() {
-      this.$emit("onIncrementIngredientClick", this.idx);
-    },
-    decrementValue() {
-      this.$emit("onDecrementIngredientClick", this.idx);
-    },
-  },
   computed: {
     isDisabledButtonPlus() {
       return this.ingredientCount >= MAX_INGREDIENT_COUNT;
     },
     isDisabledButtonMinus() {
       return this.ingredientCount === MIN_INGREDIENT_COUNT;
+    },
+  },
+  methods: {
+    incrementValue() {
+      this.$emit("onIncrementIngredientClick", this.idx);
+    },
+    decrementValue() {
+      this.$emit("onDecrementIngredientClick", this.idx);
     },
   },
 };

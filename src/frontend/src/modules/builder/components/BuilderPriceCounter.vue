@@ -9,7 +9,10 @@
 export default {
   name: "BuilderPriceCounter",
   props: {
-    sum: Number,
+    sum: {
+      type: Number,
+      default: 0,
+    },
   },
 };
 </script>

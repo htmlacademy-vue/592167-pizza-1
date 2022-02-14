@@ -23,7 +23,10 @@
 export default {
   name: "AppLayout",
   props: {
-    sum: Number,
+    sum: {
+      type: Number,
+      default: 0,
+    },
   },
 };
 </script>

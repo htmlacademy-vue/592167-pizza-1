@@ -5,10 +5,10 @@
 
       <div class="sheet__content dough">
         <label
-          class="dough__input"
-          :class="' dough__input--' + getDoughThickness(item.name)"
           v-for="item in pizza.dough"
           :key="item.id"
+          class="dough__input"
+          :class="' dough__input--' + getDoughThickness(item.name)"
           @click="$emit('onDoughSizeClick', getDoughThickness(item.name))"
         >
           <input
@@ -32,7 +32,10 @@ import pizza from "@/static/pizza.json";
 export default {
   name: "BuilderDoughSelector",
   props: {
-    doughSize: String,
+    doughSize: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {

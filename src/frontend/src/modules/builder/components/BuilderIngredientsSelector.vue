@@ -34,17 +34,17 @@
               <AppDrop @drop="$emit('drop', $event)">
                 <AppDrag :transfer-data="ingredient">
                   <builder-ingredient-picture
-                    :ingredientName="ingredient.name"
-                    :ingredientRusName="ingredient.rusName"
-                  ></builder-ingredient-picture>
+                    :ingredient-name="ingredient.name"
+                    :ingredient-rus-name="ingredient.rusName"
+                  />
                 </AppDrag>
               </AppDrop>
               <app-item-counter
                 :idx="ingredient.id"
-                :ingredientCount="ingredient.count"
+                :ingredient-count="ingredient.count"
                 @onIncrementIngredientClick="onIncrementIngredientClick"
                 @onDecrementIngredientClick="onDecrementIngredientClick"
-              ></app-item-counter>
+              />
             </li>
           </ul>
         </div>
@@ -62,6 +62,7 @@ import BuilderIngredientPicture from "./BuilderIngredientPicture";
 
 export default {
   name: "BuilderIngredientsSelector",
+  components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
   props: {
     sauceInfo: String,
     ingredients: Array,
@@ -88,7 +89,6 @@ export default {
       return sauceName === this.sauceInfo;
     },
   },
-  components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
 };
 </script>
 

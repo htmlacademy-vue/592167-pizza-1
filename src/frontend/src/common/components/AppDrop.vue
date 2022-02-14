@@ -1,6 +1,6 @@
 <template>
   <div @drop.stop="onDrop" @dragover.prevent @dragenter.prevent>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

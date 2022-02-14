@@ -8,8 +8,14 @@
 export default {
   name: "BuilderIngredientPicture",
   props: {
-    ingredientName: String,
-    ingredientRusName: String,
+    ingredientName: {
+      type: String,
+      default: "",
+    },
+    ingredientRusName: {
+      type: String,
+      default: "",
+    },
   },
 };
 </script>

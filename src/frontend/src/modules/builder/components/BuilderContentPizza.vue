@@ -9,12 +9,12 @@
       />
     </label>
     <builder-pizza-view
-      @dragNDropIngredient="dragNDropIngredient"
-      :doughSize="doughSize"
-      :sauceInfo="sauceInfo"
+      :dough-size="doughSize"
+      :sauce-info="sauceInfo"
       :ingredients="ingredients"
-    ></builder-pizza-view>
-    <builder-price-counter :sum="sum"></builder-price-counter>
+      @dragNDropIngredient="dragNDropIngredient"
+    />
+    <builder-price-counter :sum="sum" />
   </div>
 </template>
 
@@ -24,20 +24,32 @@ import BuilderPriceCounter from "./BuilderPriceCounter";
 
 export default {
   name: "BuilderContentPizza",
+  components: {
+    BuilderPizzaView,
+    BuilderPriceCounter,
+  },
   props: {
-    doughSize: String,
-    sauceInfo: String,
-    ingredients: Array,
-    sum: Number,
+    doughSize: {
+      type: String,
+      default: "",
+    },
+    sauceInfo: {
+      type: String,
+      default: "",
+    },
+    ingredients: {
+      type: Array,
+      default: () => [],
+    },
+    sum: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
     dragNDropIngredient(idx) {
       this.$emit("dragNDropIngredient", idx);
     },
-  },
-  components: {
-    BuilderPizzaView,
-    BuilderPriceCounter,
   },
 };
 </script>
