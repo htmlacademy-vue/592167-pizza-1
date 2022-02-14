@@ -14,7 +14,7 @@
           <input
             type="radio"
             name="diameter"
-            :value="getPizzaDiameterClassName(size.name)"
+            :value="size.slug"
             class="visually-hidden"
             :checked="isChecked(size.slug)"
           />
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+// import pizza from "@/static/pizza.json";
 import pizza from "@/static/pizza.json";
 
 export default {
