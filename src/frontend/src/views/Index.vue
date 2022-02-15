@@ -5,6 +5,7 @@
       :dough-size="doughSize"
       :sauce-info="sauceInfo"
       :ingredients="ingredients"
+      :selected-ingredients="selectedIngredients"
       :pizza-diameter="pizzaDiameter"
       :sum="sum"
       @onDoughSizeClick="changeDoughSize"
@@ -17,12 +18,12 @@
 </template>
 
 <script>
-import misc from "../static/misc.json";
-import user from "../static/user.json";
-import { DOUGH_PRICE, SAUCES_PRICE, SIZE_MULTIPLIER } from "../constants";
+import misc from "@/static/misc.json";
+import user from "@/static/user.json";
+import { DOUGH_PRICE, SAUCES_PRICE, SIZE_MULTIPLIER } from "@/constants";
 
 import Main from "./Main";
-import AppLayout from "../layouts/AppLayout";
+import AppLayout from "@/layouts/AppLayout";
 
 export default {
   name: "Index",
@@ -160,6 +161,7 @@ export default {
           count: 0,
         },
       ],
+      selectedIngredients: [],
     };
   },
   methods: {

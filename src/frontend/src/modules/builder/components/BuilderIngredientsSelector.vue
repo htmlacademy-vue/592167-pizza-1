@@ -26,6 +26,7 @@
         <div class="ingredients__filling">
           <p>Начинка:</p>
           <ul class="ingredients__list">
+            »
             <li
               v-for="ingredient in ingredients"
               :key="ingredient.id"
@@ -64,8 +65,14 @@ export default {
   name: "BuilderIngredientsSelector",
   components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
   props: {
-    sauceInfo: String,
-    ingredients: Array,
+    sauceInfo: {
+      type: String,
+      default: "",
+    },
+    ingredients: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return { pizza };
