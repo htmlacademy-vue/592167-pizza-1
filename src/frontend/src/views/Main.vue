@@ -25,7 +25,9 @@
           :ingredients="ingredients"
           :selected-ingredients="selectedIngredients"
           :sum="sum"
+          :pizza-name="pizzaName"
           @changeIngredientCount="changeIngredientCount"
+          @changePizzaName="changePizzaName"
         />
       </div>
     </form>
@@ -72,6 +74,10 @@ export default {
       type: Number,
       default: 0,
     },
+    pizzaName: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return { pizza };
@@ -88,6 +94,9 @@ export default {
     },
     changeIngredientCount(data) {
       this.$emit("changeIngredientCount", data);
+    },
+    changePizzaName(data) {
+      this.$emit("changePizzaName", data);
     },
   },
 };

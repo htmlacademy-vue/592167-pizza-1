@@ -8,10 +8,12 @@
       :selected-ingredients="selectedIngredients"
       :pizza-diameter="pizzaDiameter"
       :sum="sum"
+      :pizza-name="pizzaName"
       @onDoughSizeClick="changeDoughSize"
       @onSauceClick="changeSauce"
       @onPizzaDiameterClick="changePizzaDiameter"
       @changeIngredientCount="changeIngredientCount"
+      @changePizzaName="changePizzaName"
     />
   </div>
 </template>
@@ -42,6 +44,7 @@ export default {
       doughSize: "light",
       sauceInfo: "tomato",
       pizzaDiameter: "small",
+      pizzaName: "",
       sum: 0,
       ingredients: [
         {
@@ -207,6 +210,9 @@ export default {
         delete this.selectedIngredients[Object.keys(data)[0]];
       }
       this.changeSum();
+    },
+    changePizzaName(data) {
+      this.pizzaName = data;
     },
   },
 };

@@ -3,9 +3,11 @@
     <label class="input">
       <span class="visually-hidden">Название пиццы</span>
       <input
+        v-model="localPizzaName"
         type="text"
         name="pizza_name"
         placeholder="Введите название пиццы"
+        @blur="$emit('changePizzaName', localPizzaName)"
       />
     </label>
     <builder-pizza-view
@@ -50,6 +52,15 @@ export default {
       type: Number,
       default: 0,
     },
+    pizzaName: {
+      type: String,
+      default: "",
+    },
+  },
+  data() {
+    return {
+      localPizzaName: this.pizzaName,
+    };
   },
   methods: {
     changeIngredientCount(data) {
