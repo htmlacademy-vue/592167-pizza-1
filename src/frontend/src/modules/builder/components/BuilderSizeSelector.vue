@@ -26,7 +26,6 @@
 </template>
 
 <script>
-// import pizza from "@/static/pizza.json";
 import pizza from "@/static/pizza.json";
 
 export default {
@@ -47,7 +46,3 @@ export default {
   },
 };
 </script>
-
-<!--<style scoped>-->
-
-<!--</style>-->

@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import BuilderPizzaView from "./BuilderPizzaView";
-import BuilderPriceCounter from "./BuilderPriceCounter";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "BuilderContentPizza",
@@ -58,7 +58,3 @@ export default {
   },
 };
 </script>
-
-<!--<style scoped>-->
-
-<!--</style>-->

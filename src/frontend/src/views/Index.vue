@@ -26,7 +26,7 @@ import {
   SIZE_MULTIPLIER,
 } from "@/constants";
 
-import Main from "./Main";
+import Main from "@/views/Main";
 import AppLayout from "@/layouts/AppLayout";
 
 export default {
@@ -211,7 +211,3 @@ export default {
   },
 };
 </script>
-
-<!--<style scoped>-->
-
-<!--</style>-->

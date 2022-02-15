@@ -65,7 +65,7 @@ import pizza from "@/static/pizza.json";
 import AppItemCounter from "@/common/components/AppItemCounter";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
-import BuilderIngredientPicture from "./BuilderIngredientPicture";
+import BuilderIngredientPicture from "@/modules/builder/components/BuilderIngredientPicture";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -110,7 +110,3 @@ export default {
   },
 };
 </script>
-
-<!--<style scoped>-->
-
-<!--</style>-->

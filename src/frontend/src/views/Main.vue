@@ -33,11 +33,11 @@
 </template>
 
 <script>
-import pizza from "../static/pizza.json";
-import BuilderDoughSelector from "../modules/builder/components/BuilderDoughSelector";
-import BuilderSizeSelector from "../modules/builder/components/BuilderSizeSelector";
-import BuilderIngredientsSelector from "../modules/builder/components/BuilderIngredientsSelector";
-import BuilderContentPizza from "../modules/builder/components/BuilderContentPizza";
+import pizza from "@/static/pizza.json";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
+import BuilderContentPizza from "@/modules/builder/components/BuilderContentPizza";
 
 export default {
   name: "Main",
@@ -92,7 +92,3 @@ export default {
   },
 };
 </script>
-
-<!--<style scoped>-->
-
-<!--</style>-->
