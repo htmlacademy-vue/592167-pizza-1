@@ -4,11 +4,13 @@
       <div class="pizza" :class="pizzaSize">
         <div class="pizza__wrapper">
           <div
-            v-for="item of pizzaFilling"
-            :key="item.id"
+            v-for="item in pizzaFilling"
+            :key="item"
             class="pizza__filling"
             :class="
-              'pizza__filling--' + item.name + ingredientCount(item.count)
+              'pizza__filling--' +
+              item +
+              ingredientCount(selectedIngredients[item])
             "
           />
         </div>
@@ -36,6 +38,15 @@ export default {
       type: Array,
       default: () => [],
     },
+    selectedIngredients: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {
+      count: 0,
+    };
   },
   computed: {
     pizzaSize() {
@@ -45,7 +56,7 @@ export default {
       return `pizza--foundation--big-${this.sauceInfo}`;
     },
     pizzaFilling() {
-      return this.ingredients.filter((it) => it.count > 0);
+      return Object.keys(this.selectedIngredients);
     },
   },
   methods: {
@@ -60,7 +71,13 @@ export default {
       }
     },
     moveIngredient(active) {
-      this.$emit("dragNDropIngredient", active.id);
+      const keysNames = Object.keys(this.selectedIngredients);
+      this.count = keysNames.includes(active)
+        ? this.selectedIngredients[active]
+        : 0;
+      this.$emit("changeIngredientCount", {
+        [active]: ++this.count,
+      });
     },
   },
 };

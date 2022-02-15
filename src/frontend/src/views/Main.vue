@@ -15,16 +15,17 @@
           :sauce-info="sauceInfo"
           :dough-size="doughSize"
           :ingredients="ingredients"
+          :selected-ingredients="selectedIngredients"
           @onSauceClick="onSauceClick"
-          @onIncrementIngredientClick="onIncrementIngredientClick"
-          @onDecrementIngredientClick="onDecrementIngredientClick"
+          @changeIngredientCount="changeIngredientCount"
         />
         <builder-content-pizza
           :dough-size="doughSize"
           :sauce-info="sauceInfo"
           :ingredients="ingredients"
+          :selected-ingredients="selectedIngredients"
           :sum="sum"
-          @dragNDropIngredient="onIncrementIngredientClick"
+          @changeIngredientCount="changeIngredientCount"
         />
       </div>
     </form>
@@ -59,6 +60,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    selectedIngredients: {
+      type: Object,
+      default: () => {},
+    },
     pizzaDiameter: {
       type: String,
       default: "",
@@ -78,14 +83,11 @@ export default {
     onSauceClick(data) {
       this.$emit("onSauceClick", data);
     },
-    onIncrementIngredientClick(idx) {
-      this.$emit("onIncrementIngredientClick", "increment", idx);
-    },
-    onDecrementIngredientClick(idx) {
-      this.$emit("onDecrementIngredientClick", "decrement", idx);
-    },
     onPizzaDiameterClick(data) {
       this.$emit("onPizzaDiameterClick", data);
+    },
+    changeIngredientCount(data) {
+      this.$emit("changeIngredientCount", data);
     },
   },
 };

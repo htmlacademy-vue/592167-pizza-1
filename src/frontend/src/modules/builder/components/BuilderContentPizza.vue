@@ -12,7 +12,8 @@
       :dough-size="doughSize"
       :sauce-info="sauceInfo"
       :ingredients="ingredients"
-      @dragNDropIngredient="dragNDropIngredient"
+      :selected-ingredients="selectedIngredients"
+      @changeIngredientCount="changeIngredientCount"
     />
     <builder-price-counter :sum="sum" />
   </div>
@@ -41,14 +42,18 @@ export default {
       type: Array,
       default: () => [],
     },
+    selectedIngredients: {
+      type: Object,
+      default: () => {},
+    },
     sum: {
       type: Number,
       default: 0,
     },
   },
   methods: {
-    dragNDropIngredient(idx) {
-      this.$emit("dragNDropIngredient", idx);
+    changeIngredientCount(data) {
+      this.$emit("changeIngredientCount", data);
     },
   },
 };

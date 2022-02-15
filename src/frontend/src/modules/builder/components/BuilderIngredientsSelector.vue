@@ -26,14 +26,18 @@
         <div class="ingredients__filling">
           <p>Начинка:</p>
           <ul class="ingredients__list">
-            »
             <li
               v-for="ingredient in ingredients"
               :key="ingredient.id"
               class="ingredients__item"
             >
               <AppDrop @drop="$emit('drop', $event)">
-                <AppDrag :transfer-data="ingredient">
+                <AppDrag
+                  :ingredient-name="ingredient.name"
+                  :ingredient-count="
+                    getIngredientCount(ingredient.name, selectedIngredients)
+                  "
+                >
                   <builder-ingredient-picture
                     :ingredient-name="ingredient.name"
                     :ingredient-rus-name="ingredient.rusName"
@@ -42,9 +46,11 @@
               </AppDrop>
               <app-item-counter
                 :idx="ingredient.id"
-                :ingredient-count="ingredient.count"
-                @onIncrementIngredientClick="onIncrementIngredientClick"
-                @onDecrementIngredientClick="onDecrementIngredientClick"
+                :ingredient-name="ingredient.name"
+                :ingredient-count="
+                  getIngredientCount(ingredient.name, selectedIngredients)
+                "
+                @changeIngredientCount="changeIngredientCount"
               />
             </li>
           </ul>
@@ -73,6 +79,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    selectedIngredients: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return { pizza };
@@ -86,14 +96,16 @@ export default {
           return "creamy";
       }
     },
-    onIncrementIngredientClick(idx) {
-      this.$emit("onIncrementIngredientClick", idx);
-    },
-    onDecrementIngredientClick(idx) {
-      this.$emit("onDecrementIngredientClick", idx);
+    getIngredientCount(ingredientName, selectedIngredients) {
+      return selectedIngredients[ingredientName]
+        ? selectedIngredients[ingredientName]
+        : 0;
     },
     isChecked(sauceName) {
       return sauceName === this.sauceInfo;
+    },
+    changeIngredientCount(data) {
+      this.$emit("changeIngredientCount", data);
     },
   },
 };

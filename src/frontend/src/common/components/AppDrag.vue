@@ -15,14 +15,18 @@ import { MOVE, DATA_TRANSFER_PAYLOAD } from "@/constants";
 export default {
   name: "AppDrag",
   props: {
-    transferData: {
-      type: Object,
-      required: true,
+    ingredientName: {
+      type: String,
+      default: "",
+    },
+    ingredientCount: {
+      type: Number,
+      default: 0,
     },
   },
   computed: {
     onDraggable() {
-      return this.transferData.count < 3;
+      return this.ingredientCount < 3;
     },
   },
   methods: {
@@ -31,7 +35,7 @@ export default {
       dataTransfer.dropEffect = MOVE;
       dataTransfer.setData(
         DATA_TRANSFER_PAYLOAD,
-        JSON.stringify(this.transferData)
+        JSON.stringify(this.ingredientName)
       );
     },
   },

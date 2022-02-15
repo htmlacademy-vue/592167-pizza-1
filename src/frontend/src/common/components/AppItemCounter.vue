@@ -9,7 +9,7 @@
       <span class="visually-hidden">Меньше</span>
     </button>
     <input
-      v-model="ingredientCount"
+      :value="ingredientCount"
       type="text"
       name="counter"
       class="counter__input"
@@ -35,6 +35,10 @@ export default {
       type: Number,
       default: 0,
     },
+    ingredientName: {
+      type: String,
+      default: "",
+    },
     ingredientCount: {
       type: Number,
       default: 0,
@@ -56,10 +60,16 @@ export default {
   },
   methods: {
     incrementValue() {
-      this.$emit("onIncrementIngredientClick", this.idx);
+      this.count = this.ingredientCount;
+      this.$emit("changeIngredientCount", {
+        [this.ingredientName]: ++this.count,
+      });
     },
     decrementValue() {
-      this.$emit("onDecrementIngredientClick", this.idx);
+      this.count = this.ingredientCount;
+      this.$emit("changeIngredientCount", {
+        [this.ingredientName]: --this.count,
+      });
     },
   },
 };
