@@ -42,13 +42,10 @@ export default {
   },
   computed: {
     changeInputPizzaSize() {
-      console.log(this.pizza.sizes);
-      const pizzaSize = this.pizza.sizes.map((it) => {
+      return this.pizza.sizes.map((it) => {
         it.slug = PIZZA_SIZE[it.multiplier];
         return it;
       });
-      console.log(pizzaSize);
-      return this.pizza.sizes;
     },
   },
   methods: {
