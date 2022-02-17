@@ -1,35 +1,40 @@
 <template>
   <div class="counter counter--orange ingredients__counter">
-    <button
-      type="button"
-      class="counter__button counter__button--minus"
-      :disabled="isDisabledButtonMinus"
-      @click="decrementValue"
+    <app-button-counter
+      :differential="'counter__button--minus'"
+      :is-disabled="isDisabledButtonMinus"
+      @changeCount="
+        $emit('changeIngredientCount', ingredientCount - 1, ingredientName)
+      "
     >
       <span class="visually-hidden">Меньше</span>
-    </button>
+    </app-button-counter>
     <input
       :value="ingredientCount"
       type="text"
       name="counter"
       class="counter__input"
     />
-    <button
-      type="button"
-      class="counter__button counter__button--plus"
-      :disabled="isDisabledButtonPlus"
-      @click="incrementValue"
+    <app-button-counter
+      :differential="'counter__button--plus'"
+      :is-disabled="isDisabledButtonPlus"
+      @changeCount="
+        $emit('changeIngredientCount', ingredientCount + 1, ingredientName)
+      "
     >
       <span class="visually-hidden">Больше</span>
-    </button>
+    </app-button-counter>
   </div>
 </template>
 
 <script>
 import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/constants";
+import AppButtonCounter from "@/common/components/AppButtonCounter";
 
 export default {
   name: "AppItemCounter",
+  components: { AppButtonCounter },
+
   props: {
     idx: {
       type: Number,
@@ -70,6 +75,9 @@ export default {
       this.$emit("changeIngredientCount", {
         [this.ingredientName]: --this.count,
       });
+    },
+    someMethod(name) {
+      console.log("Метод вызвался на элементе: ", name);
     },
   },
 };

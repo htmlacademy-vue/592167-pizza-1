@@ -51,6 +51,7 @@
                   getIngredientCount(ingredient.name, selectedIngredients)
                 "
                 @changeIngredientCount="changeIngredientCount"
+                @changeCount="changeCount"
               />
             </li>
           </ul>
@@ -104,8 +105,12 @@ export default {
     isChecked(sauceName) {
       return sauceName === this.sauceInfo;
     },
-    changeIngredientCount(data) {
-      this.$emit("changeIngredientCount", data);
+    changeIngredientCount(count, name) {
+      this.$emit("changeIngredientCount", { [name]: count });
+    },
+    changeCount(val1, val2) {
+      console.log(val1);
+      console.log(val2);
     },
   },
 };
