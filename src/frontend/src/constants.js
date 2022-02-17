@@ -18,3 +18,9 @@ export const SAUCES_PRICE = {
   tomato: 50,
   creamy: 50,
 };
+
+export const PIZZA_SIZE = {
+  1: "small",
+  2: "normal",
+  3: "big",
+};

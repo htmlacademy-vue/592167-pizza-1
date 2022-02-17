@@ -48,21 +48,18 @@
     {
       "id": 1,
       "name": "23 см",
-      "slug": "small",
       "image": "/public/img/diameter.svg",
       "multiplier": 1
     },
     {
       "id": 2,
       "name": "32 см",
-      "slug": "normal",
       "image": "/public/img/diameter.svg",
       "multiplier": 2
     },
     {
       "id": 3,
       "name": "45 см",
-      "slug": "big",
       "image": "/public/img/diameter.svg",
       "multiplier": 3
     }

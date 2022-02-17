@@ -5,7 +5,7 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="size in pizza.sizes"
+          v-for="size in changeInputPizzaSize"
           :key="size.id"
           class="diameter__input"
           :class="' diameter__input--' + size.slug"
@@ -27,6 +27,7 @@
 
 <script>
 import pizza from "@/static/pizza.json";
+import { PIZZA_SIZE } from "@/constants";
 
 export default {
   name: "BuilderSizeSelector",
@@ -38,6 +39,17 @@ export default {
   },
   data() {
     return { pizza };
+  },
+  computed: {
+    changeInputPizzaSize() {
+      console.log(this.pizza.sizes);
+      const pizzaSize = this.pizza.sizes.map((it) => {
+        it.slug = PIZZA_SIZE[it.multiplier];
+        return it;
+      });
+      console.log(pizzaSize);
+      return this.pizza.sizes;
+    },
   },
   methods: {
     isChecked(size) {
