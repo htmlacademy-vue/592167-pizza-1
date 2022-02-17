@@ -15,6 +15,9 @@
       @changeIngredientCount="changeIngredientCount"
       @changePizzaName="changePizzaName"
     />
+    <div>
+      {{ selectedIngredients }}
+    </div>
   </div>
 </template>
 
@@ -201,10 +204,10 @@ export default {
       this.sum = sum;
     },
     changeIngredientCount(data) {
-      this.selectedIngredients = Object.assign(
-        {},
+      this.$set(
         this.selectedIngredients,
-        data
+        Object.keys(data)[0],
+        data[Object.keys(data)[0]]
       );
       if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
         delete this.selectedIngredients[Object.keys(data)[0]];
