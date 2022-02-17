@@ -4,14 +4,10 @@
       <div class="pizza" :class="pizzaSize">
         <div class="pizza__wrapper">
           <div
-            v-for="item in pizzaFilling"
-            :key="item"
+            v-for="(item, name) in selectedIngredients"
+            :key="name"
             class="pizza__filling"
-            :class="
-              'pizza__filling--' +
-              item +
-              ingredientCount(selectedIngredients[item])
-            "
+            :class="'pizza__filling--' + name + ingredientCount(item)"
           />
         </div>
       </div>
@@ -54,9 +50,6 @@ export default {
         return `pizza--foundation--small-${this.sauceInfo}`;
       }
       return `pizza--foundation--big-${this.sauceInfo}`;
-    },
-    pizzaFilling() {
-      return Object.keys(this.selectedIngredients);
     },
   },
   methods: {
