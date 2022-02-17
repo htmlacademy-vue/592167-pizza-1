@@ -1,13 +1,13 @@
 <template>
   <div>
-    <app-layout :sum="sum" />
+    <app-layout :sum="totalPrice" />
     <Main
       :dough-size="doughSize"
       :sauce-info="sauceInfo"
       :ingredients="ingredients"
       :selected-ingredients="selectedIngredients"
       :pizza-diameter="pizzaDiameter"
-      :sum="sum"
+      :sum="totalPrice"
       :pizza-name="pizzaName"
       @onDoughSizeClick="changeDoughSize"
       @onSauceClick="changeSauce"
@@ -15,9 +15,6 @@
       @changeIngredientCount="changeIngredientCount"
       @changePizzaName="changePizzaName"
     />
-    <div>
-      {{ selectedIngredients }}
-    </div>
   </div>
 </template>
 
@@ -174,34 +171,32 @@ export default {
       selectedIngredients: {},
     };
   },
-  methods: {
-    changeDoughSize(data) {
-      this.doughSize = data;
-      this.changeSum();
-    },
-    changeSauce(data) {
-      this.sauceInfo = data;
-      this.changeSum();
-    },
-    changePizzaDiameter(data) {
-      this.pizzaDiameter = data;
-      this.changeSum();
-    },
-    changeSum() {
+  computed: {
+    totalPrice() {
       // мультипликатор размера х (стоимость теста + соус + ингредиенты)
-      let sum = 0;
       let ingredientsPrice = 0;
       const selectedIngredientList = Object.keys(this.selectedIngredients);
       for (const item of selectedIngredientList) {
         const ingredient = this.ingredients.find((it) => it.name === item);
         ingredientsPrice += ingredient.price * this.selectedIngredients[item];
       }
-      sum =
+      return (
         SIZE_MULTIPLIER[this.pizzaDiameter] *
         (DOUGH_PRICE[this.doughSize] +
           SAUCES_PRICE[this.sauceInfo] +
-          ingredientsPrice);
-      this.sum = sum;
+          ingredientsPrice)
+      );
+    },
+  },
+  methods: {
+    changeDoughSize(data) {
+      this.doughSize = data;
+    },
+    changeSauce(data) {
+      this.sauceInfo = data;
+    },
+    changePizzaDiameter(data) {
+      this.pizzaDiameter = data;
     },
     changeIngredientCount(data) {
       this.$set(
@@ -212,7 +207,6 @@ export default {
       if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
         delete this.selectedIngredients[Object.keys(data)[0]];
       }
-      this.changeSum();
     },
     changePizzaName(data) {
       this.pizzaName = data;
