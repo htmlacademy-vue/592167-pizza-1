@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-layout :sum="totalPrice" />
+    <app-layout :sum="totalPrice" :is-auth="isAuth" />
     <Main
       :dough-size="doughSize"
       :sauce-info="sauceInfo"
@@ -169,6 +169,7 @@ export default {
         },
       ],
       selectedIngredients: {},
+      isAuth: true,
     };
   },
   computed: {
