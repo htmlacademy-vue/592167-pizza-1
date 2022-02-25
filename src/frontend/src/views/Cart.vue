@@ -1,7 +1,5 @@
 <template>
   <div>
-    <app-layout />
-
     <form action="#" method="post" class="layout-form">
       <main class="content cart">
         <div class="container">
@@ -321,10 +319,7 @@
 </template>
 
 <script>
-import AppLayout from "@/layouts/AppLayout";
-
 export default {
   name: "Cart",
-  components: { AppLayout },
 };
 </script>

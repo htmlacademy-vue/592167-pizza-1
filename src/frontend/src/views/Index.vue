@@ -1,6 +1,5 @@
 <template>
   <div>
-    <app-layout :sum="totalPrice" :is-auth="isAuth" />
     <Main
       :dough-size="doughSize"
       :sauce-info="sauceInfo"
@@ -29,12 +28,10 @@ import {
 } from "@/constants";
 
 import Main from "@/views/Main";
-import AppLayout from "@/layouts/AppLayout";
 
 export default {
   name: "Index",
   components: {
-    AppLayout,
     Main,
   },
   data() {
