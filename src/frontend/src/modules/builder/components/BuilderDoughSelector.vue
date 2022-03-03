@@ -5,17 +5,17 @@
 
       <div class="sheet__content dough">
         <label
-          v-for="item in pizza.dough"
+          v-for="item in doughs"
           :key="item.id"
           class="dough__input"
-          :class="' dough__input--' + getDoughThickness(item.name)"
-          @click="$emit('onDoughSizeClick', getDoughThickness(item.name))"
+          :class="' dough__input--' + item.slug"
+          @click="$emit('onDoughSizeClick', item.slug)"
         >
           <input
             type="radio"
             name="dough"
-            :value="getDoughThickness(item.name)"
-            :checked="isChecked(getDoughThickness(item.name))"
+            :value="item.slug"
+            :checked="isChecked(item.slug)"
             class="visually-hidden"
           />
           <b>{{ item.name }}</b>
@@ -27,27 +27,16 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
-  props: {
-    doughSize: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return {
-      pizza,
-    };
+  computed: {
+    ...mapGetters("Builder", ["doughs", "dough"]),
   },
   methods: {
-    getDoughThickness(doughName) {
-      return doughName === "Тонкое" ? `light` : `large`;
-    },
     isChecked(data) {
-      return data === this.doughSize;
+      return data === this.dough;
     },
   },
 };

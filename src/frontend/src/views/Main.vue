@@ -3,29 +3,13 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <builder-dough-selector
-          :dough-size="doughSize"
-          @onDoughSizeClick="onDoughSizeClick"
-        />
-        <builder-size-selector
-          :pizza-diameter="pizzaDiameter"
-          @onPizzaDiameterClick="onPizzaDiameterClick"
-        />
+        <builder-dough-selector @onDoughSizeClick="onDoughSizeClick" />
+        <builder-size-selector @onPizzaDiameterClick="onPizzaDiameterClick" />
         <builder-ingredients-selector
-          :sauce-info="sauceInfo"
-          :dough-size="doughSize"
-          :ingredients="ingredients"
-          :selected-ingredients="selectedIngredients"
           @onSauceClick="onSauceClick"
           @changeIngredientCount="changeIngredientCount"
         />
         <builder-content-pizza
-          :dough-size="doughSize"
-          :sauce-info="sauceInfo"
-          :ingredients="ingredients"
-          :selected-ingredients="selectedIngredients"
-          :sum="sum"
-          :pizza-name="pizzaName"
           @changeIngredientCount="changeIngredientCount"
           @changePizzaName="changePizzaName"
         />
@@ -35,7 +19,6 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -48,39 +31,6 @@ export default {
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderContentPizza,
-  },
-  props: {
-    doughSize: {
-      type: String,
-      default: "",
-    },
-    sauceInfo: {
-      type: String,
-      default: "",
-    },
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-    selectedIngredients: {
-      type: Object,
-      default: () => {},
-    },
-    pizzaDiameter: {
-      type: String,
-      default: "",
-    },
-    sum: {
-      type: Number,
-      default: 0,
-    },
-    pizzaName: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return { pizza };
   },
   methods: {
     onDoughSizeClick(data) {

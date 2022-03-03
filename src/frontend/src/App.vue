@@ -11,6 +11,9 @@ import AppLayout from "@/layouts/AppLayout";
 export default {
   name: "App",
   components: { AppLayout },
+  created() {
+    this.$store.dispatch("Builder/init");
+  },
 };
 </script>
 

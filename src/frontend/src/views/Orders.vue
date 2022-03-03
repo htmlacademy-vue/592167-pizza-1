@@ -1,6 +1,5 @@
 <template>
   <div>
-    <app-layout />
     <main class="layout">
       <div class="layout__sidebar sidebar">
         <a href="#" class="logo layout__logo">
@@ -246,10 +245,7 @@
 </template>
 
 <script>
-import AppLayout from "@/layouts/AppLayout";
-
 export default {
   name: "Orders",
-  components: { AppLayout },
 };
 </script>

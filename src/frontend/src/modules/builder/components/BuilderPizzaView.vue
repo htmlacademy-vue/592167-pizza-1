@@ -17,39 +17,23 @@
 
 <script>
 import AppDrop from "@/common/components/AppDrop";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
-  props: {
-    doughSize: {
-      type: String,
-      default: "",
-    },
-    sauceInfo: {
-      type: String,
-      default: "",
-    },
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-    selectedIngredients: {
-      type: Object,
-      default: () => {},
-    },
-  },
   data() {
     return {
       count: 0,
     };
   },
   computed: {
+    ...mapGetters("Builder", ["selectedIngredients", "dough", "sauce"]),
     pizzaSize() {
-      if (this.doughSize === "light") {
-        return `pizza--foundation--small-${this.sauceInfo}`;
+      if (this.dough === "light") {
+        return `pizza--foundation--small-${this.sauce}`;
       }
-      return `pizza--foundation--big-${this.sauceInfo}`;
+      return `pizza--foundation--big-${this.sauce}`;
     },
   },
   methods: {
