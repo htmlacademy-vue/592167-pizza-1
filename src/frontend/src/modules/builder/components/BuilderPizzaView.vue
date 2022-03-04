@@ -17,7 +17,7 @@
 
 <script>
 import AppDrop from "@/common/components/AppDrop";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -37,6 +37,17 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Builder", ["updateSelectedIngredients"]),
+    moveIngredient(active) {
+      const keysNames = Object.keys(this.selectedIngredients);
+      this.count = keysNames.includes(active)
+        ? this.selectedIngredients[active]
+        : 0;
+      this.updateSelectedIngredients({
+        [active]: ++this.count,
+      });
+    },
+
     ingredientCount(count) {
       switch (count) {
         case 2:
@@ -46,15 +57,6 @@ export default {
         default:
           return "";
       }
-    },
-    moveIngredient(active) {
-      const keysNames = Object.keys(this.selectedIngredients);
-      this.count = keysNames.includes(active)
-        ? this.selectedIngredients[active]
-        : 0;
-      this.$emit("changeIngredientCount", {
-        [active]: ++this.count,
-      });
     },
   },
 };
