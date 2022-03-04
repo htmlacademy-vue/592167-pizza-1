@@ -58,6 +58,9 @@
         </div>
       </div>
     </div>
+    <div>
+      {{ selectedIngredients }}
+    </div>
   </div>
 </template>
 
@@ -89,7 +92,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("Builder", ["updateSauce"]),
+    ...mapActions("Builder", ["updateSauce", "updateSelectedIngredients"]),
     changeSauce(sauce) {
       this.updateSauce(sauce);
     },
@@ -103,7 +106,7 @@ export default {
       return sauceName === this.sauce;
     },
     changeIngredientCount(count, name) {
-      this.$emit("changeIngredientCount", { [name]: count });
+      this.updateSelectedIngredients({ [name]: count });
     },
     changeCount(val1, val2) {
       console.log(val1);

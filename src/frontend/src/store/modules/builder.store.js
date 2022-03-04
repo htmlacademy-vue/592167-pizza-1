@@ -5,6 +5,7 @@ import {
   prepareSauces,
   prepareSizes,
 } from "@/common/helpers";
+import { MIN_INGREDIENT_COUNT } from "@/constants";
 
 export default {
   namespaced: true,
@@ -38,7 +39,6 @@ export default {
       return prepareDough(doughs);
     },
     dough({ dough }) {
-      console.log(dough);
       return dough;
     },
     pizzaSizes({ pizzaSizes }) {
@@ -65,6 +65,10 @@ export default {
     updateSize({ commit }, pizzaSize) {
       commit("UPDATE_SIZE", pizzaSize);
     },
+
+    updateSelectedIngredients({ commit }, data) {
+      commit("UPDATE_SELECTED_INGREDIENTS", data);
+    },
   },
 
   mutations: {
@@ -85,6 +89,12 @@ export default {
     },
     UPDATE_SIZE(state, pizzaSize) {
       state.pizzaSize = pizzaSize;
+    },
+    UPDATE_SELECTED_INGREDIENTS(state, data) {
+      state.selectedIngredients = { ...state.selectedIngredients, ...data };
+      if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
+        delete state.selectedIngredients[Object.keys(data)[0]];
+      }
     },
   },
 };
