@@ -8,7 +8,6 @@ export default {
 
   getters: {
     isAuthenticated({ user }) {
-      console.log(!!user);
       return !!user;
     },
   },
