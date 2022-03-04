@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart"> {{ sum }} ₽ </router-link>
+      <router-link to="/cart"> {{ totalPrice }} ₽ </router-link>
     </div>
     <div class="header__user">
       <template v-if="isAuth">
@@ -48,17 +48,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppLayoutHeader",
-  props: {
-    sum: {
-      type: Number,
-      default: 0,
-    },
-    isAuth: {
-      type: Boolean,
-      default: false,
-    },
+  computed: {
+    ...mapGetters("Builder", ["totalPrice"]),
   },
 };
 </script>

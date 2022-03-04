@@ -5,7 +5,12 @@ import {
   prepareSauces,
   prepareSizes,
 } from "@/common/helpers";
-import { MIN_INGREDIENT_COUNT } from "@/constants";
+import {
+  DOUGH_PRICE,
+  MIN_INGREDIENT_COUNT,
+  SAUCES_PRICE,
+  SIZE_MULTIPLIER,
+} from "@/constants";
 
 export default {
   namespaced: true,
@@ -46,6 +51,19 @@ export default {
     },
     pizzaSize({ pizzaSize }) {
       return pizzaSize;
+    },
+    totalPrice({ ingredients, selectedIngredients, dough, sauce, pizzaSize }) {
+      // мультипликатор размера х (стоимость теста + соус + ингредиенты)
+      let ingredientsPrice = 0;
+      const selectedIngredientList = Object.keys(selectedIngredients);
+      for (const item of selectedIngredientList) {
+        const ingredient = ingredients.find((it) => it.name === item);
+        ingredientsPrice += ingredient.price * selectedIngredients[item];
+      }
+      return (
+        SIZE_MULTIPLIER[pizzaSize] *
+        (DOUGH_PRICE[dough] + SAUCES_PRICE[sauce] + ingredientsPrice)
+      );
     },
   },
 
