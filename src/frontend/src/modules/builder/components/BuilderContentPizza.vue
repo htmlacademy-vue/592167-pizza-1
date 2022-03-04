@@ -6,6 +6,7 @@
         type="text"
         name="pizza_name"
         placeholder="Введите название пиццы"
+        @blur="blurInput"
       />
     </label>
     <builder-pizza-view @changeIngredientCount="changeIngredientCount" />
@@ -16,6 +17,7 @@
 <script>
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { mapActions } from "vuex";
 
 export default {
   name: "BuilderContentPizza",
@@ -24,6 +26,11 @@ export default {
     BuilderPriceCounter,
   },
   methods: {
+    ...mapActions("Builder", ["updatePizzaName"]),
+    blurInput(evt) {
+      this.updatePizzaName(evt.target.value);
+    },
+
     changeIngredientCount(data) {
       this.$emit("changeIngredientCount", data);
     },

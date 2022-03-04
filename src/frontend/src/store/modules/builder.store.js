@@ -31,27 +31,35 @@ export default {
     ingredients({ ingredients }) {
       return prepareIngrediensts(ingredients);
     },
+
     selectedIngredients({ selectedIngredients }) {
       return selectedIngredients;
     },
+
     sauces({ sauces }) {
       return prepareSauces(sauces);
     },
+
     sauce({ sauce }) {
       return sauce;
     },
+
     doughs({ doughs }) {
       return prepareDough(doughs);
     },
+
     dough({ dough }) {
       return dough;
     },
+
     pizzaSizes({ pizzaSizes }) {
       return prepareSizes(pizzaSizes);
     },
+
     pizzaSize({ pizzaSize }) {
       return pizzaSize;
     },
+
     totalPrice({ ingredients, selectedIngredients, dough, sauce, pizzaSize }) {
       // мультипликатор размера х (стоимость теста + соус + ингредиенты)
       let ingredientsPrice = 0;
@@ -64,6 +72,10 @@ export default {
         SIZE_MULTIPLIER[pizzaSize] *
         (DOUGH_PRICE[dough] + SAUCES_PRICE[sauce] + ingredientsPrice)
       );
+    },
+
+    isPizzaName({ pizzaName }) {
+      return pizzaName === "";
     },
   },
 
@@ -87,6 +99,10 @@ export default {
     updateSelectedIngredients({ commit }, data) {
       commit("UPDATE_SELECTED_INGREDIENTS", data);
     },
+
+    updatePizzaName({ commit }, name) {
+      commit("UPDATE_PIZZA_NAME", name);
+    },
   },
 
   mutations: {
@@ -99,20 +115,28 @@ export default {
       state.sauces = pizza.sauces;
       state.pizzaSizes = pizza.sizes;
     },
+
     UPDATE_DOUGH(state, dough) {
       state.dough = dough;
     },
+
     UPDATE_SAUCE(state, sauce) {
       state.sauce = sauce;
     },
+
     UPDATE_SIZE(state, pizzaSize) {
       state.pizzaSize = pizzaSize;
     },
+
     UPDATE_SELECTED_INGREDIENTS(state, data) {
       state.selectedIngredients = { ...state.selectedIngredients, ...data };
       if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
         delete state.selectedIngredients[Object.keys(data)[0]];
       }
+    },
+
+    UPDATE_PIZZA_NAME(state, name) {
+      state.pizzaName = name;
     },
   },
 };

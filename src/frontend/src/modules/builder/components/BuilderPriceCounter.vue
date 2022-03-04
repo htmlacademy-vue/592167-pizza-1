@@ -1,7 +1,9 @@
 <template>
   <div class="content__result">
     <p>Итого: {{ totalPrice }} ₽</p>
-    <button type="button" class="button" disabled>Готовьте!</button>
+    <button type="button" class="button" :disabled="isPizzaName">
+      Готовьте!
+    </button>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "BuilderPriceCounter",
   computed: {
-    ...mapGetters("Builder", ["totalPrice"]),
+    ...mapGetters("Builder", ["totalPrice", "isPizzaName"]),
   },
 };
 </script>
