@@ -86,7 +86,6 @@ export default {
       "selectedIngredients",
       "sauces",
       "sauce",
-      "doughs",
     ]),
   },
   methods: {
