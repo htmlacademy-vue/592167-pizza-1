@@ -58,9 +58,6 @@
         </div>
       </div>
     </div>
-    <div>
-      {{ selectedIngredients }}
-    </div>
   </div>
 </template>
 
