@@ -9,7 +9,7 @@
           :key="item.id"
           class="dough__input"
           :class="' dough__input--' + item.slug"
-          @click="$emit('onDoughSizeClick', item.slug)"
+          @click="changeDough(item.slug)"
         >
           <input
             type="radio"
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
@@ -35,8 +35,13 @@ export default {
     ...mapGetters("Builder", ["doughs", "dough"]),
   },
   methods: {
+    ...mapActions("Builder", ["updateDough"]),
+
     isChecked(data) {
       return data === this.dough;
+    },
+    changeDough(dough) {
+      this.updateDough(dough);
     },
   },
 };

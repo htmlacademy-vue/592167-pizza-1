@@ -38,6 +38,7 @@ export default {
       return prepareDough(doughs);
     },
     dough({ dough }) {
+      console.log(dough);
       return dough;
     },
     pizzaSizes({ pizzaSizes }) {
@@ -52,6 +53,18 @@ export default {
     async init({ commit }) {
       commit("DEFAULT_VALUE");
     },
+
+    updateDough({ commit }, dough) {
+      commit("UPDATE_DOUGH", dough);
+    },
+
+    updateSauce({ commit }, sauce) {
+      commit("UPDATE_SAUCE", sauce);
+    },
+
+    updateSize({ commit }, pizzaSize) {
+      commit("UPDATE_SIZE", pizzaSize);
+    },
   },
 
   mutations: {
@@ -63,6 +76,15 @@ export default {
       state.doughs = pizza.dough;
       state.sauces = pizza.sauces;
       state.pizzaSizes = pizza.sizes;
+    },
+    UPDATE_DOUGH(state, dough) {
+      state.dough = dough;
+    },
+    UPDATE_SAUCE(state, sauce) {
+      state.sauce = sauce;
+    },
+    UPDATE_SIZE(state, pizzaSize) {
+      state.pizzaSize = pizzaSize;
     },
   },
 };

@@ -9,7 +9,7 @@
           :key="size.id"
           class="diameter__input"
           :class="' diameter__input--' + size.slug"
-          @click="$emit('onPizzaDiameterClick', size.slug)"
+          @click="updatePizzaSize(size.slug)"
         >
           <input
             type="radio"
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
@@ -34,6 +34,11 @@ export default {
     ...mapGetters("Builder", ["pizzaSizes", "pizzaSize"]),
   },
   methods: {
+    ...mapActions("Builder", ["updateSize"]),
+    updatePizzaSize(pizzaSize) {
+      this.updateSize(pizzaSize);
+    },
+
     isChecked(size) {
       return size === this.pizzaSize;
     },

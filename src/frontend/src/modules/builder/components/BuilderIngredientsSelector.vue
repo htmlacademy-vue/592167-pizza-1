@@ -11,7 +11,7 @@
             v-for="sauce in sauces"
             :key="sauce.id"
             class="radio ingredients__input"
-            @click="$emit('onSauceClick', sauce.slug)"
+            @click="changeSauce(sauce.slug)"
           >
             <input
               type="radio"
@@ -66,7 +66,7 @@ import AppItemCounter from "@/common/components/AppItemCounter";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 import BuilderIngredientPicture from "@/modules/builder/components/BuilderIngredientPicture";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -89,6 +89,11 @@ export default {
     ]),
   },
   methods: {
+    ...mapActions("Builder", ["updateSauce"]),
+    changeSauce(sauce) {
+      this.updateSauce(sauce);
+    },
+
     getIngredientCount(ingredientName, selectedIngredients) {
       return selectedIngredients[ingredientName]
         ? selectedIngredients[ingredientName]
