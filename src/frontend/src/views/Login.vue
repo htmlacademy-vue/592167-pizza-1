@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form action="#" method="post">
+    <form action="#" method="post" @submit.prevent="loginUser">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
@@ -26,7 +26,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
+  methods: {
+    ...mapActions("Auth", ["login"]),
+
+    loginUser() {
+      this.login();
+      this.$router.push("/");
+    },
+  },
 };
 </script>
