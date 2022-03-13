@@ -1,5 +1,6 @@
 import { prepareAdditionals, preparePizzaInfo } from "@/common/helpers";
 import misc from "@/static/misc.json";
+import { MIN_INGREDIENT_COUNT } from "@/constants";
 
 const DICTIONARES = {
   additionals: [],
@@ -20,17 +21,29 @@ export default {
     pizzas({ pizzas }) {
       return preparePizzaInfo(pizzas);
     },
-    totalPrice({ pizzas }) {
+    totalPrice({ pizzas, selectedAdditional }) {
       let totalPrice = 0;
       if (pizzas.length > 0) {
         for (const pizza of pizzas) {
           totalPrice += pizza.sum * pizza.count;
         }
       }
+      if (Object.keys(selectedAdditional).length > 0) {
+        const selectedAdditionalKeys = Object.keys(selectedAdditional);
+        for (const it of selectedAdditionalKeys) {
+          const additional = DICTIONARES.additionals.find(
+            (el) => el.name === it
+          );
+          totalPrice += additional.price * selectedAdditional[it];
+        }
+      }
       return totalPrice;
     },
     additionals() {
       return prepareAdditionals(DICTIONARES.additionals);
+    },
+    selectedAdditional({ selectedAdditional }) {
+      return selectedAdditional;
     },
   },
 
@@ -44,6 +57,9 @@ export default {
     changePizzaCount({ commit }, data) {
       commit("CHANGE_PIZZA_COUNT", data);
     },
+    changeSelectedAdditional({ commit }, data) {
+      commit("CHANGE_SELECTED_ADDITIONAL", data);
+    },
   },
 
   mutations: {
@@ -56,6 +72,12 @@ export default {
     CHANGE_PIZZA_COUNT({ pizzas }, data) {
       const pizza = pizzas.find((it) => it.pizzaName === data.name);
       pizza.count = data.count;
+    },
+    CHANGE_SELECTED_ADDITIONAL(state, data) {
+      state.selectedAdditional = { ...state.selectedAdditional, ...data };
+      if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
+        delete state.selectedAdditional[Object.keys(data)[0]];
+      }
     },
   },
 };

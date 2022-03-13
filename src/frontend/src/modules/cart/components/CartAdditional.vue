@@ -8,7 +8,7 @@
       >
         <p class="additional-list__description">
           <img
-            src="@/assets/img/cola.svg"
+            :src="additional.imageSrc"
             width="39"
             height="60"
             :alt="additional.name"
@@ -17,31 +17,16 @@
         </p>
 
         <div class="additional-list__wrapper">
-          <div class="counter additional-list__counter">
-            <button
-              type="button"
-              class="counter__button counter__button--minus"
-            >
-              <span class="visually-hidden">Меньше</span>
-            </button>
-            <input
-              type="text"
-              name="counter"
-              class="counter__input"
-              value="2"
-            />
-            <button
-              type="button"
-              class="
-                counter__button counter__button--plus counter__button--orange
-              "
-            >
-              <span class="visually-hidden">Больше</span>
-            </button>
-          </div>
+          <app-item-counter
+            :class-counter="'additional-list__counter'"
+            :another-class-button="'counter__button--orange'"
+            :ingredient-count="getCount(additional.name, selectedAdditional)"
+            :ingredient-name="additional.name"
+            @changeIngredientCount="changeCount"
+          ></app-item-counter>
 
           <div class="additional-list__price">
-            <b>× 56 ₽</b>
+            <b>× {{ additional.price }} ₽</b>
           </div>
         </div>
       </li>
@@ -50,12 +35,24 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import AppItemCounter from "@/common/components/AppItemCounter";
 
 export default {
   name: "CartAdditional",
+  components: { AppItemCounter },
   computed: {
-    ...mapGetters("Cart", ["additionals"]),
+    ...mapGetters("Cart", ["additionals", "selectedAdditional"]),
+  },
+  methods: {
+    ...mapActions("Cart", ["changeSelectedAdditional"]),
+    getCount(name, selected) {
+      return selected[name] ? selected[name] : 0;
+    },
+    changeCount(value, name) {
+      const data = { [name]: value };
+      this.changeSelectedAdditional(data);
+    },
   },
 };
 </script>
