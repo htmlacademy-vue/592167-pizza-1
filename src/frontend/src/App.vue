@@ -12,7 +12,8 @@ export default {
   name: "App",
   components: { AppLayout },
   created() {
-    this.$store.dispatch("Builder/init");
+    this.$store.dispatch("Builder/initBuilderState");
+    this.$store.dispatch("Cart/initDefaultValue");
   },
 };
 </script>

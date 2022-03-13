@@ -1,19 +1,35 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ totalPrice }} ₽</p>
-    <button type="button" class="button" :disabled="isPizzaName">
+    <p>Итого: {{ pizzaSum }} ₽</p>
+    <button
+      type="button"
+      class="button"
+      :disabled="isPizzaName"
+      @click="makePizza"
+    >
       Готовьте!
     </button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
   computed: {
-    ...mapGetters("Builder", ["totalPrice", "isPizzaName"]),
+    ...mapGetters("Builder", ["pizzaSum", "isPizzaName", "pizzaInfo"]),
+  },
+  methods: {
+    ...mapActions("Cart", ["addPizza"]),
+    ...mapActions("Builder", ["resetBuilderState", "initBuilderState"]),
+    makePizza() {
+      this.pizzaInfo.sum = this.pizzaSum;
+      this.pizzaInfo.count = 1;
+      this.addPizza(this.pizzaInfo);
+      this.resetBuilderState();
+      this.initBuilderState();
+    },
   },
 };
 </script>

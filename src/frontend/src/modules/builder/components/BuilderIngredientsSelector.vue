@@ -50,6 +50,7 @@
                 :ingredient-count="
                   getIngredientCount(ingredient.name, selectedIngredients)
                 "
+                :class-counter="'counter--orange ingredients__counter'"
                 @changeIngredientCount="changeIngredientCount"
                 @changeCount="changeCount"
               />

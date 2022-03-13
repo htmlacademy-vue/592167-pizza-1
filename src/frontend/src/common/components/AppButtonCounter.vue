@@ -21,11 +21,6 @@ export default {
     differential: {
       type: String,
       default: "",
-      validator(value) {
-        return ["", "counter__button--plus", "counter__button--minus"].includes(
-          value
-        );
-      },
     },
   },
 };

@@ -12,60 +12,67 @@ import {
   SIZE_MULTIPLIER,
 } from "@/constants";
 
+const setupState = () => ({
+  dough: "",
+  sauce: "",
+  pizzaSize: "",
+  pizzaName: "",
+  sum: 0,
+  selectedIngredients: {},
+});
+
+const DICTIONARIES = {
+  ingredients: [],
+  doughs: [],
+  sauces: [],
+  pizzaSizes: [],
+};
+
 export default {
   namespaced: true,
-  state: {
-    dough: "",
-    sauce: "",
-    pizzaSize: "",
-    pizzaName: "",
-    sum: 0,
-    ingredients: [],
-    doughs: [],
-    sauces: [],
-    pizzaSizes: [],
-    selectedIngredients: {},
-  },
+  state: setupState(),
 
   getters: {
-    ingredients({ ingredients }) {
-      return prepareIngrediensts(ingredients);
+    ingredients() {
+      return prepareIngrediensts(DICTIONARIES.ingredients);
     },
 
     selectedIngredients({ selectedIngredients }) {
       return selectedIngredients;
     },
 
-    sauces({ sauces }) {
-      return prepareSauces(sauces);
+    sauces() {
+      return prepareSauces(DICTIONARIES.sauces);
     },
 
     sauce({ sauce }) {
       return sauce;
     },
 
-    doughs({ doughs }) {
-      return prepareDough(doughs);
+    doughs() {
+      return prepareDough(DICTIONARIES.doughs);
     },
 
     dough({ dough }) {
       return dough;
     },
 
-    pizzaSizes({ pizzaSizes }) {
-      return prepareSizes(pizzaSizes);
+    pizzaSizes() {
+      return prepareSizes(DICTIONARIES.pizzaSizes);
     },
 
     pizzaSize({ pizzaSize }) {
       return pizzaSize;
     },
 
-    totalPrice({ ingredients, selectedIngredients, dough, sauce, pizzaSize }) {
+    pizzaSum({ selectedIngredients, dough, sauce, pizzaSize }) {
       // мультипликатор размера х (стоимость теста + соус + ингредиенты)
       let ingredientsPrice = 0;
       const selectedIngredientList = Object.keys(selectedIngredients);
       for (const item of selectedIngredientList) {
-        const ingredient = ingredients.find((it) => it.name === item);
+        const ingredient = DICTIONARIES.ingredients.find(
+          (it) => it.name === item
+        );
         ingredientsPrice += ingredient.price * selectedIngredients[item];
       }
       return (
@@ -77,11 +84,26 @@ export default {
     isPizzaName({ pizzaName }) {
       return pizzaName === "";
     },
+
+    pizzaInfo({
+      dough,
+      sauce,
+      pizzaSize,
+      pizzaName,
+      sum,
+      selectedIngredients,
+    }) {
+      return { dough, sauce, pizzaSize, pizzaName, sum, selectedIngredients };
+    },
   },
 
   actions: {
-    async init({ commit }) {
+    initBuilderState({ commit }) {
       commit("DEFAULT_VALUE");
+    },
+
+    resetBuilderState({ commit }) {
+      commit("RESET_STATE");
     },
 
     updateDough({ commit }, dough) {
@@ -107,13 +129,17 @@ export default {
 
   mutations: {
     DEFAULT_VALUE(state) {
-      state.ingredients = pizza.ingredients;
       state.dough = "light";
       state.sauce = "tomato";
       state.pizzaSize = "small";
-      state.doughs = pizza.dough;
-      state.sauces = pizza.sauces;
-      state.pizzaSizes = pizza.sizes;
+      DICTIONARIES.ingredients = pizza.ingredients;
+      DICTIONARIES.doughs = pizza.dough;
+      DICTIONARIES.sauces = pizza.sauces;
+      DICTIONARIES.pizzaSizes = pizza.sizes;
+    },
+
+    RESET_STATE(state) {
+      Object.assign(state, setupState());
     },
 
     UPDATE_DOUGH(state, dough) {

@@ -51,7 +51,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AppLayoutHeader",
   computed: {
-    ...mapGetters("Builder", ["totalPrice"]),
+    ...mapGetters("Cart", ["totalPrice"]),
     ...mapGetters("Auth", ["isAuthenticated"]),
   },
   methods: {

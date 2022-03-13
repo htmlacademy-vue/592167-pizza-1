@@ -1,3 +1,5 @@
+import pizza from "@/static/pizza.json";
+
 const cutString = (data, start, end) => {
   return data.slice(start, end);
 };
@@ -53,4 +55,61 @@ const prepareSizes = (sizes) => {
   });
 };
 
-export { prepareIngrediensts, prepareSauces, prepareDough, prepareSizes };
+const getPizzaSizeFromValue = (size) => {
+  switch (size) {
+    case "small":
+      return "23 см";
+    case "normal":
+      return "32 см";
+    case "big":
+      return "45 см";
+    default:
+      return "";
+  }
+};
+
+const getSauceForView = (name) => {
+  switch (name) {
+    case "tomato":
+      return "томатный";
+    case "creamy":
+      return "сливочный";
+    default:
+      return "";
+  }
+};
+
+const getSelectedIngredientsForView = (data) => {
+  return pizza.ingredients
+    .filter((it) => data.includes(it.name))
+    .map((it) => it.rusName.toLowerCase())
+    .join(", ");
+};
+
+const preparePizzaInfo = (pizzas) => {
+  return pizzas.map((it) => {
+    it.sizeView = getPizzaSizeFromValue(it.pizzaSize);
+    it.sauceView = getSauceForView(it.sauce);
+    it.selectedView = getSelectedIngredientsForView(
+      Object.keys(it.selectedIngredients)
+    );
+    return it;
+  });
+};
+
+const prepareAdditionals = (data) => {
+  return data.map((it) => {
+    const imageName = cutString(it.image, 12, -4);
+    it.imageSrc = `@/assets/img/${imageName}.svg`;
+    return it;
+  });
+};
+
+export {
+  prepareIngrediensts,
+  prepareSauces,
+  prepareDough,
+  prepareSizes,
+  preparePizzaInfo,
+  prepareAdditionals,
+};
