@@ -1,6 +1,10 @@
 <template>
   <ul class="cart-list sheet">
-    <li v-for="pizza in pizzas" :key="pizza.name" class="cart-list__item">
+    <li
+      v-for="(pizza, idx) in pizzas"
+      :key="pizza.name"
+      class="cart-list__item"
+    >
       <div class="product cart-list__product">
         <img
           src="@/assets/img/product.svg"
@@ -35,7 +39,13 @@
       </div>
 
       <div class="cart-list__button">
-        <button type="button" class="cart-list__edit">Изменить</button>
+        <button
+          type="button"
+          class="cart-list__edit"
+          @click="changePizzaIngredients(idx)"
+        >
+          Изменить
+        </button>
       </div>
     </li>
   </ul>
@@ -44,6 +54,7 @@
 <script>
 import AppItemCounter from "@/common/components/AppItemCounter";
 import { mapActions, mapGetters } from "vuex";
+import router from "@/router";
 
 export default {
   name: "CartList",
@@ -53,12 +64,26 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["changePizzaCount"]),
+    ...mapActions("Builder", ["changePizza"]),
     getPizzaPrice(sum, count) {
       return sum * count;
     },
     changeCount(count, name) {
       const data = { name, count };
       this.changePizzaCount(data);
+    },
+    changePizzaIngredients(idx) {
+      const pizzaInfo = this.pizzas[idx];
+      const pizzaState = {
+        dough: pizzaInfo.dough,
+        sauce: pizzaInfo.sauce,
+        pizzaSize: pizzaInfo.pizzaSize,
+        pizzaName: pizzaInfo.pizzaName,
+        sum: pizzaInfo.sum,
+        selectedIngredients: pizzaInfo.selectedIngredients,
+      };
+      this.changePizza(pizzaState);
+      router.push("/");
     },
   },
 };

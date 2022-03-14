@@ -125,6 +125,10 @@ export default {
     updatePizzaName({ commit }, name) {
       commit("UPDATE_PIZZA_NAME", name);
     },
+
+    changePizza({ commit }, data) {
+      commit("CHANGE_PIZZA", data);
+    },
   },
 
   mutations: {
@@ -163,6 +167,11 @@ export default {
 
     UPDATE_PIZZA_NAME(state, name) {
       state.pizzaName = name;
+    },
+
+    CHANGE_PIZZA(state, data) {
+      console.log("we are here");
+      state = { ...state, data };
     },
   },
 };
