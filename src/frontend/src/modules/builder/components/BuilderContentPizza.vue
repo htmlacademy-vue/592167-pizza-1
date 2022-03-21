@@ -3,27 +3,22 @@
     <label class="input">
       <span class="visually-hidden">Название пиццы</span>
       <input
-        v-model="localPizzaName"
+        :value="pizzaName"
         type="text"
         name="pizza_name"
         placeholder="Введите название пиццы"
-        @blur="$emit('changePizzaName', localPizzaName)"
+        @input="inputChangeValue"
       />
     </label>
-    <builder-pizza-view
-      :dough-size="doughSize"
-      :sauce-info="sauceInfo"
-      :ingredients="ingredients"
-      :selected-ingredients="selectedIngredients"
-      @changeIngredientCount="changeIngredientCount"
-    />
-    <builder-price-counter :sum="sum" />
+    <builder-pizza-view @changeIngredientCount="changeIngredientCount" />
+    <builder-price-counter />
   </div>
 </template>
 
 <script>
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderContentPizza",
@@ -31,38 +26,15 @@ export default {
     BuilderPizzaView,
     BuilderPriceCounter,
   },
-  props: {
-    doughSize: {
-      type: String,
-      default: "",
-    },
-    sauceInfo: {
-      type: String,
-      default: "",
-    },
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-    selectedIngredients: {
-      type: Object,
-      default: () => {},
-    },
-    sum: {
-      type: Number,
-      default: 0,
-    },
-    pizzaName: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return {
-      localPizzaName: this.pizzaName,
-    };
+  computed: {
+    ...mapGetters("Builder", ["pizzaName"]),
   },
   methods: {
+    ...mapActions("Builder", ["updatePizzaName"]),
+    inputChangeValue(evt) {
+      this.updatePizzaName(evt.target.value);
+    },
+
     changeIngredientCount(data) {
       this.$emit("changeIngredientCount", data);
     },

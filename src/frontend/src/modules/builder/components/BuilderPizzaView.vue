@@ -17,42 +17,32 @@
 
 <script>
 import AppDrop from "@/common/components/AppDrop";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
-  props: {
-    doughSize: {
-      type: String,
-      default: "",
-    },
-    sauceInfo: {
-      type: String,
-      default: "",
-    },
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-    selectedIngredients: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  data() {
-    return {
-      count: 0,
-    };
-  },
   computed: {
+    ...mapGetters("Builder", ["selectedIngredients", "dough", "sauce"]),
     pizzaSize() {
-      if (this.doughSize === "light") {
-        return `pizza--foundation--small-${this.sauceInfo}`;
+      if (this.dough === "light") {
+        return `pizza--foundation--small-${this.sauce}`;
       }
-      return `pizza--foundation--big-${this.sauceInfo}`;
+      return `pizza--foundation--big-${this.sauce}`;
     },
   },
   methods: {
+    ...mapActions("Builder", ["updateSelectedIngredients"]),
+    moveIngredient(active) {
+      const keysNames = Object.keys(this.selectedIngredients);
+      let count = keysNames.includes(active)
+        ? this.selectedIngredients[active]
+        : 0;
+      this.updateSelectedIngredients({
+        [active]: ++count,
+      });
+    },
+
     ingredientCount(count) {
       switch (count) {
         case 2:
@@ -62,15 +52,6 @@ export default {
         default:
           return "";
       }
-    },
-    moveIngredient(active) {
-      const keysNames = Object.keys(this.selectedIngredients);
-      this.count = keysNames.includes(active)
-        ? this.selectedIngredients[active]
-        : 0;
-      this.$emit("changeIngredientCount", {
-        [active]: ++this.count,
-      });
     },
   },
 };

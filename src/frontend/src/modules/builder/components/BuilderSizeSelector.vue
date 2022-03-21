@@ -5,11 +5,11 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="size in changeInputPizzaSize"
+          v-for="size in pizzaSizes"
           :key="size.id"
           class="diameter__input"
           :class="' diameter__input--' + size.slug"
-          @click="$emit('onPizzaDiameterClick', size.slug)"
+          @click="updatePizzaSize(size.slug)"
         >
           <input
             type="radio"
@@ -26,31 +26,21 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
-import { PIZZA_SIZE } from "@/constants";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
-  props: {
-    pizzaDiameter: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return { pizza };
-  },
   computed: {
-    changeInputPizzaSize() {
-      return this.pizza.sizes.map((it) => {
-        it.slug = PIZZA_SIZE[it.multiplier];
-        return it;
-      });
-    },
+    ...mapGetters("Builder", ["pizzaSizes", "pizzaSize"]),
   },
   methods: {
+    ...mapActions("Builder", ["updateSize"]),
+    updatePizzaSize(pizzaSize) {
+      this.updateSize(pizzaSize);
+    },
+
     isChecked(size) {
-      return size === this.pizzaDiameter;
+      return size === this.pizzaSize;
     },
   },
 };

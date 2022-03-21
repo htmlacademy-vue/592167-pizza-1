@@ -1,17 +1,37 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ sum }} ₽</p>
-    <button type="button" class="button" disabled>Готовьте!</button>
+    <p>Итого: {{ pizzaSum }} ₽</p>
+    <button
+      type="button"
+      class="button"
+      :disabled="isPizzaName"
+      @click="makePizza"
+    >
+      Готовьте!
+    </button>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "BuilderPriceCounter",
-  props: {
-    sum: {
-      type: Number,
-      default: 0,
+  computed: {
+    ...mapGetters("Builder", ["pizzaSum", "isPizzaName", "pizzaInfo"]),
+  },
+  methods: {
+    ...mapActions("Cart", ["addPizza"]),
+    ...mapActions("Builder", [
+      "resetBuilderState",
+      "initBuilderState",
+      "addSum",
+    ]),
+    makePizza() {
+      this.addSum(this.pizzaSum);
+      this.addPizza(this.pizzaInfo);
+      this.resetBuilderState();
+      this.initBuilderState();
     },
   },
 };

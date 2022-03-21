@@ -8,16 +8,16 @@
           <p>Основной соус:</p>
 
           <label
-            v-for="sauce in pizza.sauces"
+            v-for="sauce in sauces"
             :key="sauce.id"
             class="radio ingredients__input"
-            @click="$emit('onSauceClick', getSauceValue(sauce.name))"
+            @click="changeSauce(sauce.slug)"
           >
             <input
               type="radio"
               name="sauce"
-              :value="getSauceValue(sauce.name)"
-              :checked="isChecked(getSauceValue(sauce.name))"
+              :value="sauce.slug"
+              :checked="isChecked(sauce.slug)"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -50,8 +50,8 @@
                 :ingredient-count="
                   getIngredientCount(ingredient.name, selectedIngredients)
                 "
+                :class-counter="'counter--orange ingredients__counter'"
                 @changeIngredientCount="changeIngredientCount"
-                @changeCount="changeCount"
               />
             </li>
           </ul>
@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
 import AppItemCounter from "@/common/components/AppItemCounter";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 import BuilderIngredientPicture from "@/modules/builder/components/BuilderIngredientPicture";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -76,41 +76,34 @@ export default {
       type: String,
       default: "",
     },
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-    selectedIngredients: {
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
-    return { pizza };
+    return {};
+  },
+  computed: {
+    ...mapGetters("Builder", [
+      "ingredients",
+      "selectedIngredients",
+      "sauces",
+      "sauce",
+    ]),
   },
   methods: {
-    getSauceValue(name) {
-      switch (name) {
-        case "Томатный":
-          return "tomato";
-        default:
-          return "creamy";
-      }
+    ...mapActions("Builder", ["updateSauce", "updateSelectedIngredients"]),
+    changeSauce(sauce) {
+      this.updateSauce(sauce);
     },
+
     getIngredientCount(ingredientName, selectedIngredients) {
       return selectedIngredients[ingredientName]
         ? selectedIngredients[ingredientName]
         : 0;
     },
     isChecked(sauceName) {
-      return sauceName === this.sauceInfo;
+      return sauceName === this.sauce;
     },
     changeIngredientCount(count, name) {
-      this.$emit("changeIngredientCount", { [name]: count });
-    },
-    changeCount(val1, val2) {
-      console.log(val1);
-      console.log(val2);
+      this.updateSelectedIngredients({ [name]: count });
     },
   },
 };

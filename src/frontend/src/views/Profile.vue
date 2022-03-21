@@ -11,7 +11,9 @@
           />
         </a>
 
-        <a class="layout__link" href="#">История заказов</a>
+        <router-link to="/orders" class="layout__link"
+          >История заказов</router-link
+        >
         <a class="layout__link layout__link--active" href="#">Мои данные</a>
       </div>
 

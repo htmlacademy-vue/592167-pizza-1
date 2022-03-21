@@ -1,5 +1,5 @@
 <template>
-  <div class="counter counter--orange ingredients__counter">
+  <div class="counter" :class="classCounter">
     <app-button-counter
       :differential="'counter__button--minus'"
       :is-disabled="isDisabledButtonMinus"
@@ -16,6 +16,7 @@
       class="counter__input"
     />
     <app-button-counter
+      :class="anotherClassButton"
       :differential="'counter__button--plus'"
       :is-disabled="isDisabledButtonPlus"
       @changeCount="
@@ -47,6 +48,14 @@ export default {
     ingredientCount: {
       type: Number,
       default: 0,
+    },
+    classCounter: {
+      type: String,
+      default: "",
+    },
+    anotherClassButton: {
+      type: String,
+      default: "",
     },
   },
   data() {
