@@ -52,7 +52,6 @@
                 "
                 :class-counter="'counter--orange ingredients__counter'"
                 @changeIngredientCount="changeIngredientCount"
-                @changeCount="changeCount"
               />
             </li>
           </ul>
@@ -105,10 +104,6 @@ export default {
     },
     changeIngredientCount(count, name) {
       this.updateSelectedIngredients({ [name]: count });
-    },
-    changeCount(val1, val2) {
-      console.log(val1);
-      console.log(val2);
     },
   },
 };
