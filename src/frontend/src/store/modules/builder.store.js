@@ -81,6 +81,10 @@ export default {
       );
     },
 
+    pizzaName({ pizzaName }) {
+      return pizzaName;
+    },
+
     isPizzaName({ pizzaName }) {
       return pizzaName === "";
     },
@@ -169,9 +173,16 @@ export default {
       state.pizzaName = name;
     },
 
-    CHANGE_PIZZA(state, data) {
-      console.log("we are here");
-      state = { ...state, data };
+    CHANGE_PIZZA(
+      state,
+      { dough, sauce, pizzaSize, pizzaName, sum, selectedIngredients }
+    ) {
+      state.dough = dough;
+      state.sauce = sauce;
+      state.pizzaSize = pizzaSize;
+      state.pizzaName = pizzaName;
+      state.sum = sum;
+      state.selectedIngredients = selectedIngredients;
     },
   },
 };
