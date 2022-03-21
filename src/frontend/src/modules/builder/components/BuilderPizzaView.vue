@@ -22,11 +22,6 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
-  data() {
-    return {
-      count: 0,
-    };
-  },
   computed: {
     ...mapGetters("Builder", ["selectedIngredients", "dough", "sauce"]),
     pizzaSize() {
@@ -40,11 +35,11 @@ export default {
     ...mapActions("Builder", ["updateSelectedIngredients"]),
     moveIngredient(active) {
       const keysNames = Object.keys(this.selectedIngredients);
-      this.count = keysNames.includes(active)
+      let count = keysNames.includes(active)
         ? this.selectedIngredients[active]
         : 0;
       this.updateSelectedIngredients({
-        [active]: ++this.count,
+        [active]: ++count,
       });
     },
 
