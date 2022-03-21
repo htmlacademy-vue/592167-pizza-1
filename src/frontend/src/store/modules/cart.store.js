@@ -1,8 +1,4 @@
-import {
-  deleteItemFromArray,
-  prepareAdditionals,
-  preparePizzaInfo,
-} from "@/common/helpers";
+import { prepareAdditionals, preparePizzaInfo } from "@/common/helpers";
 import misc from "@/static/misc.json";
 import { MIN_INGREDIENT_COUNT } from "@/constants";
 
@@ -90,7 +86,7 @@ export default {
       if (data.count === MIN_INGREDIENT_COUNT) {
         state.pizzas =
           state.pizzas.length > 1
-            ? deleteItemFromArray(state.pizzas, data.name)
+            ? state.pizzas.filter((it) => it.pizzaName !== data.name)
             : [];
       } else {
         const pizza = state.pizzas.find((it) => it.pizzaName === data.name);

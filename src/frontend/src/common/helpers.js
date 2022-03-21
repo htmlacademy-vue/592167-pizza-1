@@ -105,18 +105,6 @@ const prepareAdditionals = (data) => {
   });
 };
 
-const deleteItemFromArray = (array, name) => {
-  const idx = array.map((el) => el.pizzaName).indexOf(name);
-  if (idx === -1) {
-    return idx;
-  }
-
-  const beforeIdx = array.slice(0, idx);
-  const afterIdx = array.slice(idx + 1);
-
-  return [...beforeIdx, ...afterIdx];
-};
-
 export {
   prepareIngrediensts,
   prepareSauces,
@@ -124,5 +112,4 @@ export {
   prepareSizes,
   preparePizzaInfo,
   prepareAdditionals,
-  deleteItemFromArray,
 };
