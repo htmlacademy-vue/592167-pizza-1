@@ -19,11 +19,6 @@ export default {
   components: {
     Main,
   },
-  data() {
-    return {
-      isAuth: true,
-    };
-  },
   computed: {
     totalPrice() {
       // мультипликатор размера х (стоимость теста + соус + ингредиенты)
