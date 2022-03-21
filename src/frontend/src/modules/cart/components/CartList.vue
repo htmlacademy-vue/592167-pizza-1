@@ -32,7 +32,7 @@
         :ingredient-count="pizza.count"
         :ingredient-name="pizza.pizzaName"
         @changeIngredientCount="changeCount"
-      ></app-item-counter>
+      />
 
       <div class="cart-list__price">
         <b>{{ getPizzaPrice(pizza.sum, pizza.count) }} ₽</b>

@@ -23,7 +23,7 @@
             :ingredient-count="getCount(additional.name, selectedAdditional)"
             :ingredient-name="additional.name"
             @changeIngredientCount="changeCount"
-          ></app-item-counter>
+          />
 
           <div class="additional-list__price">
             <b>× {{ additional.price }} ₽</b>
