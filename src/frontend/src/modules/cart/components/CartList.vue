@@ -27,7 +27,7 @@
       </div>
 
       <app-item-counter
-        :class-counter="'cart-list__counter'"
+        class-counter="cart-list__counter"
         :another-class-button="'counter__button--orange'"
         :ingredient-count="pizza.count"
         :ingredient-name="pizza.pizzaName"

@@ -18,7 +18,7 @@
 
         <div class="additional-list__wrapper">
           <app-item-counter
-            :class-counter="'additional-list__counter'"
+            class-counter="additional-list__counter"
             :another-class-button="'counter__button--orange'"
             :ingredient-count="getCount(additional.name, selectedAdditional)"
             :ingredient-name="additional.name"
