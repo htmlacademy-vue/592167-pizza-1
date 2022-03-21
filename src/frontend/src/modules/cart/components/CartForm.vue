@@ -4,15 +4,10 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select v-if="isAuthenticated" name="test" class="select">
+        <select name="test" class="select">
           <option value="1">Заберу сам</option>
           <option value="2">Новый адрес</option>
-          <option value="3">Дом</option>
-        </select>
-
-        <select v-else name="test" class="select">
-          <option value="1">Заберу сам</option>
-          <option value="2">Новый адрес</option>
+          <option v-if="isAuthenticated" value="3">Дом</option>
         </select>
       </label>
 
