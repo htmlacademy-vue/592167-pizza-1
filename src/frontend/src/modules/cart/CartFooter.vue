@@ -1,7 +1,10 @@
 <template>
   <section class="footer">
     <div class="footer__more">
-      <router-link to="/" class="button button--border button--arrow"
+      <router-link
+        to="/"
+        class="button button--border button--arrow"
+        @click.native.prevent="addNewPizza"
         >Хочу еще одну</router-link
       >
     </div>
@@ -21,12 +24,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CartFooter",
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
+  },
+  methods: {
+    ...mapActions("Builder", ["resetBuilderState"]),
+    addNewPizza() {
+      this.resetBuilderState();
+    },
   },
 };
 </script>

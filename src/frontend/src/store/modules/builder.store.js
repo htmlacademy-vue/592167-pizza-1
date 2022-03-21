@@ -147,7 +147,12 @@ export default {
     },
 
     RESET_STATE(state) {
-      Object.assign(state, setupState());
+      state.dough = "light";
+      state.sauce = "tomato";
+      state.pizzaSize = "small";
+      state.pizzaName = "";
+      state.sum = 0;
+      state.selectedIngredients = {};
     },
 
     UPDATE_DOUGH(state, dough) {
