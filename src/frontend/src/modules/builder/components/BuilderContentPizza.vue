@@ -32,7 +32,6 @@ export default {
   methods: {
     ...mapActions("Builder", ["updatePizzaName"]),
     inputChangeValue(evt) {
-      console.log(evt.target.value);
       this.updatePizzaName(evt.target.value);
     },
 
