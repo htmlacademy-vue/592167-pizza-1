@@ -7,7 +7,7 @@
         type="text"
         name="pizza_name"
         placeholder="Введите название пиццы"
-        @blur="blurInput"
+        @input="inputChangeValue"
       />
     </label>
     <builder-pizza-view @changeIngredientCount="changeIngredientCount" />
@@ -31,7 +31,8 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["updatePizzaName"]),
-    blurInput(evt) {
+    inputChangeValue(evt) {
+      console.log(evt.target.value);
       this.updatePizzaName(evt.target.value);
     },
 
