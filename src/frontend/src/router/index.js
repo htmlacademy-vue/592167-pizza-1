@@ -13,13 +13,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const requireAuth = to.meta.auth;
 
-  if (requireAuth && store.getters["Auth/isAuthenticated"]) {
-    next();
-  } else if (requireAuth && !store.getters["Auth/isAuthenticated"]) {
+  if (requireAuth && !store.getters["Auth/isAuthenticated"]) {
     next("/login");
-  } else {
-    next();
   }
+
+  next();
 });
 
 export default router;
