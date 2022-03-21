@@ -67,7 +67,20 @@ export default {
       DICTIONARES.additionals = misc;
     },
     ADD_PIZZA(state, pizza) {
-      state.pizzas.push(pizza);
+      const pizzaInfo = state.pizzas.find(
+        (it) => it.pizzaName === pizza.pizzaName
+      );
+      if (pizzaInfo) {
+        pizzaInfo.dough = pizza.dough;
+        pizzaInfo.sauce = pizza.sauce;
+        pizzaInfo.pizzaSize = pizza.pizzaSize;
+        pizzaInfo.pizzaName = pizza.pizzaName;
+        pizzaInfo.sum = pizza.sum;
+        pizzaInfo.selectedIngredients = pizza.selectedIngredients;
+      } else {
+        pizza.count = 1;
+        state.pizzas.push(pizza);
+      }
     },
     CHANGE_PIZZA_COUNT({ pizzas }, data) {
       const pizza = pizzas.find((it) => it.pizzaName === data.name);

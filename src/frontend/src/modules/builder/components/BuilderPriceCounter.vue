@@ -22,9 +22,13 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["addPizza"]),
-    ...mapActions("Builder", ["resetBuilderState", "initBuilderState"]),
+    ...mapActions("Builder", [
+      "resetBuilderState",
+      "initBuilderState",
+      "addSum",
+    ]),
     makePizza() {
-      this.pizzaInfo.sum = this.pizzaSum;
+      this.addSum(this.pizzaSum);
       this.pizzaInfo.count = 1;
       this.addPizza(this.pizzaInfo);
       this.resetBuilderState();

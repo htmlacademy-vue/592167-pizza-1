@@ -130,6 +130,10 @@ export default {
       commit("UPDATE_PIZZA_NAME", name);
     },
 
+    addSum({ commit }, sum) {
+      commit("ADD_SUM", sum);
+    },
+
     changePizza({ commit }, data) {
       commit("CHANGE_PIZZA", data);
     },
@@ -176,6 +180,10 @@ export default {
 
     UPDATE_PIZZA_NAME(state, name) {
       state.pizzaName = name;
+    },
+
+    ADD_SUM(state, sum) {
+      state.sum = sum;
     },
 
     CHANGE_PIZZA(
