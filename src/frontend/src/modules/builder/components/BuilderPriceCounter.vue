@@ -29,7 +29,6 @@ export default {
     ]),
     makePizza() {
       this.addSum(this.pizzaSum);
-      this.pizzaInfo.count = 1;
       this.addPizza(this.pizzaInfo);
       this.resetBuilderState();
       this.initBuilderState();
