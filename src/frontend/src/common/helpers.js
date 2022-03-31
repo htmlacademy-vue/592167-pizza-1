@@ -1,4 +1,5 @@
 import pizza from "@/static/pizza.json";
+import { AuthApiService } from "@/services/api.service";
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -105,6 +106,17 @@ const prepareAdditionals = (data) => {
   });
 };
 
+const createResources = () => {
+  return {
+    auth: new AuthApiService(),
+  };
+};
+
+const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+};
+
 export {
   prepareIngrediensts,
   prepareSauces,
@@ -112,4 +124,6 @@ export {
   prepareSizes,
   preparePizzaInfo,
   prepareAdditionals,
+  createResources,
+  setAuth,
 };

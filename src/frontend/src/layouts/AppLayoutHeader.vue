@@ -39,27 +39,29 @@
           </picture>
           <span>Василий Ложкин</span>
         </router-link>
-        <a class="header__logout" @click="logoutUser"><span>Выйти</span></a>
+        <a class="header__logout" @click="$logout"><span>Выйти</span></a>
       </template>
     </div>
   </header>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import { logout } from "@/common/mixins";
 
 export default {
   name: "AppLayoutHeader",
+  mixins: [logout],
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
     ...mapGetters("Auth", ["isAuthenticated"]),
   },
-  methods: {
-    ...mapActions("Auth", ["logout"]),
-    logoutUser() {
-      this.logout();
-      this.$router.push("/");
-    },
-  },
+  // methods: {
+  //   ...mapActions("Auth", ["logout"]),
+  //   logoutUser() {
+  //     this.logout();
+  //     this.$router.push("/");
+  //   },
+  // },
 };
 </script>

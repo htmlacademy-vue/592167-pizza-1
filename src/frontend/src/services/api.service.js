@@ -6,7 +6,7 @@ export class AuthApiService {
   setAuthHeader() {
     const token = JwtService.getToken();
     axios.defaults.headers.common["Authorization"] = token
-      ? `User ${token}`
+      ? `Bearer ${token}`
       : ``;
   }
 
