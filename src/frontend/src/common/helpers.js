@@ -106,9 +106,9 @@ const prepareAdditionals = (data) => {
   });
 };
 
-const createResources = () => {
+const createResources = (notifier) => {
   return {
-    auth: new AuthApiService(),
+    auth: new AuthApiService(notifier),
   };
 };
 

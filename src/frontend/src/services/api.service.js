@@ -2,7 +2,11 @@ import JwtService from "@/services/jwt.service";
 import axios from "@/plugins/axios";
 
 export class AuthApiService {
-  constructor() {}
+  constructor(notifier) {
+    if (!axios.$notifier) {
+      axios.$notifier = notifier;
+    }
+  }
   setAuthHeader() {
     const token = JwtService.getToken();
     axios.defaults.headers.common["Authorization"] = token
