@@ -93,8 +93,6 @@ export default {
         password: this.password,
       });
 
-      this.$notifier.success("Вы успешно авторизовались");
-
       await this.$router.push("/");
     },
   },
