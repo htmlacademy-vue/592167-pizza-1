@@ -1,5 +1,6 @@
 import pizza from "@/static/pizza.json";
-import { AuthApiService } from "@/services/api.service";
+import { AuthApiService, CrudApiService } from "@/services/api.service";
+import resources from "@/common/enums/resources";
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -108,13 +109,32 @@ const prepareAdditionals = (data) => {
 
 const createResources = (notifier) => {
   return {
-    auth: new AuthApiService(notifier),
+    [resources.AUTH]: new AuthApiService(notifier),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
   };
 };
 
 const setAuth = (store) => {
   store.$api.auth.setAuthHeader();
   store.dispatch("Auth/getMe");
+};
+
+const prepareAddresses = (addresses) => {
+  if (addresses.length > 0) {
+    const addressArray = [];
+    for (const it of addresses) {
+      const address = {
+        name: it.name,
+        fullAddress: `${it.street}, д.${it.building}`,
+        comment: it.comment,
+      };
+      address.fullAddress += it.flat ? `, ${it.flat}` : ``;
+      addressArray.push(address);
+    }
+    return addressArray;
+  } else {
+    return [];
+  }
 };
 
 export {
@@ -126,4 +146,5 @@ export {
   prepareAdditionals,
   createResources,
   setAuth,
+  prepareAddresses,
 };

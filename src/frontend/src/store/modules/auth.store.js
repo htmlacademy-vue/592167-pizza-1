@@ -8,6 +8,9 @@ export default {
     isAuthenticated({ user }) {
       return !!user;
     },
+    userInfo({ user }) {
+      return user;
+    },
   },
 
   actions: {
@@ -31,6 +34,10 @@ export default {
       try {
         const data = await this.$api.auth.getMe();
         commit("LOG_IN", data);
+        const profile = await this.$api.addresses.get();
+        if (profile.length > 0) {
+          dispatch("Profile/initAddresses", [...profile], { root: true });
+        }
       } catch {
         dispatch("logout", false);
       }

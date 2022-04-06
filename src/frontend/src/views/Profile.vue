@@ -34,42 +34,50 @@
             <img
               src="@/assets/img/users/user5@2x.jpg"
               srcset="../assets/img/users/user5@4x.jpg"
-              alt="Василий Ложкин"
+              :alt="userInfo.name"
               width="72"
               height="72"
             />
           </picture>
           <div class="user__name">
-            <span>Василий Ложкин</span>
+            <span>{{ userInfo.name }}</span>
           </div>
           <p class="user__phone">
-            Контактный телефон: <span>+7 999-999-99-99</span>
+            Контактный телефон: <span>{{ userInfo.phone }}</span>
           </p>
         </div>
 
-        <div class="layout__address">
+        <div v-for="(address, i) in addresses" :key="i" class="layout__address">
           <div class="sheet address-form">
             <div class="address-form__header">
-              <b>Адрес №1. Тест</b>
+              <b>{{ address.name }}</b>
               <div class="address-form__edit">
-                <button type="button" class="icon">
+                <button
+                  type="button"
+                  class="icon"
+                  @click="editAddress(address.id)"
+                >
                   <span class="visually-hidden">Изменить адрес</span>
                 </button>
               </div>
             </div>
-            <p>Невский пр., д. 22, кв. 46</p>
-            <small>Позвоните, пожалуйста, от проходной</small>
+            <p>
+              Ул. {{ address.street }}, д.{{ address.building }}
+              {{ address.flat ? ", кв." + address.flat : "" }}
+            </p>
+            <small>{{ address.comment }}</small>
           </div>
         </div>
 
-        <div class="layout__address">
+        <div v-if="showForm" class="layout__address">
           <form
             action="#"
             method="post"
             class="address-form address-form--opened sheet"
+            @submit.prevent="saveAddress"
           >
             <div class="address-form__header">
-              <b>Адрес №1</b>
+              <b>Адрес №{{ addressCount }}</b>
             </div>
 
             <div class="address-form__wrapper">
@@ -77,6 +85,7 @@
                 <label class="input">
                   <span>Название адреса*</span>
                   <input
+                    v-model="name"
                     type="text"
                     name="addr-name"
                     placeholder="Введите название адреса"
@@ -90,6 +99,7 @@
                 <label class="input">
                   <span>Улица*</span>
                   <input
+                    v-model="street"
                     type="text"
                     name="addr-street"
                     placeholder="Введите название улицы"
@@ -101,6 +111,7 @@
                 <label class="input">
                   <span>Дом*</span>
                   <input
+                    v-model="building"
                     type="text"
                     name="addr-house"
                     placeholder="Введите номер дома"
@@ -112,6 +123,7 @@
                 <label class="input">
                   <span>Квартира</span>
                   <input
+                    v-model="flat"
                     type="text"
                     name="addr-apartment"
                     placeholder="Введите № квартиры"
@@ -122,6 +134,7 @@
                 <label class="input">
                   <span>Комментарий</span>
                   <input
+                    v-model="comment"
                     type="text"
                     name="addr-comment"
                     placeholder="Введите комментарий"
@@ -131,7 +144,12 @@
             </div>
 
             <div class="address-form__buttons">
-              <button type="button" class="button button--transparent">
+              <button
+                v-if="showDeleteButton"
+                type="button"
+                class="button button--transparent"
+                @click="onDeleteAddress"
+              >
                 Удалить
               </button>
               <button type="submit" class="button">Сохранить</button>
@@ -140,7 +158,11 @@
         </div>
 
         <div class="layout__button">
-          <button type="button" class="button button--border">
+          <button
+            type="button"
+            class="button button--border"
+            @click="showFormAddNewAddress"
+          >
             Добавить новый адрес
           </button>
         </div>
@@ -150,7 +172,86 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Profile",
+  data() {
+    return {
+      name: "",
+      street: "",
+      building: "",
+      flat: "",
+      comment: "",
+      addressCount: 0,
+      showForm: false,
+      showDeleteButton: false,
+      addressId: null,
+    };
+  },
+  computed: {
+    ...mapGetters("Auth", ["userInfo"]),
+    ...mapGetters("Profile", ["addresses"]),
+  },
+  methods: {
+    ...mapActions("Profile", ["addAddress", "changeAddress", "deleteAddress"]),
+    showFormAddNewAddress() {
+      this.showForm = true;
+      this.showDeleteButton = false;
+      this.addressCount = this.addresses.length + 1;
+      this.clearFormFields();
+    },
+    saveAddress() {
+      const address = {
+        name: this.name,
+        street: this.street,
+        building: this.building,
+        flat: this.flat,
+        comment: this.comment,
+        userId: this.userInfo.id,
+      };
+
+      if (this.showDeleteButton) {
+        address.id = this.addressId;
+        this.changeAddress(address);
+      } else {
+        this.addAddress(address);
+      }
+
+      this.clearFormFields();
+      this.closeAddressForm();
+    },
+    editAddress(id) {
+      this.openAddressForm();
+      this.showDeleteButton = true;
+      this.addressCount = id;
+
+      const address = this.addresses.find((it) => it.id === id);
+      this.name = address.name;
+      this.street = address.street;
+      this.building = address.building;
+      this.flat = address.flat;
+      this.comment = address.comment;
+
+      this.addressId = id;
+    },
+    onDeleteAddress() {
+      this.deleteAddress(this.addressId);
+      this.closeAddressForm();
+    },
+    clearFormFields() {
+      this.name = "";
+      this.street = "";
+      this.building = "";
+      this.flat = "";
+      this.comment = "";
+    },
+    openAddressForm() {
+      this.showForm = true;
+    },
+    closeAddressForm() {
+      this.showForm = false;
+    },
+  },
 };
 </script>
