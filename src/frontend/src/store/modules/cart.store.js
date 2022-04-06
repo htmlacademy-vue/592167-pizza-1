@@ -1,9 +1,9 @@
-import { prepareAdditionals, preparePizzaInfo } from "@/common/helpers";
+import { prepareAdditional, preparePizzaInfo } from "@/common/helpers";
 import misc from "@/static/misc.json";
 import { MIN_INGREDIENT_COUNT } from "@/constants";
 
-const DICTIONARES = {
-  additionals: [],
+const DICTIONARIES = {
+  additional: [],
 };
 
 export default {
@@ -31,7 +31,7 @@ export default {
       if (Object.keys(selectedAdditional).length > 0) {
         const selectedAdditionalKeys = Object.keys(selectedAdditional);
         for (const it of selectedAdditionalKeys) {
-          const additional = DICTIONARES.additionals.find(
+          const additional = DICTIONARIES.additional.find(
             (el) => el.name === it
           );
           totalPrice += additional.price * selectedAdditional[it];
@@ -39,8 +39,8 @@ export default {
       }
       return totalPrice;
     },
-    additionals() {
-      return prepareAdditionals(DICTIONARES.additionals);
+    additional() {
+      return prepareAdditional(DICTIONARIES.additional);
     },
     selectedAdditional({ selectedAdditional }) {
       return selectedAdditional;
@@ -64,7 +64,7 @@ export default {
 
   mutations: {
     DEFAULT_VALUE() {
-      DICTIONARES.additionals = misc;
+      DICTIONARIES.additional = misc;
     },
     ADD_PIZZA(state, pizza) {
       const pizzaInfo = state.pizzas.find(
