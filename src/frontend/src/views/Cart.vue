@@ -1,7 +1,10 @@
 <template>
   <form action="#" method="post" class="layout-form" @submit.prevent>
     <cart-main />
-    <cart-footer @makeOrder="isOpenPopup = true"></cart-footer>
+    <cart-footer
+      v-if="pizzas.length > 0"
+      @makeOrder="isOpenPopup = true"
+    ></cart-footer>
     <app-popup v-if="isOpenPopup" @closePopup="isOpenPopup = false"></app-popup>
   </form>
 </template>
@@ -10,6 +13,7 @@
 import CartMain from "@/modules/cart/CartMain";
 import CartFooter from "@/modules/cart/CartFooter";
 import AppPopup from "@/common/components/AppPopup";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Cart",
@@ -18,6 +22,9 @@ export default {
     return {
       isOpenPopup: false,
     };
+  },
+  computed: {
+    ...mapGetters("Cart", ["pizzas"]),
   },
 };
 </script>
