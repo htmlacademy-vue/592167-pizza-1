@@ -86,8 +86,8 @@ export default {
       return pizzaName;
     },
 
-    isPizzaName({ pizzaName }) {
-      return pizzaName === "";
+    isButtonCookDisable({ pizzaName, selectedIngredients }) {
+      return pizzaName === "" || Object.keys(selectedIngredients).length === 0;
     },
 
     pizzaInfo({

@@ -4,7 +4,7 @@
     <button
       type="button"
       class="button"
-      :disabled="isPizzaName"
+      :disabled="isButtonCookDisable"
       @click="makePizza"
     >
       Готовьте!
@@ -18,7 +18,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BuilderPriceCounter",
   computed: {
-    ...mapGetters("Builder", ["pizzaSum", "isPizzaName", "pizzaInfo"]),
+    ...mapGetters("Builder", ["pizzaSum", "isButtonCookDisable", "pizzaInfo"]),
   },
   methods: {
     ...mapActions("Cart", ["addPizza"]),
