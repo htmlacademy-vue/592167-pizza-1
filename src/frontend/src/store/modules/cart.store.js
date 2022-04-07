@@ -1,5 +1,4 @@
-import { prepareAdditional, preparePizzaInfo } from "@/common/helpers";
-import misc from "@/static/misc.json";
+import { preparePizzaInfo } from "@/common/helpers";
 import { MIN_INGREDIENT_COUNT } from "@/constants";
 
 const DICTIONARIES = {
@@ -15,11 +14,13 @@ export default {
     phone: "",
     address: {},
     totalPrice: 0,
+    additional: [],
   },
 
   getters: {
-    pizzas({ pizzas }) {
-      return preparePizzaInfo(pizzas);
+    pizzas({ pizzas }, _, rootState) {
+      let ingredients = rootState.Builder.ingredients;
+      return preparePizzaInfo(pizzas, ingredients);
     },
     totalPrice({ pizzas, selectedAdditional }) {
       let totalPrice = 0;
@@ -39,8 +40,8 @@ export default {
       }
       return totalPrice;
     },
-    additional() {
-      return prepareAdditional(DICTIONARIES.additional);
+    additional({ additional }) {
+      return additional;
     },
     selectedAdditional({ selectedAdditional }) {
       return selectedAdditional;
@@ -48,7 +49,10 @@ export default {
   },
 
   actions: {
-    initDefaultValue({ commit }) {
+    async initDefaultValue({ commit }) {
+      const resAdditional = await this.$api.misc.get();
+      DICTIONARIES.additional = resAdditional.slice(0, 3);
+
       commit("DEFAULT_VALUE");
     },
     addPizza({ commit }, pizza) {
@@ -63,8 +67,8 @@ export default {
   },
 
   mutations: {
-    DEFAULT_VALUE() {
-      DICTIONARIES.additional = misc;
+    DEFAULT_VALUE(state) {
+      state.additional = DICTIONARIES.additional;
     },
     ADD_PIZZA(state, pizza) {
       const pizzaInfo = state.pizzas.find(

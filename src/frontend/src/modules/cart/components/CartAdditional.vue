@@ -2,31 +2,26 @@
   <div class="cart__additional">
     <ul class="additional-list">
       <li
-        v-for="additional of additionals"
-        :key="additional.id"
+        v-for="item of additional"
+        :key="item.id"
         class="additional-list__item sheet"
       >
         <p class="additional-list__description">
-          <img
-            :src="additional.imageSrc"
-            width="39"
-            height="60"
-            :alt="additional.name"
-          />
-          <span>{{ additional.name }}</span>
+          <img :src="item.image" width="39" height="60" :alt="item.name" />
+          <span>{{ item.name }}</span>
         </p>
 
         <div class="additional-list__wrapper">
           <app-item-counter
             class-counter="additional-list__counter"
             :another-class-button="'counter__button--orange'"
-            :ingredient-count="getCount(additional.name, selectedAdditional)"
-            :ingredient-name="additional.name"
+            :ingredient-count="getCount(item.name, selectedAdditional)"
+            :ingredient-name="item.name"
             @changeIngredientCount="changeCount"
           />
 
           <div class="additional-list__price">
-            <b>× {{ additional.price }} ₽</b>
+            <b>× {{ item.price }} ₽</b>
           </div>
         </div>
       </li>
@@ -42,7 +37,7 @@ export default {
   name: "CartAdditional",
   components: { AppItemCounter },
   computed: {
-    ...mapGetters("Cart", ["additionals", "selectedAdditional"]),
+    ...mapGetters("Cart", ["additional", "selectedAdditional"]),
   },
   methods: {
     ...mapActions("Cart", ["changeSelectedAdditional"]),

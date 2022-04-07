@@ -1,7 +1,6 @@
-import pizza from "@/static/pizza.json";
 import {
   prepareDough,
-  prepareIngrediensts,
+  prepareIngredients,
   prepareSauces,
   prepareSizes,
 } from "@/common/helpers";
@@ -12,15 +11,6 @@ import {
   SIZE_MULTIPLIER,
 } from "@/constants";
 
-const setupState = () => ({
-  dough: "",
-  sauce: "",
-  pizzaSize: "",
-  pizzaName: "",
-  sum: 0,
-  selectedIngredients: {},
-});
-
 const DICTIONARIES = {
   ingredients: [],
   doughs: [],
@@ -30,35 +20,46 @@ const DICTIONARIES = {
 
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {
+    dough: "",
+    sauce: "",
+    pizzaSize: "",
+    pizzaName: "",
+    sum: 0,
+    selectedIngredients: {},
+    ingredients: [],
+    doughs: [],
+    sauces: [],
+    pizzaSizes: [],
+  },
 
   getters: {
-    ingredients() {
-      return prepareIngrediensts(DICTIONARIES.ingredients);
+    ingredients({ ingredients }) {
+      return prepareIngredients(ingredients);
     },
 
     selectedIngredients({ selectedIngredients }) {
       return selectedIngredients;
     },
 
-    sauces() {
-      return prepareSauces(DICTIONARIES.sauces);
+    sauces({ sauces }) {
+      return prepareSauces(sauces);
     },
 
     sauce({ sauce }) {
       return sauce;
     },
 
-    doughs() {
-      return prepareDough(DICTIONARIES.doughs);
+    doughs({ doughs }) {
+      return prepareDough(doughs);
     },
 
     dough({ dough }) {
       return dough;
     },
 
-    pizzaSizes() {
-      return prepareSizes(DICTIONARIES.pizzaSizes);
+    pizzaSizes({ pizzaSizes }) {
+      return prepareSizes(pizzaSizes);
     },
 
     pizzaSize({ pizzaSize }) {
@@ -102,7 +103,19 @@ export default {
   },
 
   actions: {
-    initBuilderState({ commit }) {
+    async initBuilderState({ commit }) {
+      const resIngredients = await this.$api.ingredients.get(); //345
+      DICTIONARIES.ingredients = resIngredients.slice(0, 15);
+
+      const resDough = await this.$api.dough.get(); //42
+      DICTIONARIES.doughs = resDough.slice(0, 2);
+
+      const resSauces = await this.$api.sauces.get(); //42
+      DICTIONARIES.sauces = resSauces.slice(0, 2);
+
+      const resSize = await this.$api.sizes.get(); //63
+      DICTIONARIES.pizzaSizes = resSize.slice(0, 3);
+
       commit("DEFAULT_VALUE");
     },
 
@@ -144,10 +157,11 @@ export default {
       state.dough = "light";
       state.sauce = "tomato";
       state.pizzaSize = "small";
-      DICTIONARIES.ingredients = pizza.ingredients;
-      DICTIONARIES.doughs = pizza.dough;
-      DICTIONARIES.sauces = pizza.sauces;
-      DICTIONARIES.pizzaSizes = pizza.sizes;
+
+      state.ingredients = DICTIONARIES.ingredients;
+      state.doughs = DICTIONARIES.doughs;
+      state.sauces = DICTIONARIES.sauces;
+      state.pizzaSizes = DICTIONARIES.pizzaSizes;
     },
 
     RESET_STATE(state) {

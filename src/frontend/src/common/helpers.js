@@ -1,4 +1,3 @@
-import pizza from "@/static/pizza.json";
 import { AuthApiService, CrudApiService } from "@/services/api.service";
 import resources from "@/common/enums/resources";
 
@@ -28,7 +27,7 @@ const getPizzaSizeValue = (size) => {
   }
 };
 
-const prepareIngrediensts = (ingredients) => {
+const prepareIngredients = (ingredients) => {
   return ingredients.map((it) => {
     it.rusName = it.name;
     it.name = cutString(it.image, 20, -4);
@@ -51,6 +50,7 @@ const prepareDough = (doughs) => {
 };
 
 const prepareSizes = (sizes) => {
+  sizes.sort((a, b) => (a.multiplier > b.multiplier ? 1 : -1));
   return sizes.map((it) => {
     it.slug = getPizzaSizeValue(it.name);
     return it;
@@ -81,28 +81,21 @@ const getSauceForView = (name) => {
   }
 };
 
-const getSelectedIngredientsForView = (data) => {
-  return pizza.ingredients
+const getSelectedIngredientsForView = (data, ingredients) => {
+  return ingredients
     .filter((it) => data.includes(it.name))
     .map((it) => it.rusName.toLowerCase())
     .join(", ");
 };
 
-const preparePizzaInfo = (pizzas) => {
+const preparePizzaInfo = (pizzas, ingredients) => {
   return pizzas.map((it) => {
     it.sizeView = getPizzaSizeFromValue(it.pizzaSize);
     it.sauceView = getSauceForView(it.sauce);
     it.selectedView = getSelectedIngredientsForView(
-      Object.keys(it.selectedIngredients)
+      Object.keys(it.selectedIngredients),
+      ingredients
     );
-    return it;
-  });
-};
-
-const prepareAdditionals = (data) => {
-  return data.map((it) => {
-    const imageName = cutString(it.image, 12, -4);
-    it.imageSrc = `@/assets/img/${imageName}.svg`;
     return it;
   });
 };
@@ -111,6 +104,14 @@ const createResources = (notifier) => {
   return {
     [resources.AUTH]: new AuthApiService(notifier),
     [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
+    [resources.DOUGH]: new CrudApiService(resources.DOUGH, notifier),
+    [resources.INGREDIENTS]: new CrudApiService(
+      resources.INGREDIENTS,
+      notifier
+    ),
+    [resources.SAUCES]: new CrudApiService(resources.SAUCES, notifier),
+    [resources.SIZES]: new CrudApiService(resources.SIZES, notifier),
+    [resources.MISC]: new CrudApiService(resources.MISC, notifier),
   };
 };
 
@@ -138,12 +139,11 @@ const prepareAddresses = (addresses) => {
 };
 
 export {
-  prepareIngrediensts,
+  prepareIngredients,
   prepareSauces,
   prepareDough,
   prepareSizes,
   preparePizzaInfo,
-  prepareAdditionals,
   createResources,
   setAuth,
   prepareAddresses,
