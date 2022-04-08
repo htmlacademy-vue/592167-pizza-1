@@ -16,8 +16,11 @@ const rules = {
   },
 };
 
-const validator = (value, appliedRules) => {
+const validator = (value, appliedRules, needValidation = true) => {
   let error = "";
+  if (!needValidation) {
+    return;
+  }
   appliedRules.forEach((appliedRule) => {
     if (!rules[appliedRule]) {
       return;
@@ -35,7 +38,11 @@ export default {
     $validateFields(fields, validations) {
       let isValid = true;
       Object.keys(validations).forEach((key) => {
-        validations[key].error = validator(fields[key], validations[key].rules);
+        validations[key].error = validator(
+          fields[key],
+          validations[key].rules,
+          validations[key].needValidation
+        );
         if (validations[key].error) {
           isValid = false;
         }

@@ -1,9 +1,9 @@
 <template>
   <form action="#" method="post" class="layout-form" @submit.prevent>
-    <cart-main />
+    <cart-main ref="cartMain" />
     <cart-footer
       v-if="pizzas.length > 0"
-      @makeOrder="isOpenPopup = true"
+      @makeOrder="onOrderClick"
     ></cart-footer>
     <app-popup v-if="isOpenPopup" @closePopup="isOpenPopup = false"></app-popup>
   </form>
@@ -25,6 +25,13 @@ export default {
   },
   computed: {
     ...mapGetters("Cart", ["pizzas"]),
+  },
+  methods: {
+    onOrderClick() {
+      if (this.$refs.cartMain.$refs.cartForm.validationFields()) {
+        this.isOpenPopup = true;
+      }
+    },
   },
 };
 </script>

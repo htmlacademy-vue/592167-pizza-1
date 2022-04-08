@@ -8,6 +8,7 @@
       :class="{ 'text-field__input--error': showError }"
       :placeholder="placeholder"
       :required="required"
+      :disabled="disabled"
       @input="$emit('input', $event.target.value)"
     />
     <span v-if="showError" class="text-field__text--error">{{
@@ -45,6 +46,10 @@ export default {
       default: "",
     },
     required: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

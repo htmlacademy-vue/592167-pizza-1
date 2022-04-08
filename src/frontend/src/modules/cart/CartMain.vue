@@ -9,7 +9,7 @@
 
         <cart-additional />
 
-        <cart-form />
+        <cart-form ref="cartForm" />
       </template>
       <template v-else>
         <div class="sheet cart__empty">
