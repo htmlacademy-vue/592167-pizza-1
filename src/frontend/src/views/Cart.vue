@@ -5,7 +5,7 @@
       v-if="pizzas.length > 0"
       @makeOrder="onOrderClick"
     ></cart-footer>
-    <app-popup v-if="isOpenPopup" @closePopup="isOpenPopup = false"></app-popup>
+    <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick"></app-popup>
   </form>
 </template>
 
@@ -25,12 +25,17 @@ export default {
   },
   computed: {
     ...mapGetters("Cart", ["pizzas"]),
+    ...mapGetters("Auth", ["isAuthenticated"]),
   },
   methods: {
     onOrderClick() {
       if (this.$refs.cartMain.$refs.cartForm.validationFields()) {
         this.isOpenPopup = true;
       }
+    },
+    onClosePopupClick() {
+      this.isOpenPopup = false;
+      this.$router.push(this.isAuthenticated ? "/orders" : "/");
     },
   },
 };
