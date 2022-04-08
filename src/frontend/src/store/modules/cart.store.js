@@ -64,6 +64,9 @@ export default {
     changeSelectedAdditional({ commit }, data) {
       commit("CHANGE_SELECTED_ADDITIONAL", data);
     },
+    resetState({ commit }) {
+      commit("RESET_STATE");
+    },
   },
 
   mutations: {
@@ -102,6 +105,14 @@ export default {
       if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
         delete state.selectedAdditional[Object.keys(data)[0]];
       }
+    },
+    RESET_STATE(state) {
+      state.pizzas = [];
+      state.selectedAdditional = {};
+      state.receivingOrder = "";
+      state.phone = "";
+      state.address = {};
+      state.totalPric = 0;
     },
   },
 };
