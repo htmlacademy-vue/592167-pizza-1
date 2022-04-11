@@ -28,16 +28,23 @@ export default {
     ...mapGetters("Auth", ["isAuthenticated"]),
   },
   methods: {
-    ...mapActions("Cart", ["resetState"]),
+    ...mapActions("Cart", ["resetState", "addAddressFormFields"]),
+    ...mapActions("Orders", ["addOrder"]),
     onOrderClick() {
       if (this.$refs.cartMain.$refs.cartForm.validationFields()) {
         this.isOpenPopup = true;
       }
     },
-    onClosePopupClick() {
+    async onClosePopupClick() {
       this.isOpenPopup = false;
-      this.resetState();
-      this.$router.push(this.isAuthenticated ? "/orders" : "/");
+      // this.resetState();
+      this.addAddressFormFields(
+        this.$refs.cartMain.$refs.cartForm.giveAddressFields()
+      );
+      const link = this.isAuthenticated ? "/orders" : "/";
+      const res = await this.addOrder();
+      console.log(res);
+      await this.$router.push(link);
     },
   },
 };

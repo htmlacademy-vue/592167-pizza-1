@@ -38,6 +38,8 @@ export default {
         if (profile.length > 0) {
           dispatch("Profile/initAddresses", [...profile], { root: true });
         }
+        const orders = await this.$api.orders.get();
+        console.log(orders);
       } catch {
         dispatch("logout", false);
       }

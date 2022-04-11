@@ -67,6 +67,30 @@ export default {
     resetState({ commit }) {
       commit("RESET_STATE");
     },
+    addAddressFormFields({ commit, rootState }, data) {
+      const address = {
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
+      };
+      if (+data.deliveryChoice >= 3) {
+        const addressesFromState = rootState.Profile.addresses;
+        const addressFromState = addressesFromState.find(
+          (it) => it.id === +data.deliveryChoice - 2
+        );
+        address.street = addressFromState.street;
+        address.building = addressFromState.building;
+        address.flat = addressFromState.flat;
+        address.comment = addressFromState.comment;
+      } else if (+data.deliveryChoice === 2) {
+        address.street = data.street;
+        address.building = data.building;
+        address.flat = data.flat;
+      }
+      commit("ADD_PHONE", data.phone);
+      commit("ADD_ADDRESS", address);
+    },
   },
 
   mutations: {
@@ -113,6 +137,12 @@ export default {
       state.phone = "";
       state.address = {};
       state.totalPric = 0;
+    },
+    ADD_PHONE(state, phone) {
+      state.phone = phone;
+    },
+    ADD_ADDRESS(state, data) {
+      state.address = data;
     },
   },
 };

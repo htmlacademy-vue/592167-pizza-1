@@ -167,6 +167,15 @@ export default {
       this.validations["building"].needValidation = +this.deliveryChoice === 2;
       return this.$validateFields(fields, this.validations);
     },
+    giveAddressFields() {
+      return {
+        deliveryChoice: this.deliveryChoice,
+        street: this.street,
+        building: this.building,
+        flat: this.flat,
+        phone: this.phone,
+      };
+    },
   },
 };
 </script>
