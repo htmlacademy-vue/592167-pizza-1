@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { MAX_INGREDIENT_COUNT, MIN_INGREDIENT_COUNT } from "@/constants";
 import AppButtonCounter from "@/common/components/AppButtonCounter";
 
 export default {
@@ -57,6 +56,14 @@ export default {
       type: String,
       default: "",
     },
+    maxCount: {
+      type: Number,
+      default: 100,
+    },
+    minCount: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -66,10 +73,10 @@ export default {
   },
   computed: {
     isDisabledButtonPlus() {
-      return this.ingredientCount >= MAX_INGREDIENT_COUNT;
+      return this.ingredientCount >= this.maxCount;
     },
     isDisabledButtonMinus() {
-      return this.ingredientCount === MIN_INGREDIENT_COUNT;
+      return this.ingredientCount === this.minCount;
     },
   },
   methods: {

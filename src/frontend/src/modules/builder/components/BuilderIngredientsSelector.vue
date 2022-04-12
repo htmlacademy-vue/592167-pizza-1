@@ -51,6 +51,7 @@
                   getIngredientCount(ingredient.name, selectedIngredients)
                 "
                 :class-counter="'counter--orange ingredients__counter'"
+                :max-count="3"
                 @changeIngredientCount="changeIngredientCount"
               />
             </li>
@@ -67,6 +68,7 @@ import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 import BuilderIngredientPicture from "@/modules/builder/components/BuilderIngredientPicture";
 import { mapActions, mapGetters } from "vuex";
+import { MAX_INGREDIENT_COUNT } from "@/constants";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -78,7 +80,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      maxCount: MAX_INGREDIENT_COUNT,
+    };
   },
   computed: {
     ...mapGetters("Builder", [
