@@ -172,7 +172,6 @@ const prepareAddresses = (addresses) => {
 };
 
 const prepareAddressForOrder = (orderAddress, receivingOrder) => {
-  debugger;
   let address = null;
   if (+receivingOrder === NEW_ADDRESS) {
     address = {
