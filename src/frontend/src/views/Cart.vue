@@ -41,9 +41,12 @@ export default {
       this.addAddressFormFields(
         this.$refs.cartMain.$refs.cartForm.giveAddressFields()
       );
-      const link = this.isAuthenticated ? "/orders" : "/";
-      const res = await this.addOrder();
-      console.log(res);
+      let link = "/";
+      if (this.isAuthenticated) {
+        link = "/orders";
+        const res = await this.addOrder();
+        console.log(res);
+      }
       await this.$router.push(link);
     },
   },
