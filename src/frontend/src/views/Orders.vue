@@ -34,7 +34,11 @@
               </div>
 
               <div class="order__button">
-                <button type="button" class="button button--border">
+                <button
+                  type="button"
+                  class="button button--border"
+                  @click="deleteOrder(order.id)"
+                >
                   Удалить
                 </button>
               </div>
@@ -117,12 +121,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Orders",
   computed: {
     ...mapGetters("Orders", ["isOrders", "orders"]),
+  },
+  methods: {
+    ...mapActions("Orders", ["deleteOrder"]),
+    // deleteOrder(id) {
+    //   console.log("Мы нажали кнопку delete с id: ", id);
+    // },
   },
 };
 </script>

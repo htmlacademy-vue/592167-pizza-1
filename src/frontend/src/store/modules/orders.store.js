@@ -31,6 +31,7 @@ export default {
     initState({ commit }, data) {
       commit("INIT_STATE", data);
     },
+
     async addOrder({ commit, rootState }) {
       const pizzas = preparePizzaForOrder(
         rootState.Cart.pizzas,
@@ -60,6 +61,11 @@ export default {
       commit("ADD_ORDER", data);
       return "";
     },
+
+    async deleteOrder({ commit }, id) {
+      await this.$api.orders.delete(id);
+      commit("DELETE_ORDER", id);
+    },
   },
 
   mutations: {
@@ -69,6 +75,10 @@ export default {
 
     ADD_ORDER(state, data) {
       state.orders.push(data);
+    },
+
+    DELETE_ORDER(state, id) {
+      state.orders = state.orders.filter((it) => it.id !== id);
     },
   },
 };
