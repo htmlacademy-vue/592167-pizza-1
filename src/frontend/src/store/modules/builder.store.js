@@ -104,17 +104,10 @@ export default {
 
   actions: {
     async initBuilderState({ commit }) {
-      const resIngredients = await this.$api.ingredients.get(); //345
-      DICTIONARIES.ingredients = resIngredients.slice(0, 15);
-
-      const resDough = await this.$api.dough.get(); //42
-      DICTIONARIES.doughs = resDough.slice(0, 2);
-
-      const resSauces = await this.$api.sauces.get(); //42
-      DICTIONARIES.sauces = resSauces.slice(0, 2);
-
-      const resSize = await this.$api.sizes.get(); //63
-      DICTIONARIES.pizzaSizes = resSize.slice(0, 3);
+      DICTIONARIES.ingredients = await this.$api.ingredients.get();
+      DICTIONARIES.doughs = await this.$api.dough.get();
+      DICTIONARIES.sauces = await this.$api.sauces.get();
+      DICTIONARIES.pizzaSizes = await this.$api.sizes.get();
 
       commit("DEFAULT_VALUE");
     },

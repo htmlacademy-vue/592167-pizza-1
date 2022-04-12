@@ -1,4 +1,9 @@
-import { prepareMiscForOrder, preparePizzaForOrder } from "@/common/helpers";
+import {
+  prepareAddressForOrder,
+  prepareMiscForOrder,
+  prepareOrdersForView,
+  preparePizzaForOrder,
+} from "@/common/helpers";
 
 export default {
   namespaced: true,
@@ -7,14 +12,24 @@ export default {
   },
 
   getters: {
-    orders({ orders }) {
-      return orders;
+    orders({ orders }, _, rootState) {
+      return prepareOrdersForView(
+        orders,
+        rootState.Builder.pizzaSizes,
+        rootState.Builder.doughs,
+        rootState.Builder.sauces,
+        rootState.Builder.ingredients,
+        rootState.Cart.additional
+      );
+    },
+    isOrders({ orders }) {
+      return orders.length > 0;
     },
   },
 
   actions: {
-    initState({ commit }) {
-      commit("INIT_STATE");
+    initState({ commit }, data) {
+      commit("INIT_STATE", data);
     },
     async addOrder({ commit, rootState }) {
       const pizzas = preparePizzaForOrder(
@@ -28,18 +43,18 @@ export default {
         rootState.Cart.additional,
         rootState.Cart.selectedAdditional
       );
+      const address = prepareAddressForOrder(
+        rootState.Cart.address,
+        rootState.Cart.receivingOrder
+      );
       const data = {
         userId: rootState.Auth.user.id,
         phone: rootState.Cart.phone,
-        address: {
-          street: rootState.Cart.address.street,
-          building: rootState.Cart.address.building,
-          flat: rootState.Cart.address.flat,
-          comment: rootState.Cart.address.comment,
-        },
+        address,
         pizzas,
         misc,
       };
+      console.log(data);
       const order = await this.$api.orders.post(data);
       data.id = order.id;
       commit("ADD_ORDER", data);
@@ -48,8 +63,8 @@ export default {
   },
 
   mutations: {
-    INIT_STATE(state) {
-      state.userId = 1;
+    INIT_STATE(state, data) {
+      state.orders = data;
     },
 
     ADD_ORDER(state, data) {

@@ -1,5 +1,9 @@
 import { preparePizzaInfo } from "@/common/helpers";
-import { MIN_INGREDIENT_COUNT } from "@/constants";
+import {
+  MIN_INGREDIENT_COUNT,
+  MY_FIRST_ADDRESS,
+  NEW_ADDRESS,
+} from "@/constants";
 
 const DICTIONARIES = {
   additional: [],
@@ -74,22 +78,23 @@ export default {
         flat: "",
         comment: "",
       };
-      if (+data.deliveryChoice >= 3) {
+      if (+data.deliveryChoice >= MY_FIRST_ADDRESS) {
         const addressesFromState = rootState.Profile.addresses;
         const addressFromState = addressesFromState.find(
-          (it) => it.id === +data.deliveryChoice - 2
+          (it) => it.id === +data.deliveryChoice - NEW_ADDRESS
         );
         address.street = addressFromState.street;
         address.building = addressFromState.building;
         address.flat = addressFromState.flat;
         address.comment = addressFromState.comment;
-      } else if (+data.deliveryChoice === 2) {
+      } else if (+data.deliveryChoice === NEW_ADDRESS) {
         address.street = data.street;
         address.building = data.building;
         address.flat = data.flat;
       }
       commit("ADD_PHONE", data.phone);
       commit("ADD_ADDRESS", address);
+      commit("ADD_RECEIVING_ORDER", data.deliveryChoice);
     },
   },
 
@@ -143,6 +148,9 @@ export default {
     },
     ADD_ADDRESS(state, data) {
       state.address = data;
+    },
+    ADD_RECEIVING_ORDER(state, data) {
+      state.receivingOrder = data;
     },
   },
 };

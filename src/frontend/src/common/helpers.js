@@ -1,5 +1,11 @@
 import { AuthApiService, CrudApiService } from "@/services/api.service";
 import resources from "@/common/enums/resources";
+import { NEW_ADDRESS } from "@/constants";
+// import {DOUGH_PRICE, NEW_ADDRESS, SAUCES_PRICE, SIZE_MULTIPLIER} from "@/constants";
+
+// Удаляет таблицы из базы, чтобы привести ее к начальному состоянию.
+// Можно удалять не все, а только словарные значения
+// DROP TABLE IF EXISTS address, dough, ingredient, misc, miscorder, "order", pizza, pizzaingredient, sauce, size, "user", usercredentials;
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -57,6 +63,24 @@ const prepareSizes = (sizes) => {
   });
 };
 
+const prepareSizeForView = (pizzaSizes, sizeId) => {
+  return pizzaSizes.find((it) => it.id === sizeId).name;
+};
+
+const changeEndOfWord = (word) => {
+  return word.replace("ое", "ом");
+};
+
+const prepareDoughForView = (doughs, doughId) => {
+  return changeEndOfWord(
+    doughs.find((it) => it.id === doughId).name.toLowerCase()
+  );
+};
+
+const prepareSauceForView = (sauces, sauceId) => {
+  return sauces.find((it) => it.id === sauceId).name.toLowerCase();
+};
+
 const getPizzaSizeFromValue = (size) => {
   switch (size) {
     case "small":
@@ -84,6 +108,14 @@ const getSauceForView = (name) => {
 const getSelectedIngredientsForView = (data, ingredients) => {
   return ingredients
     .filter((it) => data.includes(it.name))
+    .map((it) => it.rusName.toLowerCase())
+    .join(", ");
+};
+
+const prepareIngredientsForView = (data, ingredients) => {
+  const ingredientsId = data.map((it) => it.ingredientId);
+  return ingredients
+    .filter((it) => ingredientsId.includes(it.id))
     .map((it) => it.rusName.toLowerCase())
     .join(", ");
 };
@@ -139,6 +171,27 @@ const prepareAddresses = (addresses) => {
   }
 };
 
+const prepareAddressForOrder = (orderAddress, receivingOrder) => {
+  debugger;
+  let address = null;
+  if (+receivingOrder === NEW_ADDRESS) {
+    address = {
+      street: orderAddress.street,
+      building: orderAddress.building,
+      flat: orderAddress.flat,
+      comment: orderAddress.comment,
+    };
+  } else if (+receivingOrder > NEW_ADDRESS) {
+    address = {
+      id: +receivingOrder - NEW_ADDRESS,
+    };
+  }
+  console.log(receivingOrder);
+  console.log(orderAddress);
+  console.log(address);
+  return address;
+};
+
 const preparePizzaForOrder = (
   pizzas,
   ingredients,
@@ -171,6 +224,67 @@ const preparePizzaForOrder = (
     });
 };
 
+const calcSumPizza = (pizza, ingredients, pizzaSizes, doughs, sauces) => {
+  // мультипликатор размера х (стоимость теста + соус + ингредиенты)
+  let ingredientsPrice = 0;
+  pizza.ingredients.map((it) => {
+    const ingredient = ingredients.find((el) => el.id === it.ingredientId);
+    ingredientsPrice += ingredient.price * it.quantity;
+  });
+  const multiplier = pizzaSizes.find((it) => it.id === pizza.sizeId).multiplier;
+  const doughPrice = doughs.find((it) => it.id === pizza.doughId).price;
+  const saucePrice = sauces.find((it) => it.id === pizza.sauceId).price;
+
+  return multiplier * (doughPrice + saucePrice + ingredientsPrice);
+};
+
+const getMiscInfo = (misc, additional) => {
+  return additional.find((it) => it.id === misc.miscId);
+};
+
+const calcTotalPrice = (order) => {
+  let totalPrice = 0;
+  order.orderPizzas.map((pizza) => {
+    totalPrice += pizza.sum * pizza.quantity;
+  });
+  order.orderMisc?.map((misc) => {
+    totalPrice += misc.sum * misc.quantity;
+  });
+  return totalPrice;
+};
+
+const prepareOrdersForView = (
+  orders,
+  pizzaSizes,
+  doughs,
+  sauces,
+  ingredients,
+  additional
+) => {
+  orders.map((order) => {
+    order.orderPizzas.map((pizza) => {
+      pizza.sizeView = prepareSizeForView(pizzaSizes, pizza.sizeId);
+      pizza.doughView = prepareDoughForView(doughs, pizza.doughId);
+      pizza.sauceView = prepareSauceForView(sauces, pizza.sauceId);
+      pizza.ingredientsForView = prepareIngredientsForView(
+        pizza.ingredients,
+        ingredients
+      );
+      pizza.sum = calcSumPizza(pizza, ingredients, pizzaSizes, doughs, sauces);
+      return pizza;
+    });
+    order.orderMisc?.map((misc) => {
+      const miscInfo = getMiscInfo(misc, additional);
+      misc.name = miscInfo.name;
+      misc.sum = miscInfo.price;
+      misc.img = miscInfo.image;
+      return misc;
+    });
+    order.totalPrice = calcTotalPrice(order);
+  });
+  return orders;
+};
+
 const prepareMiscForOrder = (additional, selectedAdditional) => {
   let misc = [];
   const selectedMisc = Object.keys(selectedAdditional);
@@ -190,10 +304,13 @@ export {
   prepareSauces,
   prepareDough,
   prepareSizes,
+  prepareSizeForView,
   preparePizzaInfo,
   createResources,
   setAuth,
   prepareAddresses,
   preparePizzaForOrder,
   prepareMiscForOrder,
+  prepareOrdersForView,
+  prepareAddressForOrder,
 };

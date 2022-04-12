@@ -30,3 +30,6 @@ export const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 
 export const SEC = 1000;
 export const MESSAGE_LIVE_TIME = 3 * SEC;
+export const PICK_UP_MYSELF = 1;
+export const NEW_ADDRESS = 2;
+export const MY_FIRST_ADDRESS = 3;

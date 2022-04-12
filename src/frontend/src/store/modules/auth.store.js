@@ -39,7 +39,7 @@ export default {
           dispatch("Profile/initAddresses", [...profile], { root: true });
         }
         const orders = await this.$api.orders.get();
-        console.log(orders);
+        dispatch("Orders/initState", [...orders], { root: true });
       } catch {
         dispatch("logout", false);
       }
