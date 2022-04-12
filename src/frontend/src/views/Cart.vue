@@ -37,16 +37,16 @@ export default {
     },
     async onClosePopupClick() {
       this.isOpenPopup = false;
-      // this.resetState();
-      this.addAddressFormFields(
-        this.$refs.cartMain.$refs.cartForm.giveAddressFields()
-      );
       let link = "/";
       if (this.isAuthenticated) {
+        this.addAddressFormFields(
+          this.$refs.cartMain.$refs.cartForm.giveAddressFields()
+        );
         link = "/orders";
         const res = await this.addOrder();
         console.log(res);
       }
+      this.resetState();
       await this.$router.push(link);
     },
   },
