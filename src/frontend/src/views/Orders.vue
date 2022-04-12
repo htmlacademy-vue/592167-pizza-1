@@ -112,9 +112,6 @@
             <p>История пока пуста</p>
           </div>
         </template>
-        <div>
-          {{ orders }}
-        </div>
       </div>
     </main>
   </div>
@@ -130,9 +127,6 @@ export default {
   },
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
-    // deleteOrder(id) {
-    //   console.log("Мы нажали кнопку delete с id: ", id);
-    // },
   },
 };
 </script>
