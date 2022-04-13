@@ -16,10 +16,7 @@
         <div class="product__text">
           <h2>{{ pizza.pizzaName }}</h2>
           <ul>
-            <li>
-              {{ pizza.sizeView }}, на
-              {{ pizza.dough === "large" ? "толстом" : "тонком" }} тесте
-            </li>
+            <li>{{ pizza.sizeView }}, на {{ pizza.doughView }} тесте</li>
             <li>Соус: {{ pizza.sauceView }}</li>
             <li>Начинка: {{ pizza.selectedView }}</li>
           </ul>
@@ -68,16 +65,16 @@ export default {
     getPizzaPrice(sum, count) {
       return sum * count;
     },
-    changeCount(count, name) {
-      const data = { name, count };
+    changeCount(count, idx) {
+      const data = { name: this.pizzas[idx].pizzaName, count };
       this.changePizzaCount(data);
     },
     changePizzaIngredients(idx) {
       const pizzaInfo = this.pizzas[idx];
       const pizzaState = {
-        dough: pizzaInfo.dough,
-        sauce: pizzaInfo.sauce,
-        pizzaSize: pizzaInfo.pizzaSize,
+        doughId: pizzaInfo.doughId,
+        sauceId: pizzaInfo.sauceId,
+        pizzaSizeId: pizzaInfo.pizzaSizeId,
         pizzaName: pizzaInfo.pizzaName,
         sum: pizzaInfo.sum,
         selectedIngredients: pizzaInfo.selectedIngredients,

@@ -15,8 +15,8 @@
           <app-item-counter
             class-counter="additional-list__counter"
             :another-class-button="'counter__button--orange'"
-            :ingredient-count="getCount(item.name, selectedAdditional)"
-            :ingredient-name="item.name"
+            :ingredient-count="getCount(item.id, selectedAdditional)"
+            :ingredient-id="item.id"
             @changeIngredientCount="changeCount"
           />
 
@@ -41,11 +41,15 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["changeSelectedAdditional"]),
-    getCount(name, selected) {
-      return selected[name] ? selected[name] : 0;
+    getCount(id, selected) {
+      const misc = selected?.find((it) => it.miscId === id);
+      return misc ? misc.quantity : 0;
     },
-    changeCount(value, name) {
-      const data = { [name]: value };
+    changeCount(count, id) {
+      const data = {
+        miscId: id,
+        quantity: count,
+      };
       this.changeSelectedAdditional(data);
     },
   },

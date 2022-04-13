@@ -81,36 +81,36 @@ const prepareSauceForView = (sauces, sauceId) => {
   return sauces.find((it) => it.id === sauceId).name.toLowerCase();
 };
 
-const getPizzaSizeFromValue = (size) => {
-  switch (size) {
-    case "small":
-      return "23 см";
-    case "normal":
-      return "32 см";
-    case "big":
-      return "45 см";
-    default:
-      return "";
-  }
-};
-
-const getSauceForView = (name) => {
-  switch (name) {
-    case "tomato":
-      return "томатный";
-    case "creamy":
-      return "сливочный";
-    default:
-      return "";
-  }
-};
-
-const getSelectedIngredientsForView = (data, ingredients) => {
-  return ingredients
-    .filter((it) => data.includes(it.name))
-    .map((it) => it.rusName.toLowerCase())
-    .join(", ");
-};
+// const getPizzaSizeFromValue = (size) => {
+//   switch (size) {
+//     case "small":
+//       return "23 см";
+//     case "normal":
+//       return "32 см";
+//     case "big":
+//       return "45 см";
+//     default:
+//       return "";
+//   }
+// };
+//
+// const getSauceForView = (name) => {
+//   switch (name) {
+//     case "tomato":
+//       return "томатный";
+//     case "creamy":
+//       return "сливочный";
+//     default:
+//       return "";
+//   }
+// };
+//
+// const getSelectedIngredientsForView = (data, ingredients) => {
+//   return ingredients
+//     .filter((it) => data.includes(it.name))
+//     .map((it) => it.rusName.toLowerCase())
+//     .join(", ");
+// };
 
 const prepareIngredientsForView = (data, ingredients) => {
   const ingredientsId = data.map((it) => it.ingredientId);
@@ -120,17 +120,26 @@ const prepareIngredientsForView = (data, ingredients) => {
     .join(", ");
 };
 
-const preparePizzaInfo = (pizzas, ingredients) => {
+const preparePizzaInfo = (pizzas, ingredients, pizzaSizes, doughs, sauces) => {
   return pizzas.map((it) => {
-    it.sizeView = getPizzaSizeFromValue(it.pizzaSize);
-    it.sauceView = getSauceForView(it.sauce);
-    it.selectedView = getSelectedIngredientsForView(
-      Object.keys(it.selectedIngredients),
+    it.sizeView = prepareSizeForView(pizzaSizes, it.pizzaSizeId);
+    it.doughView = prepareDoughForView(doughs, it.doughId);
+    it.sauceView = prepareSauceForView(sauces, it.sauceId);
+    it.selectedView = prepareIngredientsForView(
+      it.selectedIngredients,
       ingredients
     );
     return it;
   });
 };
+
+// pizza.sizeView = prepareSizeForView(pizzaSizes, pizza.sizeId);
+// pizza.doughView = prepareDoughForView(doughs, pizza.doughId);
+// pizza.sauceView = prepareSauceForView(sauces, pizza.sauceId);
+// pizza.ingredientsForView = prepareIngredientsForView(
+//   pizza.ingredients,
+//   ingredients
+// );
 
 const createResources = (notifier) => {
   return {

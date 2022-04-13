@@ -13,7 +13,7 @@ export default {
   namespaced: true,
   state: {
     pizzas: [],
-    selectedAdditional: {},
+    selectedAdditional: [],
     receivingOrder: "",
     phone: "",
     address: {},
@@ -23,24 +23,27 @@ export default {
 
   getters: {
     pizzas({ pizzas }, _, rootState) {
-      let ingredients = rootState.Builder.ingredients;
-      return preparePizzaInfo(pizzas, ingredients);
+      const ingredients = rootState.Builder.ingredients;
+      const pizzaSizes = rootState.Builder.pizzaSizes;
+      const doughs = rootState.Builder.doughs;
+      const sauces = rootState.Builder.sauces;
+
+      return preparePizzaInfo(pizzas, ingredients, pizzaSizes, doughs, sauces);
     },
-    totalPrice({ pizzas, selectedAdditional }) {
+    totalPrice({ pizzas, selectedAdditional, additional }) {
       let totalPrice = 0;
       if (pizzas.length > 0) {
-        for (const pizza of pizzas) {
-          totalPrice += pizza.sum * pizza.count;
-        }
+        pizzas.map((it) => {
+          totalPrice += it.sum * it.count;
+        });
       }
-      if (Object.keys(selectedAdditional).length > 0) {
-        const selectedAdditionalKeys = Object.keys(selectedAdditional);
-        for (const it of selectedAdditionalKeys) {
-          const additional = DICTIONARIES.additional.find(
-            (el) => el.name === it
-          );
-          totalPrice += additional.price * selectedAdditional[it];
-        }
+      if (selectedAdditional.length > 0) {
+        selectedAdditional.map((it) => {
+          const additionalPrice = additional.find(
+            (misc) => misc.id === it.miscId
+          ).price;
+          totalPrice += additionalPrice * it.quantity;
+        });
       }
       return totalPrice;
     },
@@ -107,9 +110,9 @@ export default {
         (it) => it.pizzaName === pizza.pizzaName
       );
       if (pizzaInfo) {
-        pizzaInfo.dough = pizza.dough;
-        pizzaInfo.sauce = pizza.sauce;
-        pizzaInfo.pizzaSize = pizza.pizzaSize;
+        pizzaInfo.doughId = pizza.doughId;
+        pizzaInfo.sauceId = pizza.sauceId;
+        pizzaInfo.pizzaSizeId = pizza.pizzaSizeId;
         pizzaInfo.pizzaName = pizza.pizzaName;
         pizzaInfo.sum = pizza.sum;
         pizzaInfo.selectedIngredients = pizza.selectedIngredients;
@@ -130,9 +133,20 @@ export default {
       }
     },
     CHANGE_SELECTED_ADDITIONAL(state, data) {
-      state.selectedAdditional = { ...state.selectedAdditional, ...data };
-      if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
-        delete state.selectedAdditional[Object.keys(data)[0]];
+      const misc = state.selectedAdditional.find(
+        (it) => it.miscId === data.miscId
+      );
+      if (misc) {
+        misc.quantity = data.quantity;
+      } else {
+        state.selectedAdditional.push(data);
+      }
+
+      // Удаляем из списка ингредиент, если его количество равно нулю
+      if (data.quantity === MIN_INGREDIENT_COUNT) {
+        state.selectedAdditional = state.selectedAdditional.filter(
+          (it) => it.miscId !== data.miscId
+        );
       }
     },
     RESET_STATE(state) {
