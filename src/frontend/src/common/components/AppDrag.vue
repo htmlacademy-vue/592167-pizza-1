@@ -15,9 +15,9 @@ import { MOVE, DATA_TRANSFER_PAYLOAD } from "@/constants";
 export default {
   name: "AppDrag",
   props: {
-    ingredientName: {
-      type: String,
-      default: "",
+    ingredientId: {
+      type: Number,
+      default: 0,
     },
     ingredientCount: {
       type: Number,
@@ -35,7 +35,7 @@ export default {
       dataTransfer.dropEffect = MOVE;
       dataTransfer.setData(
         DATA_TRANSFER_PAYLOAD,
-        JSON.stringify(this.ingredientName)
+        JSON.stringify(this.ingredientId)
       );
     },
   },

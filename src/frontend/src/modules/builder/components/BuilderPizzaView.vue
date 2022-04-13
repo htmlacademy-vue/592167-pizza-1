@@ -4,10 +4,14 @@
       <div class="pizza" :class="pizzaSize">
         <div class="pizza__wrapper">
           <div
-            v-for="(item, name) in selectedIngredients"
-            :key="name"
+            v-for="ingredient in selectedIngredients"
+            :key="ingredient.id"
             class="pizza__filling"
-            :class="'pizza__filling--' + name + ingredientCount(item)"
+            :class="
+              'pizza__filling--' +
+              getIngredientName(ingredient.ingredientId) +
+              ingredientCount(ingredient.quantity)
+            "
           />
         </div>
       </div>
@@ -23,12 +27,18 @@ export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
   computed: {
-    ...mapGetters("Builder", ["selectedIngredients", "dough", "sauce"]),
+    ...mapGetters("Builder", [
+      "selectedIngredients",
+      "ingredients",
+      "doughId",
+      "sauceId",
+      "sauces",
+    ]),
     pizzaSize() {
-      if (this.dough === "light") {
-        return `pizza--foundation--small-${this.sauce}`;
-      }
-      return `pizza--foundation--big-${this.sauce}`;
+      const sauceName = this.sauces.find((it) => it.id === this.sauceId).slug;
+      return `pizza--foundation--${
+        this.doughId === 1 ? "small" : "big"
+      }-${sauceName}`;
     },
   },
   methods: {
@@ -52,6 +62,10 @@ export default {
         default:
           return "";
       }
+    },
+    getIngredientName(id) {
+      const ingredient = this.ingredients.find((it) => it.id === id)?.name;
+      return ingredient ? ingredient : "";
     },
   },
 };

@@ -312,4 +312,5 @@ export {
   prepareMiscForOrder,
   prepareOrdersForView,
   prepareAddressForOrder,
+  calcSumPizza,
 };

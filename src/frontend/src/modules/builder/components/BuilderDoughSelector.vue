@@ -9,13 +9,13 @@
           :key="item.id"
           class="dough__input"
           :class="' dough__input--' + item.slug"
-          @click="changeDough(item.slug)"
+          @click="changeDough(item.id)"
         >
           <input
             type="radio"
             name="dough"
             :value="item.slug"
-            :checked="isChecked(item.slug)"
+            :checked="isChecked(item.id)"
             class="visually-hidden"
           />
           <b>{{ item.name }}</b>
@@ -32,16 +32,16 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BuilderDoughSelector",
   computed: {
-    ...mapGetters("Builder", ["doughs", "dough"]),
+    ...mapGetters("Builder", ["doughs", "doughId"]),
   },
   methods: {
     ...mapActions("Builder", ["updateDough"]),
 
-    isChecked(data) {
-      return data === this.dough;
+    isChecked(doughId) {
+      return doughId === this.doughId;
     },
-    changeDough(dough) {
-      this.updateDough(dough);
+    changeDough(id) {
+      this.updateDough(id);
     },
   },
 };

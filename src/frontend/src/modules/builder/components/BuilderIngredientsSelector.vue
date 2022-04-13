@@ -11,13 +11,13 @@
             v-for="sauce in sauces"
             :key="sauce.id"
             class="radio ingredients__input"
-            @click="changeSauce(sauce.slug)"
+            @click="changeSauce(sauce.id)"
           >
             <input
               type="radio"
               name="sauce"
               :value="sauce.slug"
-              :checked="isChecked(sauce.slug)"
+              :checked="isChecked(sauce.id)"
             />
             <span>{{ sauce.name }}</span>
           </label>
@@ -33,9 +33,9 @@
             >
               <AppDrop @drop="$emit('drop', $event)">
                 <AppDrag
-                  :ingredient-name="ingredient.name"
+                  :ingredient-id="ingredient.id"
                   :ingredient-count="
-                    getIngredientCount(ingredient.name, selectedIngredients)
+                    getIngredientCount(ingredient.id, selectedIngredients)
                   "
                 >
                   <builder-ingredient-picture
@@ -46,12 +46,12 @@
               </AppDrop>
               <app-item-counter
                 :idx="ingredient.id"
-                :ingredient-name="ingredient.name"
+                :ingredient-id="ingredient.id"
                 :ingredient-count="
-                  getIngredientCount(ingredient.name, selectedIngredients)
+                  getIngredientCount(ingredient.id, selectedIngredients)
                 "
                 :class-counter="'counter--orange ingredients__counter'"
-                :max-count="3"
+                :max-count="maxCount"
                 @changeIngredientCount="changeIngredientCount"
               />
             </li>
@@ -89,25 +89,29 @@ export default {
       "ingredients",
       "selectedIngredients",
       "sauces",
-      "sauce",
+      "sauceId",
     ]),
   },
   methods: {
     ...mapActions("Builder", ["updateSauce", "updateSelectedIngredients"]),
-    changeSauce(sauce) {
-      this.updateSauce(sauce);
+    changeSauce(id) {
+      this.updateSauce(id);
     },
 
-    getIngredientCount(ingredientName, selectedIngredients) {
-      return selectedIngredients[ingredientName]
-        ? selectedIngredients[ingredientName]
-        : 0;
+    getIngredientCount(ingredientId, selectedIngredients) {
+      const ingredient = selectedIngredients.find(
+        (it) => it.ingredientId === ingredientId
+      );
+      return ingredient ? ingredient.quantity : 0;
     },
-    isChecked(sauceName) {
-      return sauceName === this.sauce;
+    isChecked(id) {
+      return id === this.sauceId;
     },
-    changeIngredientCount(count, name) {
-      this.updateSelectedIngredients({ [name]: count });
+    changeIngredientCount(count, id) {
+      this.updateSelectedIngredients({
+        ingredientId: id,
+        quantity: count,
+      });
     },
   },
 };

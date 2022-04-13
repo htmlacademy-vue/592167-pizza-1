@@ -4,7 +4,7 @@
       :differential="'counter__button--minus'"
       :is-disabled="isDisabledButtonMinus"
       @changeCount="
-        $emit('changeIngredientCount', ingredientCount - 1, ingredientName)
+        $emit('changeIngredientCount', ingredientCount - 1, ingredientId)
       "
     >
       <span class="visually-hidden">Меньше</span>
@@ -20,7 +20,7 @@
       :differential="'counter__button--plus'"
       :is-disabled="isDisabledButtonPlus"
       @changeCount="
-        $emit('changeIngredientCount', ingredientCount + 1, ingredientName)
+        $emit('changeIngredientCount', ingredientCount + 1, ingredientId)
       "
     >
       <span class="visually-hidden">Больше</span>
@@ -36,13 +36,9 @@ export default {
   components: { AppButtonCounter },
 
   props: {
-    idx: {
+    ingredientId: {
       type: Number,
       default: 0,
-    },
-    ingredientName: {
-      type: String,
-      default: "",
     },
     ingredientCount: {
       type: Number,
@@ -77,23 +73,6 @@ export default {
     },
     isDisabledButtonMinus() {
       return this.ingredientCount === this.minCount;
-    },
-  },
-  methods: {
-    incrementValue() {
-      this.count = this.ingredientCount;
-      this.$emit("changeIngredientCount", {
-        [this.ingredientName]: ++this.count,
-      });
-    },
-    decrementValue() {
-      this.count = this.ingredientCount;
-      this.$emit("changeIngredientCount", {
-        [this.ingredientName]: --this.count,
-      });
-    },
-    someMethod(name) {
-      console.log("Метод вызвался на элементе: ", name);
     },
   },
 };
