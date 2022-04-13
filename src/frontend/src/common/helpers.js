@@ -194,40 +194,20 @@ const prepareAddressForOrder = (orderAddress, receivingOrder) => {
       id: +receivingOrder - NEW_ADDRESS,
     };
   }
-  console.log(receivingOrder);
-  console.log(orderAddress);
-  console.log(address);
   return address;
 };
 
-const preparePizzaForOrder = (
-  pizzas,
-  ingredients,
-  doughs,
-  sauces,
-  pizzaSizes
-) => {
+const preparePizzaForOrder = (pizzas) => {
   return Array(pizzas.length)
     .fill({})
     .map((_, idx) => {
-      const selectedIngredients = Object.keys(pizzas[idx].selectedIngredients);
       return {
         name: pizzas[idx].pizzaName,
-        sauceId: sauces.find((it) => it.slug === pizzas[idx].sauce).id,
-        doughId: doughs.find((it) => it.slug === pizzas[idx].dough).id,
-        sizeId: pizzaSizes.find((it) => it.slug === pizzas[idx].pizzaSize).id,
+        sauceId: pizzas[idx].sauceId,
+        doughId: pizzas[idx].doughId,
+        sizeId: pizzas[idx].pizzaSizeId,
         quantity: pizzas[idx].count,
-        ingredients: Array(selectedIngredients.length)
-          .fill({})
-          .map((_, ingredientIdx) => ({
-            ingredientId: ingredients.find(
-              (it) => it.name === selectedIngredients[ingredientIdx]
-            ).id,
-            quantity:
-              pizzas[idx].selectedIngredients[
-                selectedIngredients[ingredientIdx]
-              ],
-          })),
+        ingredients: pizzas[idx].selectedIngredients,
       };
     });
 };

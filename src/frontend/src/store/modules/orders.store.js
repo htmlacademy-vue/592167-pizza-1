@@ -1,6 +1,5 @@
 import {
   prepareAddressForOrder,
-  prepareMiscForOrder,
   prepareOrdersForView,
   preparePizzaForOrder,
 } from "@/common/helpers";
@@ -33,17 +32,7 @@ export default {
     },
 
     async addOrder({ commit, rootState }) {
-      const pizzas = preparePizzaForOrder(
-        rootState.Cart.pizzas,
-        rootState.Builder.ingredients,
-        rootState.Builder.doughs,
-        rootState.Builder.sauces,
-        rootState.Builder.pizzaSizes
-      );
-      const misc = prepareMiscForOrder(
-        rootState.Cart.additional,
-        rootState.Cart.selectedAdditional
-      );
+      const pizzas = preparePizzaForOrder(rootState.Cart.pizzas);
       const address = prepareAddressForOrder(
         rootState.Cart.address,
         rootState.Cart.receivingOrder
@@ -53,12 +42,11 @@ export default {
         phone: rootState.Cart.phone,
         address,
         pizzas,
-        misc,
+        misc: rootState.Cart.selectedAdditional,
       };
-      console.log(data);
-      const order = await this.$api.orders.post(data);
-      data.id = order.id;
-      commit("ADD_ORDER", data);
+      await this.$api.orders.post(data);
+      const newState = await this.$api.orders.get();
+      commit("ADD_ORDER", newState);
       return "";
     },
 
@@ -74,7 +62,8 @@ export default {
     },
 
     ADD_ORDER(state, data) {
-      state.orders.push(data);
+      state.orders = data;
+      // state.orders.push(data);
     },
 
     DELETE_ORDER(state, id) {
