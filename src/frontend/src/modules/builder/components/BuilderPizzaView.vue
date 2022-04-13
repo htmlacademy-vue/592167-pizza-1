@@ -43,13 +43,14 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["updateSelectedIngredients"]),
-    moveIngredient(active) {
-      const keysNames = Object.keys(this.selectedIngredients);
-      let count = keysNames.includes(active)
-        ? this.selectedIngredients[active]
-        : 0;
+    moveIngredient(id) {
+      const ingredient = this.selectedIngredients.find(
+        (it) => it.ingredientId === id
+      );
+      let count = ingredient ? ingredient.quantity : 0;
       this.updateSelectedIngredients({
-        [active]: ++count,
+        ingredientId: id,
+        quantity: ++count,
       });
     },
 
