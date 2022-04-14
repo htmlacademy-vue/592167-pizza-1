@@ -14,6 +14,7 @@ import CartMain from "@/modules/cart/CartMain";
 import CartFooter from "@/modules/cart/CartFooter";
 import AppPopup from "@/common/components/AppPopup";
 import { mapActions, mapGetters } from "vuex";
+import { NEW_ADDRESS } from "@/constants";
 
 export default {
   name: "Cart",
@@ -28,7 +29,7 @@ export default {
     ...mapGetters("Auth", ["isAuthenticated"]),
   },
   methods: {
-    ...mapActions("Cart", ["resetState", "addAddressFormFields"]),
+    ...mapActions("Cart", ["resetState", "addAddress"]),
     ...mapActions("Orders", ["addOrder"]),
     onOrderClick() {
       if (this.$refs.cartMain.$refs.cartForm.validationFields()) {
@@ -39,13 +40,15 @@ export default {
       this.isOpenPopup = false;
       let link = "/";
       if (this.isAuthenticated) {
-        this.addAddressFormFields(
-          this.$refs.cartMain.$refs.cartForm.giveAddressFields()
-        );
+        const fieldsValue =
+          this.$refs.cartMain.$refs.cartForm.giveAddressFields();
+        if (+fieldsValue[0] === NEW_ADDRESS) {
+          this.addAddress(fieldsValue[1]);
+        }
         link = "/orders";
-        const res = await this.addOrder();
-        console.log(res);
+        await this.addOrder();
       }
+      console.log(link);
       this.resetState();
       await this.$router.push(link);
     },

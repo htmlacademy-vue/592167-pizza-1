@@ -26,13 +26,13 @@
       <app-item-counter
         class-counter="cart-list__counter"
         :another-class-button="'counter__button--orange'"
-        :ingredient-count="pizza.count"
+        :ingredient-count="pizza.quantity"
         :ingredient-name="pizza.pizzaName"
         @changeIngredientCount="changeCount"
       />
 
       <div class="cart-list__price">
-        <b>{{ getPizzaPrice(pizza.sum, pizza.count) }} ₽</b>
+        <b>{{ getPizzaPrice(pizza.sum, pizza.quantity) }} ₽</b>
       </div>
 
       <div class="cart-list__button">
@@ -62,11 +62,11 @@ export default {
   methods: {
     ...mapActions("Cart", ["changePizzaCount"]),
     ...mapActions("Builder", ["changePizza"]),
-    getPizzaPrice(sum, count) {
-      return sum * count;
+    getPizzaPrice(sum, quantity) {
+      return sum * quantity;
     },
-    changeCount(count, idx) {
-      const data = { name: this.pizzas[idx].pizzaName, count };
+    changeCount(quantity, idx) {
+      const data = { name: this.pizzas[idx].pizzaName, quantity };
       this.changePizzaCount(data);
     },
     changePizzaIngredients(idx) {

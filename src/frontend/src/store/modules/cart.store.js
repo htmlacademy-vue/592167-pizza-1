@@ -14,9 +14,14 @@ export default {
   state: {
     pizzas: [],
     selectedAdditional: [],
-    receivingOrder: "",
+    receivingOrder: 1,
     phone: "",
-    address: {},
+    address: {
+      street: "",
+      building: "",
+      flat: "",
+      comment: "",
+    },
     totalPrice: 0,
     additional: [],
   },
@@ -34,7 +39,7 @@ export default {
       let totalPrice = 0;
       if (pizzas.length > 0) {
         pizzas.map((it) => {
-          totalPrice += it.sum * it.count;
+          totalPrice += it.sum * it.quantity;
         });
       }
       if (selectedAdditional.length > 0) {
@@ -52,6 +57,15 @@ export default {
     },
     selectedAdditional({ selectedAdditional }) {
       return selectedAdditional;
+    },
+    receivingOrder({ receivingOrder }) {
+      return receivingOrder;
+    },
+    address({ address }) {
+      return address;
+    },
+    phone({ phone }) {
+      return phone;
     },
   },
 
@@ -74,30 +88,39 @@ export default {
     resetState({ commit }) {
       commit("RESET_STATE");
     },
-    addAddressFormFields({ commit, rootState }, data) {
-      const address = {
+    addAddress({ commit }, data) {
+      commit("ADD_ADDRESS", data);
+    },
+    addAddressFromUserAddresses({ commit, rootState }, receivingOrder) {
+      let address = {
         street: "",
         building: "",
         flat: "",
         comment: "",
       };
-      if (+data.deliveryChoice >= MY_FIRST_ADDRESS) {
-        const addressesFromState = rootState.Profile.addresses;
-        const addressFromState = addressesFromState.find(
-          (it) => it.id === +data.deliveryChoice - NEW_ADDRESS
+      if (receivingOrder >= MY_FIRST_ADDRESS) {
+        address = rootState.Profile.addresses.find(
+          (it) => it.id === +receivingOrder - NEW_ADDRESS
         );
-        address.street = addressFromState.street;
-        address.building = addressFromState.building;
-        address.flat = addressFromState.flat;
-        address.comment = addressFromState.comment;
-      } else if (+data.deliveryChoice === NEW_ADDRESS) {
-        address.street = data.street;
-        address.building = data.building;
-        address.flat = data.flat;
       }
-      commit("ADD_PHONE", data.phone);
       commit("ADD_ADDRESS", address);
-      commit("ADD_RECEIVING_ORDER", data.deliveryChoice);
+    },
+    addPhone({ commit }, phone) {
+      commit("ADD_PHONE", phone);
+    },
+    changeAddressField({ commit }, data) {
+      commit("CHANGE_ADDRESS_FIELD", data);
+    },
+    repeatOrder({ commit }, oldOrder) {
+      commit("ADD_PIZZAS", oldOrder.pizzas);
+      commit("ADD_SELECTED_ADDITIONAL", oldOrder.selectedAdditional);
+      commit("ADD_RECEIVING_ORDER", oldOrder.receivingOrder);
+      commit("ADD_PHONE", oldOrder.phone);
+      commit("ADD_ADDRESS", oldOrder.address);
+      commit("ADD_TOTAL_PRICE", oldOrder.totalPrice);
+    },
+    changeReceivingOrder({ commit }, data) {
+      commit("ADD_RECEIVING_ORDER", data);
     },
   },
 
@@ -117,19 +140,19 @@ export default {
         pizzaInfo.sum = pizza.sum;
         pizzaInfo.selectedIngredients = pizza.selectedIngredients;
       } else {
-        pizza.count = 1;
+        pizza.quantity = 1;
         state.pizzas.push(pizza);
       }
     },
     CHANGE_PIZZA_COUNT(state, data) {
-      if (data.count === MIN_INGREDIENT_COUNT) {
+      if (data.quantity === MIN_INGREDIENT_COUNT) {
         state.pizzas =
           state.pizzas.length > 1
             ? state.pizzas.filter((it) => it.pizzaName !== data.name)
             : [];
       } else {
         const pizza = state.pizzas.find((it) => it.pizzaName === data.name);
-        pizza.count = data.count;
+        pizza.quantity = data.quantity;
       }
     },
     CHANGE_SELECTED_ADDITIONAL(state, data) {
@@ -165,6 +188,19 @@ export default {
     },
     ADD_RECEIVING_ORDER(state, data) {
       state.receivingOrder = data;
+    },
+    ADD_PIZZAS(state, data) {
+      state.pizzas = data;
+    },
+    ADD_SELECTED_ADDITIONAL(state, data) {
+      state.selectedAdditional = data;
+    },
+    ADD_TOTAL_PRICE(state, data) {
+      state.totalPrice = data;
+    },
+    CHANGE_ADDRESS_FIELD(state, data) {
+      const addressField = Object.keys(data)[0];
+      state.address[addressField] = data[addressField];
     },
   },
 };

@@ -4,7 +4,12 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select v-model="deliveryChoice" name="test" class="select">
+        <select
+          :value="receivingOrder"
+          name="test"
+          class="select"
+          @change="onReceivingOrderChange"
+        >
           <option value="1">Заберу сам</option>
           <option value="2">Новый адрес</option>
           <option
@@ -21,11 +26,12 @@
         <span>Контактный телефон:</span>
         <app-input
           ref="phone"
-          v-model="phone"
+          :value="phone"
           type="tel"
           name="tel"
           placeholder="+7 999-999-99-99"
           :error-text="validations.phone.error"
+          @input="changePhone"
         />
       </label>
 
@@ -37,11 +43,12 @@
             <span>Улица*</span>
             <app-input
               ref="street"
-              v-model="street"
+              :value="address.street"
               type="text"
               name="street"
               :error-text="validations.street.error"
               :disabled="isDisabled"
+              @input="changeStreet"
             />
           </label>
         </div>
@@ -51,11 +58,12 @@
             <span>Дом*</span>
             <app-input
               ref="building"
-              v-model="building"
+              :value="address.building"
               type="text"
               name="building"
               :error-text="validations.building.error"
               :disabled="isDisabled"
+              @input="changeBuilding"
             />
           </label>
         </div>
@@ -65,11 +73,12 @@
             <span>Квартира</span>
             <app-input
               ref="flat"
-              v-model="flat"
+              :value="address.flat"
               type="text"
               name="apartment"
               :error-text="validations.flat.error"
               :disabled="isDisabled"
+              @input="changeFlat"
             />
           </label>
         </div>
@@ -79,7 +88,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import AppInput from "@/common/components/AppInput";
 import validator from "@/common/mixins/validator";
 
@@ -90,11 +99,6 @@ export default {
   data() {
     return {
       startPersonalAddressIndex: 3,
-      deliveryChoice: 1,
-      street: "",
-      building: "",
-      flat: "",
-      phone: "",
       validations: {
         phone: {
           error: "",
@@ -118,31 +122,19 @@ export default {
   computed: {
     ...mapGetters("Auth", ["isAuthenticated"]),
     ...mapGetters("Profile", ["addresses"]),
+    ...mapGetters("Cart", ["receivingOrder", "address", "phone"]),
     isDisabled() {
-      return this.deliveryChoice > 2;
+      return this.receivingOrder > 2;
     },
     isShowAddressForm() {
-      return this.deliveryChoice > 1;
+      return this.receivingOrder > 1;
     },
   },
   watch: {
-    deliveryChoice() {
-      this.street =
-        this.deliveryChoice > 2
-          ? this.addresses[this.deliveryChoice - this.startPersonalAddressIndex]
-              .street
-          : "";
-      this.building =
-        this.deliveryChoice > 2
-          ? this.addresses[this.deliveryChoice - this.startPersonalAddressIndex]
-              .building
-          : "";
-      this.flat =
-        this.deliveryChoice > 2
-          ? this.addresses[this.deliveryChoice - this.startPersonalAddressIndex]
-              .flat
-          : "";
-      if (this.deliveryChoice !== 2) {
+    receivingOrder() {
+      this.addAddressFromUserAddresses(this.receivingOrder);
+      console.log(this.receivingOrder);
+      if (this.receivingOrder !== 2) {
         this.$clearValidationErrors();
       }
     },
@@ -157,24 +149,55 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Cart", [
+      "changeReceivingOrder",
+      "addAddressFromUserAddresses",
+      "addPhone",
+      "changeAddressField",
+    ]),
     validationFields() {
       const fields = {
         phone: this.phone,
         street: this.street,
         building: this.building,
       };
-      this.validations["street"].needValidation = +this.deliveryChoice === 2;
-      this.validations["building"].needValidation = +this.deliveryChoice === 2;
+      this.validations["street"].needValidation = +this.receivingOrder === 2;
+      this.validations["building"].needValidation = +this.receivingOrder === 2;
       return this.$validateFields(fields, this.validations);
     },
     giveAddressFields() {
-      return {
-        deliveryChoice: this.deliveryChoice,
-        street: this.street,
-        building: this.building,
-        flat: this.flat,
-        phone: this.phone,
-      };
+      return [
+        this.receivingOrder,
+        {
+          street: this.$refs.street.value,
+          building: this.$refs.building.value,
+          flat: this.$refs.flat.value,
+        },
+      ];
+    },
+    onReceivingOrderChange(evt) {
+      console.log(this.$refs.street);
+      this.changeReceivingOrder(
+        +evt.target.options[[evt.target.options.selectedIndex]].value
+      );
+    },
+    changePhone(phone) {
+      this.addPhone(phone);
+    },
+    changeStreet(street) {
+      this.changeAddressField({
+        street,
+      });
+    },
+    changeBuilding(building) {
+      this.changeAddressField({
+        building,
+      });
+    },
+    changeFlat(flat) {
+      this.changeAddressField({
+        flat,
+      });
     },
   },
 };

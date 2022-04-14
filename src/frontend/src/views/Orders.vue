@@ -43,7 +43,13 @@
                 </button>
               </div>
               <div class="order__button">
-                <button type="button" class="button">Повторить</button>
+                <button
+                  type="button"
+                  class="button"
+                  @click="onRepeatOrderClick(order.id)"
+                >
+                  Повторить
+                </button>
               </div>
             </div>
 
@@ -119,6 +125,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { prepareOrderForCart } from "@/common/helpers";
 
 export default {
   name: "Orders",
@@ -127,6 +134,13 @@ export default {
   },
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
+    ...mapActions("Cart", ["repeatOrder"]),
+    onRepeatOrderClick(id) {
+      this.repeatOrder(
+        prepareOrderForCart(this.orders.find((it) => it.id === id))
+      );
+      this.$router.push("/cart");
+    },
   },
 };
 </script>

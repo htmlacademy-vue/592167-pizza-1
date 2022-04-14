@@ -206,7 +206,7 @@ const preparePizzaForOrder = (pizzas) => {
         sauceId: pizzas[idx].sauceId,
         doughId: pizzas[idx].doughId,
         sizeId: pizzas[idx].pizzaSizeId,
-        quantity: pizzas[idx].count,
+        quantity: pizzas[idx].quantity,
         ingredients: pizzas[idx].selectedIngredients,
       };
     });
@@ -287,6 +287,75 @@ const prepareMiscForOrder = (additional, selectedAdditional) => {
   return misc;
 };
 
+const prepareAddressFromOrderToCart = (data) => {
+  const address = {
+    street: "",
+    building: "",
+    flat: "",
+    comment: "",
+  };
+  let receivingOrder = 1;
+
+  if (data) {
+    address.street = data.street;
+    address.building = data.building;
+    address.flat = data.flat;
+    address.comment = data.comment;
+    receivingOrder = data.id + NEW_ADDRESS;
+  }
+
+  return {
+    receivingOrder,
+    address,
+  };
+};
+
+const prepareOrderForCart = (order) => {
+  const prepareAddress = prepareAddressFromOrderToCart(order.orderAddress);
+  const pizzas = Array(order.orderPizzas.length)
+    .fill({})
+    .map((_, idx) => {
+      const item = order.orderPizzas[idx];
+      const selectedIngredients = Array(item.ingredients.length)
+        .fill({})
+        .map((_, ingredientIdx) => ({
+          ingredientId: item.ingredients[ingredientIdx].ingredientId,
+          quantity: item.ingredients[ingredientIdx].quantity,
+        }));
+
+      return {
+        doughId: item.doughId,
+        pizzaName: item.name,
+        pizzaSizeId: item.sizeId,
+        quantity: item.quantity,
+        sauceId: item.sauceId,
+        sum: item.sum,
+        selectedIngredients,
+      };
+    });
+  let selectedAdditional = [];
+  if (order.orderMisc) {
+    selectedAdditional = Array(order.orderMisc.length)
+      .fill({})
+      .map((_, idx) => {
+        const misc = order.orderMisc[idx];
+        return {
+          miscId: misc.miscId,
+          quantity: misc.quantity,
+        };
+      });
+  }
+
+  return {
+    pizzas,
+    selectedAdditional,
+    receivingOrder: prepareAddress.receivingOrder,
+    phone: order.phone,
+    address: prepareAddress.address,
+    totalPrice: order.totalPrice,
+  };
+};
+
 export {
   prepareIngredients,
   prepareSauces,
@@ -302,4 +371,5 @@ export {
   prepareOrdersForView,
   prepareAddressForOrder,
   calcSumPizza,
+  prepareOrderForCart,
 };
