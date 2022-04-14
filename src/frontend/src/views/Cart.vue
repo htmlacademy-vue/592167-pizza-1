@@ -29,7 +29,7 @@ export default {
     ...mapGetters("Auth", ["isAuthenticated"]),
   },
   methods: {
-    ...mapActions("Cart", ["resetState", "addAddress"]),
+    ...mapActions("Cart", ["resetCartState", "addAddress"]),
     ...mapActions("Orders", ["addOrder"]),
     onOrderClick() {
       if (this.$refs.cartMain.$refs.cartForm.validationFields()) {
@@ -49,7 +49,7 @@ export default {
         await this.addOrder();
       }
       console.log(link);
-      this.resetState();
+      this.resetCartState();
       await this.$router.push(link);
     },
   },

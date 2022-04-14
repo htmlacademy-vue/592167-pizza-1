@@ -85,7 +85,7 @@ export default {
     changeSelectedAdditional({ commit }, data) {
       commit("CHANGE_SELECTED_ADDITIONAL", data);
     },
-    resetState({ commit }) {
+    resetCartState({ commit }) {
       commit("RESET_STATE");
     },
     addAddress({ commit }, data) {
