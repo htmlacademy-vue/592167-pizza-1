@@ -91,6 +91,7 @@
 import { mapActions, mapGetters } from "vuex";
 import AppInput from "@/common/components/AppInput";
 import validator from "@/common/mixins/validator";
+import { MY_FIRST_ADDRESS, NEW_ADDRESS, PICK_UP_MYSELF } from "@/constants";
 
 export default {
   name: "CartForm",
@@ -98,7 +99,7 @@ export default {
   mixins: [validator],
   data() {
     return {
-      startPersonalAddressIndex: 3,
+      startPersonalAddressIndex: MY_FIRST_ADDRESS,
       validations: {
         phone: {
           error: "",
@@ -124,16 +125,16 @@ export default {
     ...mapGetters("Profile", ["addresses"]),
     ...mapGetters("Cart", ["receivingOrder", "address", "phone"]),
     isDisabled() {
-      return this.receivingOrder > 2;
+      return this.receivingOrder > NEW_ADDRESS;
     },
     isShowAddressForm() {
-      return this.receivingOrder > 1;
+      return this.receivingOrder > PICK_UP_MYSELF;
     },
   },
   watch: {
     receivingOrder() {
       this.addAddressFromUserAddresses(this.receivingOrder);
-      if (this.receivingOrder !== 2) {
+      if (this.receivingOrder !== NEW_ADDRESS) {
         this.$clearValidationErrors();
       }
     },
@@ -157,20 +158,27 @@ export default {
     validationFields() {
       const fields = {
         phone: this.phone,
-        street: this.$refs.street.value,
+        street: this.address.street,
         building: this.address.building,
       };
-      this.validations["street"].needValidation = +this.receivingOrder === 2;
-      this.validations["building"].needValidation = +this.receivingOrder === 2;
+      this.validations["street"].needValidation =
+        +this.receivingOrder > NEW_ADDRESS;
+      this.validations["building"].needValidation =
+        +this.receivingOrder > NEW_ADDRESS;
       return this.$validateFields(fields, this.validations);
     },
     giveAddressFields() {
       return [
         this.receivingOrder,
         {
-          street: this.$refs.street.value,
-          building: this.$refs.building.value,
-          flat: this.$refs.flat.value,
+          street:
+            +this.receivingOrder === NEW_ADDRESS ? this.$refs.street.value : "",
+          building:
+            +this.receivingOrder === NEW_ADDRESS
+              ? this.$refs.building.value
+              : "",
+          flat:
+            +this.receivingOrder === NEW_ADDRESS ? this.$refs.flat.value : "",
         },
       ];
     },
