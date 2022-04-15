@@ -1,11 +1,6 @@
 import { AuthApiService, CrudApiService } from "@/services/api.service";
 import resources from "@/common/enums/resources";
 import { NEW_ADDRESS } from "@/constants";
-// import {DOUGH_PRICE, NEW_ADDRESS, SAUCES_PRICE, SIZE_MULTIPLIER} from "@/constants";
-
-// Удаляет таблицы из базы, чтобы привести ее к начальному состоянию.
-// Можно удалять не все, а только словарные значения
-// DROP TABLE IF EXISTS address, dough, ingredient, misc, miscorder, "order", pizza, pizzaingredient, sauce, size, "user", usercredentials;
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -81,37 +76,6 @@ const prepareSauceForView = (sauces, sauceId) => {
   return sauces.find((it) => it.id === sauceId).name.toLowerCase();
 };
 
-// const getPizzaSizeFromValue = (size) => {
-//   switch (size) {
-//     case "small":
-//       return "23 см";
-//     case "normal":
-//       return "32 см";
-//     case "big":
-//       return "45 см";
-//     default:
-//       return "";
-//   }
-// };
-//
-// const getSauceForView = (name) => {
-//   switch (name) {
-//     case "tomato":
-//       return "томатный";
-//     case "creamy":
-//       return "сливочный";
-//     default:
-//       return "";
-//   }
-// };
-//
-// const getSelectedIngredientsForView = (data, ingredients) => {
-//   return ingredients
-//     .filter((it) => data.includes(it.name))
-//     .map((it) => it.rusName.toLowerCase())
-//     .join(", ");
-// };
-
 const prepareIngredientsForView = (data, ingredients) => {
   const ingredientsId = data.map((it) => it.ingredientId);
   return ingredients
@@ -132,14 +96,6 @@ const preparePizzaInfo = (pizzas, ingredients, pizzaSizes, doughs, sauces) => {
     return it;
   });
 };
-
-// pizza.sizeView = prepareSizeForView(pizzaSizes, pizza.sizeId);
-// pizza.doughView = prepareDoughForView(doughs, pizza.doughId);
-// pizza.sauceView = prepareSauceForView(sauces, pizza.sauceId);
-// pizza.ingredientsForView = prepareIngredientsForView(
-//   pizza.ingredients,
-//   ingredients
-// );
 
 const createResources = (notifier) => {
   return {
@@ -273,20 +229,6 @@ const prepareOrdersForView = (
   return orders;
 };
 
-const prepareMiscForOrder = (additional, selectedAdditional) => {
-  let misc = [];
-  const selectedMisc = Object.keys(selectedAdditional);
-  if (selectedMisc.length > 0) {
-    misc = Array(Object.keys(selectedMisc).length)
-      .fill({})
-      .map((_, idx) => ({
-        miscId: additional.find((it) => it.name === selectedMisc[idx]).id,
-        quantity: selectedAdditional[selectedMisc[idx]],
-      }));
-  }
-  return misc;
-};
-
 const prepareAddressFromOrderToCart = (data) => {
   const address = {
     street: "",
@@ -367,7 +309,6 @@ export {
   setAuth,
   prepareAddresses,
   preparePizzaForOrder,
-  prepareMiscForOrder,
   prepareOrdersForView,
   prepareAddressForOrder,
   calcSumPizza,

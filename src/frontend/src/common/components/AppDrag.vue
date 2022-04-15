@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { MOVE, DATA_TRANSFER_PAYLOAD } from "@/constants";
+import { MOVE, DATA_TRANSFER_PAYLOAD, MAX_INGREDIENT_COUNT } from "@/constants";
 
 export default {
   name: "AppDrag",
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     onDraggable() {
-      return this.ingredientCount < 3;
+      return this.ingredientCount < MAX_INGREDIENT_COUNT;
     },
   },
   methods: {
