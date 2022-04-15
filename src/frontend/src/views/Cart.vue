@@ -48,7 +48,6 @@ export default {
         link = "/orders";
         await this.addOrder();
       }
-      console.log(link);
       this.resetCartState();
       await this.$router.push(link);
     },

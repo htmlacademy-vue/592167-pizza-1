@@ -133,7 +133,6 @@ export default {
   watch: {
     receivingOrder() {
       this.addAddressFromUserAddresses(this.receivingOrder);
-      console.log(this.receivingOrder);
       if (this.receivingOrder !== 2) {
         this.$clearValidationErrors();
       }
@@ -141,10 +140,10 @@ export default {
     phone() {
       this.$clearValidationErrors();
     },
-    street() {
+    "address.street"() {
       this.$clearValidationErrors();
     },
-    building() {
+    "address.building"() {
       this.$clearValidationErrors();
     },
   },
@@ -158,8 +157,8 @@ export default {
     validationFields() {
       const fields = {
         phone: this.phone,
-        street: this.street,
-        building: this.building,
+        street: this.$refs.street.value,
+        building: this.address.building,
       };
       this.validations["street"].needValidation = +this.receivingOrder === 2;
       this.validations["building"].needValidation = +this.receivingOrder === 2;
@@ -176,7 +175,6 @@ export default {
       ];
     },
     onReceivingOrderChange(evt) {
-      console.log(this.$refs.street);
       this.changeReceivingOrder(
         +evt.target.options[[evt.target.options.selectedIndex]].value
       );
