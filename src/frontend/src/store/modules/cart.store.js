@@ -71,8 +71,7 @@ export default {
 
   actions: {
     async initDefaultValue({ commit }) {
-      const resAdditional = await this.$api.misc.get();
-      DICTIONARIES.additional = resAdditional.slice(0, 3);
+      DICTIONARIES.additional = await this.$api.misc.get();
 
       commit("DEFAULT_VALUE");
     },
@@ -174,8 +173,8 @@ export default {
     },
     RESET_STATE(state) {
       state.pizzas = [];
-      state.selectedAdditional = {};
-      state.receivingOrder = "";
+      state.selectedAdditional = [];
+      state.receivingOrder = 1;
       state.phone = "";
       state.address = {};
       state.totalPric = 0;
