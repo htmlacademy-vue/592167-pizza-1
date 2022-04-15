@@ -106,6 +106,15 @@ export default {
         selectedIngredients,
       };
     },
+
+    isLoaded({ ingredients, doughs, sauces, pizzaSizes }) {
+      return (
+        !ingredients.length > 0 &&
+        !doughs.length > 0 &&
+        !sauces.length > 0 &&
+        !pizzaSizes.length > 0
+      );
+    },
   },
 
   actions: {

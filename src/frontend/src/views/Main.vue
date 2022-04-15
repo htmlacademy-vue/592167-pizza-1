@@ -1,18 +1,13 @@
 <template>
-  <main class="content">
+  <app-loader v-if="isLoaded" />
+  <main v-else class="content">
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <builder-dough-selector @onDoughSizeClick="onDoughSizeClick" />
-        <builder-size-selector @onPizzaDiameterClick="onPizzaDiameterClick" />
-        <builder-ingredients-selector
-          @onSauceClick="onSauceClick"
-          @changeIngredientCount="changeIngredientCount"
-        />
-        <builder-content-pizza
-          @changeIngredientCount="changeIngredientCount"
-          @changePizzaName="changePizzaName"
-        />
+        <builder-dough-selector />
+        <builder-size-selector />
+        <builder-ingredients-selector />
+        <builder-content-pizza />
       </div>
     </form>
   </main>
@@ -23,6 +18,8 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderContentPizza from "@/modules/builder/components/BuilderContentPizza";
+import AppLoader from "@/common/components/AppLoader";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Main",
@@ -31,23 +28,10 @@ export default {
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderContentPizza,
+    AppLoader,
   },
-  methods: {
-    onDoughSizeClick(data) {
-      this.$emit("onDoughSizeClick", data);
-    },
-    onSauceClick(data) {
-      this.$emit("onSauceClick", data);
-    },
-    onPizzaDiameterClick(data) {
-      this.$emit("onPizzaDiameterClick", data);
-    },
-    changeIngredientCount(data) {
-      this.$emit("changeIngredientCount", data);
-    },
-    changePizzaName(data) {
-      this.$emit("changePizzaName", data);
-    },
+  computed: {
+    ...mapGetters("Builder", ["isLoaded"]),
   },
 };
 </script>
