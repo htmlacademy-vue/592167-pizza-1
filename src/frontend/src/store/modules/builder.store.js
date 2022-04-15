@@ -165,7 +165,7 @@ export default {
 
     RESET_STATE(state) {
       state.doughId = 1;
-      state.sauce = 1;
+      state.sauceId = 1;
       state.pizzaSizeId = 1;
       state.pizzaName = "";
       state.sum = 0;
