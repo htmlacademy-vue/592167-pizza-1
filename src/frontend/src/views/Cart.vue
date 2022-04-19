@@ -5,7 +5,7 @@
       v-if="pizzas.length > 0"
       @makeOrder="onOrderClick"
     ></cart-footer>
-    <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick"></app-popup>
+    <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
   </form>
 </template>
 

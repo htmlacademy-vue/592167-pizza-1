@@ -47,7 +47,6 @@ export default {
       await this.$api.orders.post(data);
       const newState = await this.$api.orders.get();
       commit("ADD_ORDER", newState);
-      return "";
     },
 
     async deleteOrder({ commit }, id) {
