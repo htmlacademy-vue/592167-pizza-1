@@ -1,10 +1,6 @@
 import { emailRegex } from "@/constants";
 
 const rules = {
-  isNotEmpty: {
-    rule: (value) => !!value?.trim(),
-    message: "Поле не заполнено",
-  },
   required: {
     rule: (value) => !!value?.trim(),
     message: "Поле обязательно для заполнения",
