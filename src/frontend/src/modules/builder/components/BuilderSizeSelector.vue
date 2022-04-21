@@ -9,14 +9,14 @@
           :key="size.id"
           class="diameter__input"
           :class="' diameter__input--' + size.slug"
-          @click="updatePizzaSize(size.slug)"
+          @click="updatePizzaSize(size.id)"
         >
           <input
             type="radio"
             name="diameter"
             :value="size.slug"
             class="visually-hidden"
-            :checked="isChecked(size.slug)"
+            :checked="isChecked(size.id)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -31,16 +31,16 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BuilderSizeSelector",
   computed: {
-    ...mapGetters("Builder", ["pizzaSizes", "pizzaSize"]),
+    ...mapGetters("Builder", ["pizzaSizes", "pizzaSizeId"]),
   },
   methods: {
     ...mapActions("Builder", ["updateSize"]),
-    updatePizzaSize(pizzaSize) {
-      this.updateSize(pizzaSize);
+    updatePizzaSize(id) {
+      this.updateSize(id);
     },
 
-    isChecked(size) {
-      return size === this.pizzaSize;
+    isChecked(id) {
+      return id === this.pizzaSizeId;
     },
   },
 };

@@ -1,25 +1,11 @@
-import pizza from "@/static/pizza.json";
 import {
+  calcSumPizza,
   prepareDough,
-  prepareIngrediensts,
+  prepareIngredients,
   prepareSauces,
   prepareSizes,
 } from "@/common/helpers";
-import {
-  DOUGH_PRICE,
-  MIN_INGREDIENT_COUNT,
-  SAUCES_PRICE,
-  SIZE_MULTIPLIER,
-} from "@/constants";
-
-const setupState = () => ({
-  dough: "",
-  sauce: "",
-  pizzaSize: "",
-  pizzaName: "",
-  sum: 0,
-  selectedIngredients: {},
-});
+import { MIN_INGREDIENT_COUNT } from "@/constants";
 
 const DICTIONARIES = {
   ingredients: [],
@@ -30,79 +16,114 @@ const DICTIONARIES = {
 
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {
+    doughId: 1,
+    sauceId: 1,
+    pizzaSizeId: 1,
+    pizzaName: "",
+    sum: 0,
+    selectedIngredients: [],
+    ingredients: [],
+    doughs: [],
+    sauces: [],
+    pizzaSizes: [],
+  },
 
   getters: {
-    ingredients() {
-      return prepareIngrediensts(DICTIONARIES.ingredients);
+    ingredients({ ingredients }) {
+      return prepareIngredients(ingredients);
     },
 
     selectedIngredients({ selectedIngredients }) {
       return selectedIngredients;
     },
 
-    sauces() {
-      return prepareSauces(DICTIONARIES.sauces);
+    sauces({ sauces }) {
+      return prepareSauces(sauces);
     },
 
-    sauce({ sauce }) {
-      return sauce;
+    sauceId({ sauceId }) {
+      return sauceId;
     },
 
-    doughs() {
-      return prepareDough(DICTIONARIES.doughs);
+    doughs({ doughs }) {
+      return prepareDough(doughs);
     },
 
-    dough({ dough }) {
-      return dough;
+    doughId({ doughId }) {
+      return doughId;
     },
 
-    pizzaSizes() {
-      return prepareSizes(DICTIONARIES.pizzaSizes);
+    pizzaSizes({ pizzaSizes }) {
+      return prepareSizes(pizzaSizes);
     },
 
-    pizzaSize({ pizzaSize }) {
-      return pizzaSize;
+    pizzaSizeId({ pizzaSizeId }) {
+      return pizzaSizeId;
     },
 
-    pizzaSum({ selectedIngredients, dough, sauce, pizzaSize }) {
-      // мультипликатор размера х (стоимость теста + соус + ингредиенты)
-      let ingredientsPrice = 0;
-      const selectedIngredientList = Object.keys(selectedIngredients);
-      for (const item of selectedIngredientList) {
-        const ingredient = DICTIONARIES.ingredients.find(
-          (it) => it.name === item
-        );
-        ingredientsPrice += ingredient.price * selectedIngredients[item];
-      }
-      return (
-        SIZE_MULTIPLIER[pizzaSize] *
-        (DOUGH_PRICE[dough] + SAUCES_PRICE[sauce] + ingredientsPrice)
-      );
+    pizzaSum({
+      selectedIngredients,
+      doughId,
+      sauceId,
+      pizzaSizeId,
+      ingredients,
+      pizzaSizes,
+      doughs,
+      sauces,
+    }) {
+      const pizza = {
+        ingredients: selectedIngredients,
+        doughId,
+        sauceId,
+        sizeId: pizzaSizeId,
+      };
+      return calcSumPizza(pizza, ingredients, pizzaSizes, doughs, sauces);
     },
 
     pizzaName({ pizzaName }) {
       return pizzaName;
     },
 
-    isPizzaName({ pizzaName }) {
-      return pizzaName === "";
+    isButtonCookDisable({ pizzaName, selectedIngredients }) {
+      return pizzaName === "" || Object.keys(selectedIngredients).length === 0;
     },
 
     pizzaInfo({
-      dough,
-      sauce,
-      pizzaSize,
+      doughId,
+      sauceId,
+      pizzaSizeId,
       pizzaName,
       sum,
       selectedIngredients,
     }) {
-      return { dough, sauce, pizzaSize, pizzaName, sum, selectedIngredients };
+      return {
+        doughId,
+        sauceId,
+        pizzaSizeId,
+        pizzaName,
+        sum,
+        selectedIngredients,
+      };
+    },
+
+    isLoaded({ ingredients, doughs, sauces, pizzaSizes }) {
+      return (
+        !ingredients.length > 0 &&
+        !doughs.length > 0 &&
+        !sauces.length > 0 &&
+        !pizzaSizes.length > 0
+      );
     },
   },
 
   actions: {
-    initBuilderState({ commit }) {
+    async initBuilderState({ commit }) {
+      DICTIONARIES.ingredients = await this.$api.ingredients.get();
+      DICTIONARIES.doughs = await this.$api.dough.get();
+      DICTIONARIES.sauces = await this.$api.sauces.get();
+      DICTIONARIES.pizzaSizes = await this.$api.sizes.get();
+
       commit("DEFAULT_VALUE");
     },
 
@@ -110,16 +131,16 @@ export default {
       commit("RESET_STATE");
     },
 
-    updateDough({ commit }, dough) {
-      commit("UPDATE_DOUGH", dough);
+    updateDough({ commit }, doughId) {
+      commit("UPDATE_DOUGH", doughId);
     },
 
-    updateSauce({ commit }, sauce) {
-      commit("UPDATE_SAUCE", sauce);
+    updateSauce({ commit }, sauceId) {
+      commit("UPDATE_SAUCE", sauceId);
     },
 
-    updateSize({ commit }, pizzaSize) {
-      commit("UPDATE_SIZE", pizzaSize);
+    updateSize({ commit }, pizzaSizeId) {
+      commit("UPDATE_SIZE", pizzaSizeId);
     },
 
     updateSelectedIngredients({ commit }, data) {
@@ -141,40 +162,52 @@ export default {
 
   mutations: {
     DEFAULT_VALUE(state) {
-      state.dough = "light";
-      state.sauce = "tomato";
-      state.pizzaSize = "small";
-      DICTIONARIES.ingredients = pizza.ingredients;
-      DICTIONARIES.doughs = pizza.dough;
-      DICTIONARIES.sauces = pizza.sauces;
-      DICTIONARIES.pizzaSizes = pizza.sizes;
+      state.doughId = 1;
+      state.sauce = 1;
+      state.pizzaSizeId = 1;
+
+      state.ingredients = DICTIONARIES.ingredients;
+      state.doughs = DICTIONARIES.doughs;
+      state.sauces = DICTIONARIES.sauces;
+      state.pizzaSizes = DICTIONARIES.pizzaSizes;
     },
 
     RESET_STATE(state) {
-      state.dough = "light";
-      state.sauce = "tomato";
-      state.pizzaSize = "small";
+      state.doughId = 1;
+      state.sauceId = 1;
+      state.pizzaSizeId = 1;
       state.pizzaName = "";
       state.sum = 0;
-      state.selectedIngredients = {};
+      state.selectedIngredients = [];
     },
 
-    UPDATE_DOUGH(state, dough) {
-      state.dough = dough;
+    UPDATE_DOUGH(state, doughID) {
+      state.doughId = doughID;
     },
 
-    UPDATE_SAUCE(state, sauce) {
-      state.sauce = sauce;
+    UPDATE_SAUCE(state, sauceId) {
+      state.sauceId = sauceId;
     },
 
-    UPDATE_SIZE(state, pizzaSize) {
-      state.pizzaSize = pizzaSize;
+    UPDATE_SIZE(state, pizzaSizeId) {
+      state.pizzaSizeId = pizzaSizeId;
     },
 
     UPDATE_SELECTED_INGREDIENTS(state, data) {
-      state.selectedIngredients = { ...state.selectedIngredients, ...data };
-      if (data[Object.keys(data)[0]] === MIN_INGREDIENT_COUNT) {
-        delete state.selectedIngredients[Object.keys(data)[0]];
+      const ingredient = state.selectedIngredients.find(
+        (it) => it.ingredientId === data.ingredientId
+      );
+      if (ingredient) {
+        ingredient.quantity = data.quantity;
+      } else {
+        state.selectedIngredients.push(data);
+      }
+
+      // Удаляем из списка ингредиент, если его количество равно нулю
+      if (data.quantity === MIN_INGREDIENT_COUNT) {
+        state.selectedIngredients = state.selectedIngredients.filter(
+          (it) => it.ingredientId !== data.ingredientId
+        );
       }
     },
 
@@ -188,11 +221,11 @@ export default {
 
     CHANGE_PIZZA(
       state,
-      { dough, sauce, pizzaSize, pizzaName, sum, selectedIngredients }
+      { doughId, sauceId, pizzaSizeId, pizzaName, sum, selectedIngredients }
     ) {
-      state.dough = dough;
-      state.sauce = sauce;
-      state.pizzaSize = pizzaSize;
+      state.doughId = doughId;
+      state.sauceId = sauceId;
+      state.pizzaSizeId = pizzaSizeId;
       state.pizzaName = pizzaName;
       state.sum = sum;
       state.selectedIngredients = selectedIngredients;

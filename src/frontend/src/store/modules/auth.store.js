@@ -1,5 +1,3 @@
-import users from "@/static/user.json";
-
 export default {
   namespaced: true,
   state: {
@@ -10,15 +8,41 @@ export default {
     isAuthenticated({ user }) {
       return !!user;
     },
+    userInfo({ user }) {
+      return user;
+    },
   },
 
   actions: {
-    login({ commit }) {
-      commit("LOG_IN", users);
+    async login({ dispatch }, credentials) {
+      const data = await this.$api.auth.login(credentials);
+      this.$jwt.saveToken(data.token);
+      this.$api.auth.setAuthHeader();
+      dispatch("getMe");
     },
 
-    logout({ commit }) {
+    async logout({ commit }, sendRequest = true) {
+      if (sendRequest) {
+        await this.$api.auth.logout();
+      }
+      this.$jwt.destroyToken();
+      this.$api.auth.setAuthHeader();
       commit("LOG_OUT");
+    },
+
+    async getMe({ commit, dispatch }) {
+      try {
+        const data = await this.$api.auth.getMe();
+        commit("LOG_IN", data);
+        const profile = await this.$api.addresses.get();
+        if (profile.length > 0) {
+          dispatch("Profile/initAddresses", [...profile], { root: true });
+        }
+        const orders = await this.$api.orders.get();
+        dispatch("Orders/initState", [...orders], { root: true });
+      } catch {
+        dispatch("logout", false);
+      }
     },
   },
 

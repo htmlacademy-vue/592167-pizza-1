@@ -32,34 +32,29 @@
             <img
               src="../assets/img/users/user5.jpg"
               srcset="../assets/img/users/user5@2x.jpg"
-              alt="Василий Ложкин"
+              :alt="userInfo.name"
               width="32"
               height="32"
             />
           </picture>
-          <span>Василий Ложкин</span>
+          <span>{{ userInfo.name }}</span>
         </router-link>
-        <a class="header__logout" @click="logoutUser"><span>Выйти</span></a>
+        <a class="header__logout" @click="$logout"><span>Выйти</span></a>
       </template>
     </div>
   </header>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import { logout } from "@/common/mixins";
 
 export default {
   name: "AppLayoutHeader",
+  mixins: [logout],
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
-    ...mapGetters("Auth", ["isAuthenticated"]),
-  },
-  methods: {
-    ...mapActions("Auth", ["logout"]),
-    logoutUser() {
-      this.logout();
-      this.$router.push("/");
-    },
+    ...mapGetters("Auth", ["isAuthenticated", "userInfo"]),
   },
 };
 </script>

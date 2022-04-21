@@ -1,5 +1,6 @@
 <template>
   <div>
+    <app-notifications />
     <app-layout-header :sum="sum" />
     <slot />
   </div>
@@ -7,10 +8,11 @@
 
 <script>
 import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+import AppNotifications from "@/common/components/AppNotifications";
 
 export default {
   name: "AppLayoutDefault",
-  components: { AppLayoutHeader },
+  components: { AppNotifications, AppLayoutHeader },
   props: {
     sum: {
       type: Number,
