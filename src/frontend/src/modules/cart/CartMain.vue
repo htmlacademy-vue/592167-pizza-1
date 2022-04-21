@@ -9,7 +9,7 @@
 
         <cart-additional />
 
-        <cart-form ref="cartForm" />
+        <slot name="cartForm"></slot>
       </template>
       <template v-else>
         <div class="sheet cart__empty">
@@ -23,12 +23,11 @@
 <script>
 import CartList from "@/modules/cart/components/CartList";
 import CartAdditional from "@/modules/cart/components/CartAdditional";
-import CartForm from "@/modules/cart/components/CartForm";
 import { mapGetters } from "vuex";
 
 export default {
   name: "CartMain",
-  components: { CartList, CartAdditional, CartForm },
+  components: { CartList, CartAdditional },
   computed: {
     ...mapGetters("Cart", ["pizzas"]),
   },
