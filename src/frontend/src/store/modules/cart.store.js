@@ -78,8 +78,16 @@ export default {
     addPizza({ commit }, pizza) {
       commit("ADD_PIZZA", pizza);
     },
-    changePizzaCount({ commit }, data) {
-      commit("CHANGE_PIZZA_COUNT", data);
+    changePizzaCount({ commit, state }, data) {
+      if (state.pizzas.length > 0) {
+        if (data.quantity === MIN_INGREDIENT_COUNT) {
+          commit("DELETE_PIZZA_FROM_STATE", data.name);
+        } else {
+          commit("CHANGE_PIZZA_COUNT", data);
+        }
+      } else {
+        commit("RESET_STATE");
+      }
     },
     changeSelectedAdditional({ commit }, data) {
       commit("CHANGE_SELECTED_ADDITIONAL", data);
@@ -144,15 +152,11 @@ export default {
       }
     },
     CHANGE_PIZZA_COUNT(state, data) {
-      if (data.quantity === MIN_INGREDIENT_COUNT) {
-        state.pizzas =
-          state.pizzas.length > 1
-            ? state.pizzas.filter((it) => it.pizzaName !== data.name)
-            : [];
-      } else {
-        const pizza = state.pizzas.find((it) => it.pizzaName === data.name);
-        pizza.quantity = data.quantity;
-      }
+      const pizza = state.pizzas.find((it) => it.pizzaName === data.name);
+      pizza.quantity = data.quantity;
+    },
+    DELETE_PIZZA_FROM_STATE(state, pizzaName) {
+      state.pizzas = state.pizzas.filter((it) => it.pizzaName !== pizzaName);
     },
     CHANGE_SELECTED_ADDITIONAL(state, data) {
       const misc = state.selectedAdditional.find(
