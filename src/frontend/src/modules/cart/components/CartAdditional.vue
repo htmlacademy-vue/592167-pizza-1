@@ -16,7 +16,7 @@
             class-counter="additional-list__counter"
             :another-class-button="'counter__button--orange'"
             :ingredient-count="getCount(item.id, selectedAdditional)"
-            :ingredient-id="item.id"
+            :ingredient="item.id"
             @changeIngredientCount="changeCount"
           />
 

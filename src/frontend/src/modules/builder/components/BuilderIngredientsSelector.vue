@@ -46,7 +46,7 @@
               </AppDrop>
               <app-item-counter
                 :idx="ingredient.id"
-                :ingredient-id="ingredient.id"
+                :ingredient="ingredient.id"
                 :ingredient-count="
                   getIngredientCount(ingredient.id, selectedIngredients)
                 "

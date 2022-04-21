@@ -4,7 +4,7 @@
       :differential="'counter__button--minus'"
       :is-disabled="isDisabledButtonMinus"
       @changeCount="
-        $emit('changeIngredientCount', ingredientCount - 1, ingredientId)
+        $emit('changeIngredientCount', ingredientCount - 1, ingredient)
       "
     >
       <span class="visually-hidden">Меньше</span>
@@ -20,7 +20,7 @@
       :differential="'counter__button--plus'"
       :is-disabled="isDisabledButtonPlus"
       @changeCount="
-        $emit('changeIngredientCount', ingredientCount + 1, ingredientId)
+        $emit('changeIngredientCount', ingredientCount + 1, ingredient)
       "
     >
       <span class="visually-hidden">Больше</span>
@@ -36,9 +36,9 @@ export default {
   components: { AppButtonCounter },
 
   props: {
-    ingredientId: {
-      type: Number,
-      default: 0,
+    ingredient: {
+      type: [String, Number],
+      required: true,
     },
     ingredientCount: {
       type: Number,
