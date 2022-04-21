@@ -118,24 +118,6 @@ const setAuth = (store) => {
   store.dispatch("Auth/getMe");
 };
 
-const prepareAddresses = (addresses) => {
-  if (addresses.length > 0) {
-    const addressArray = [];
-    for (const it of addresses) {
-      const address = {
-        name: it.name,
-        fullAddress: `${it.street}, д.${it.building}`,
-        comment: it.comment,
-      };
-      address.fullAddress += it.flat ? `, ${it.flat}` : ``;
-      addressArray.push(address);
-    }
-    return addressArray;
-  } else {
-    return [];
-  }
-};
-
 const prepareAddressForOrder = (orderAddress, receivingOrder) => {
   let address = null;
   if (+receivingOrder === NEW_ADDRESS) {
@@ -154,18 +136,14 @@ const prepareAddressForOrder = (orderAddress, receivingOrder) => {
 };
 
 const preparePizzaForOrder = (pizzas) => {
-  return Array(pizzas.length)
-    .fill({})
-    .map((_, idx) => {
-      return {
-        name: pizzas[idx].pizzaName,
-        sauceId: pizzas[idx].sauceId,
-        doughId: pizzas[idx].doughId,
-        sizeId: pizzas[idx].pizzaSizeId,
-        quantity: pizzas[idx].quantity,
-        ingredients: pizzas[idx].selectedIngredients,
-      };
-    });
+  return pizzas.map((_, idx) => ({
+    name: pizzas[idx].pizzaName,
+    sauceId: pizzas[idx].sauceId,
+    doughId: pizzas[idx].doughId,
+    sizeId: pizzas[idx].pizzaSizeId,
+    quantity: pizzas[idx].quantity,
+    ingredients: pizzas[idx].selectedIngredients,
+  }));
 };
 
 const calcSumPizza = (pizza, ingredients, pizzaSizes, doughs, sauces) => {
@@ -254,38 +232,30 @@ const prepareAddressFromOrderToCart = (data) => {
 
 const prepareOrderForCart = (order) => {
   const prepareAddress = prepareAddressFromOrderToCart(order.orderAddress);
-  const pizzas = Array(order.orderPizzas.length)
-    .fill({})
-    .map((_, idx) => {
-      const item = order.orderPizzas[idx];
-      const selectedIngredients = Array(item.ingredients.length)
-        .fill({})
-        .map((_, ingredientIdx) => ({
-          ingredientId: item.ingredients[ingredientIdx].ingredientId,
-          quantity: item.ingredients[ingredientIdx].quantity,
-        }));
+  const pizzas = order.orderPizzas.map((_, idx) => {
+    const item = order.orderPizzas[idx];
+    const selectedIngredients = item.ingredients.map((_, ingredientIdx) => ({
+      ingredientId: item.ingredients[ingredientIdx].ingredientId,
+      quantity: item.ingredients[ingredientIdx].quantity,
+    }));
 
-      return {
-        doughId: item.doughId,
-        pizzaName: item.name,
-        pizzaSizeId: item.sizeId,
-        quantity: item.quantity,
-        sauceId: item.sauceId,
-        sum: item.sum,
-        selectedIngredients,
-      };
-    });
+    return {
+      doughId: item.doughId,
+      pizzaName: item.name,
+      pizzaSizeId: item.sizeId,
+      quantity: item.quantity,
+      sauceId: item.sauceId,
+      sum: item.sum,
+      selectedIngredients,
+    };
+  });
+
   let selectedAdditional = [];
   if (order.orderMisc) {
-    selectedAdditional = Array(order.orderMisc.length)
-      .fill({})
-      .map((_, idx) => {
-        const misc = order.orderMisc[idx];
-        return {
-          miscId: misc.miscId,
-          quantity: misc.quantity,
-        };
-      });
+    selectedAdditional = order.orderMisc.map((_, idx) => ({
+      miscId: order.orderMisc[idx].miscId,
+      quantity: order.orderMisc[idx].quantity,
+    }));
   }
 
   return {
@@ -307,7 +277,6 @@ export {
   preparePizzaInfo,
   createResources,
   setAuth,
-  prepareAddresses,
   preparePizzaForOrder,
   prepareOrdersForView,
   prepareAddressForOrder,
