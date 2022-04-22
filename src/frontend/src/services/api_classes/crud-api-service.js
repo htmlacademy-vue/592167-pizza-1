@@ -4,7 +4,7 @@ import axios from "@/plugins/axios";
 export class CrudApiService extends BaseApiService {
   #resource;
   constructor(resource, notifier) {
-    super(resource, notifier);
+    super(notifier);
     this.#resource = resource;
   }
 
