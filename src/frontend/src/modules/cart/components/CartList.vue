@@ -27,8 +27,7 @@
         class-counter="cart-list__counter"
         :another-class-button="'counter__button--orange'"
         :ingredient-count="pizza.quantity"
-        :ingredient="pizza.pizzaName"
-        @changeIngredientCount="changeCount"
+        @changeIngredientCount="changeCount($event, pizza.pizzaName)"
       />
 
       <div class="cart-list__price">
