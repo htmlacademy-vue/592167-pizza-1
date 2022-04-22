@@ -136,13 +136,13 @@ const prepareAddressForOrder = (orderAddress, receivingOrder) => {
 };
 
 const preparePizzaForOrder = (pizzas) => {
-  return pizzas.map((_, idx) => ({
-    name: pizzas[idx].pizzaName,
-    sauceId: pizzas[idx].sauceId,
-    doughId: pizzas[idx].doughId,
-    sizeId: pizzas[idx].pizzaSizeId,
-    quantity: pizzas[idx].quantity,
-    ingredients: pizzas[idx].selectedIngredients,
+  return pizzas.map((item) => ({
+    name: item.pizzaName,
+    sauceId: item.sauceId,
+    doughId: item.doughId,
+    sizeId: item.pizzaSizeId,
+    quantity: item.quantity,
+    ingredients: item.selectedIngredients,
   }));
 };
 
