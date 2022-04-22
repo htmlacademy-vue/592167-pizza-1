@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <app-layout>
-      <router-view />
+      <transition name="slide" mode="in-out">
+        <router-view />
+      </transition>
     </app-layout>
   </div>
 </template>
@@ -24,5 +26,17 @@ export default {
 </script>
 
 <style lang="scss">
+.slide-enter-active {
+  transition: all 0.4s;
+}
+.slide-enter {
+  opacity: 0;
+  margin-left: 90px;
+}
+.slide-leave-active {
+  transition: all 0.4s;
+  opacity: 0;
+  margin-left: -100px;
+}
 @import "./assets/scss/app";
 </style>

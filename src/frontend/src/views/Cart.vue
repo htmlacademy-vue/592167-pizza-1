@@ -94,7 +94,9 @@
       v-if="pizzas.length > 0"
       @makeOrder="onOrderClick"
     ></cart-footer>
-    <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
+    <transition name="slide-popup" mode="in-out">
+      <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
+    </transition>
   </form>
 </template>
 
@@ -215,21 +217,36 @@ export default {
     },
     async onClosePopupClick() {
       this.isOpenPopup = false;
-      let link = "/";
-      if (this.isAuthenticated) {
-        if (+this.receivingOrder === NEW_ADDRESS) {
-          this.addAddress({
-            street: this.$refs.street.value,
-            building: this.$refs.building.value,
-            flat: this.$refs.flat.value,
-          });
-        }
-        link = "/orders";
-        await this.addOrder();
-      }
-      this.resetCartState();
-      await this.$router.push(link);
+      // let link = "/";
+      // if (this.isAuthenticated) {
+      //   if (+this.receivingOrder === NEW_ADDRESS) {
+      //     this.addAddress({
+      //       street: this.$refs.street.value,
+      //       building: this.$refs.building.value,
+      //       flat: this.$refs.flat.value,
+      //     });
+      //   }
+      //   link = "/orders";
+      //   await this.addOrder();
+      // }
+      // this.resetCartState();
+      // await this.$router.push(link);
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.slide-popup-enter-active {
+  transition: all 0.4s;
+}
+.slide-popup-enter {
+  opacity: 0;
+  margin-left: 90px;
+}
+.slide-popup-leave-active {
+  transition: all 0.4s;
+  opacity: 0;
+  margin-left: -100px;
+}
+</style>

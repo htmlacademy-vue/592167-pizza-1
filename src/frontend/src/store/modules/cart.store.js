@@ -134,6 +134,7 @@ export default {
       state.additional = DICTIONARIES.additional;
     },
     ADD_PIZZA(state, pizza) {
+      //todo с помощью lodash добавлять id для пиццы. Тоже самое делать для восстановления пиццы. Чтобы каждый раз были уникальные id.
       const pizzaInfo = state.pizzas.find(
         (it) => it.pizzaName === pizza.pizzaName
       );
