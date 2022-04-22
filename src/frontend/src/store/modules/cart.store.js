@@ -79,13 +79,11 @@ export default {
       commit("ADD_PIZZA", pizza);
     },
     changePizzaCount({ commit, state }, data) {
-      if (state.pizzas.length > 0) {
-        if (data.quantity === MIN_INGREDIENT_COUNT) {
-          commit("DELETE_PIZZA_FROM_STATE", data.name);
-        } else {
-          commit("CHANGE_PIZZA_COUNT", data);
-        }
-      } else {
+      data.quantity === MIN_INGREDIENT_COUNT
+        ? commit("DELETE_PIZZA_FROM_STATE", data.name)
+        : commit("CHANGE_PIZZA_COUNT", data);
+
+      if (state.pizzas.length === MIN_INGREDIENT_COUNT) {
         commit("RESET_STATE");
       }
     },
