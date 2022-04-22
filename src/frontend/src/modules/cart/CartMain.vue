@@ -9,7 +9,7 @@
 
         <cart-additional />
 
-        <slot name="cartForm"></slot>
+        <slot name="cartForm" />
       </template>
       <template v-else>
         <div class="sheet cart__empty">
