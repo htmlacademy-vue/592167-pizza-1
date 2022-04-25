@@ -94,7 +94,9 @@
       v-if="pizzas.length > 0"
       @makeOrder="onOrderClick"
     ></cart-footer>
-    <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
+    <transition name="slide-popup" mode="out-in">
+      <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
+    </transition>
   </form>
 </template>
 
@@ -233,3 +235,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.slide-popup-enter-active {
+  transition: all 0.4s;
+}
+.slide-popup-enter {
+  opacity: 0;
+  margin-top: 100px;
+}
+.slide-popup-leave-active {
+  transition: all 0.4s;
+  opacity: 0;
+  margin-top: 100px;
+}
+</style>

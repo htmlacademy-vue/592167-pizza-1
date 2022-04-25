@@ -1,6 +1,7 @@
 import { AuthApiService, CrudApiService } from "@/services/api.service";
 import resources from "@/common/enums/resources";
 import { NEW_ADDRESS } from "@/constants";
+import { uniqueId } from "lodash";
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -136,13 +137,13 @@ const prepareAddressForOrder = (orderAddress, receivingOrder) => {
 };
 
 const preparePizzaForOrder = (pizzas) => {
-  return pizzas.map((_, idx) => ({
-    name: pizzas[idx].pizzaName,
-    sauceId: pizzas[idx].sauceId,
-    doughId: pizzas[idx].doughId,
-    sizeId: pizzas[idx].pizzaSizeId,
-    quantity: pizzas[idx].quantity,
-    ingredients: pizzas[idx].selectedIngredients,
+  return pizzas.map((item) => ({
+    name: item.pizzaName,
+    sauceId: item.sauceId,
+    doughId: item.doughId,
+    sizeId: item.pizzaSizeId,
+    quantity: item.quantity,
+    ingredients: item.selectedIngredients,
   }));
 };
 
@@ -240,6 +241,7 @@ const prepareOrderForCart = (order) => {
     }));
 
     return {
+      id: uniqueId(),
       doughId: item.doughId,
       pizzaName: item.name,
       pizzaSizeId: item.sizeId,

@@ -46,13 +46,14 @@
               </AppDrop>
               <app-item-counter
                 :idx="ingredient.id"
-                :ingredient="ingredient.id"
                 :ingredient-count="
                   getIngredientCount(ingredient.id, selectedIngredients)
                 "
                 :class-counter="'counter--orange ingredients__counter'"
                 :max-count="maxCount"
-                @changeIngredientCount="changeIngredientCount"
+                @changeIngredientCount="
+                  changeIngredientCount($event, ingredient.id)
+                "
               />
             </li>
           </ul>

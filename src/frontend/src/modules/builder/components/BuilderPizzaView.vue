@@ -2,10 +2,10 @@
   <AppDrop @drop="moveIngredient">
     <div class="content__constructor">
       <div class="pizza" :class="pizzaSize">
-        <div class="pizza__wrapper">
+        <transition-group name="list" tag="div" class="pizza__wrapper">
           <div
             v-for="ingredient in selectedIngredients"
-            :key="ingredient.id"
+            :key="ingredient.ingredientId"
             class="pizza__filling"
             :class="
               'pizza__filling--' +
@@ -13,7 +13,7 @@
               ingredientCount(ingredient.quantity)
             "
           />
-        </div>
+        </transition-group>
       </div>
     </div>
   </AppDrop>
@@ -71,3 +71,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+</style>

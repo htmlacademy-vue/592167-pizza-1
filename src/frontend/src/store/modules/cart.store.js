@@ -4,6 +4,7 @@ import {
   MY_FIRST_ADDRESS,
   NEW_ADDRESS,
 } from "@/constants";
+import { uniqueId } from "lodash";
 
 const DICTIONARIES = {
   additional: [],
@@ -79,13 +80,11 @@ export default {
       commit("ADD_PIZZA", pizza);
     },
     changePizzaCount({ commit, state }, data) {
-      if (state.pizzas.length > 0) {
-        if (data.quantity === MIN_INGREDIENT_COUNT) {
-          commit("DELETE_PIZZA_FROM_STATE", data.name);
-        } else {
-          commit("CHANGE_PIZZA_COUNT", data);
-        }
-      } else {
+      data.quantity === MIN_INGREDIENT_COUNT
+        ? commit("DELETE_PIZZA_FROM_STATE", data.id)
+        : commit("CHANGE_PIZZA_COUNT", data);
+
+      if (state.pizzas.length === MIN_INGREDIENT_COUNT) {
         commit("RESET_STATE");
       }
     },
@@ -136,6 +135,7 @@ export default {
       state.additional = DICTIONARIES.additional;
     },
     ADD_PIZZA(state, pizza) {
+      //todo с помощью lodash добавлять id для пиццы. Тоже самое делать для восстановления пиццы. Чтобы каждый раз были уникальные id.
       const pizzaInfo = state.pizzas.find(
         (it) => it.pizzaName === pizza.pizzaName
       );
@@ -148,15 +148,16 @@ export default {
         pizzaInfo.selectedIngredients = pizza.selectedIngredients;
       } else {
         pizza.quantity = 1;
+        pizza.id = uniqueId();
         state.pizzas.push(pizza);
       }
     },
     CHANGE_PIZZA_COUNT(state, data) {
-      const pizza = state.pizzas.find((it) => it.pizzaName === data.name);
+      const pizza = state.pizzas.find((it) => it.id === data.id);
       pizza.quantity = data.quantity;
     },
-    DELETE_PIZZA_FROM_STATE(state, pizzaName) {
-      state.pizzas = state.pizzas.filter((it) => it.pizzaName !== pizzaName);
+    DELETE_PIZZA_FROM_STATE(state, id) {
+      state.pizzas = state.pizzas.filter((it) => it.id !== id);
     },
     CHANGE_SELECTED_ADDITIONAL(state, data) {
       const misc = state.selectedAdditional.find(
