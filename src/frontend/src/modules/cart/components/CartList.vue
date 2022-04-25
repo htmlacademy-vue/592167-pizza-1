@@ -27,7 +27,7 @@
         class-counter="cart-list__counter"
         :another-class-button="'counter__button--orange'"
         :ingredient-count="pizza.quantity"
-        @changeIngredientCount="changeCount($event, pizza.pizzaName)"
+        @changeIngredientCount="changeCount($event, pizza.id)"
       />
 
       <div class="cart-list__price">
@@ -64,8 +64,8 @@ export default {
     getPizzaPrice(sum, quantity) {
       return sum * quantity;
     },
-    changeCount(quantity, name) {
-      const data = { name, quantity };
+    changeCount(quantity, id) {
+      const data = { id, quantity };
       this.changePizzaCount(data);
     },
     changePizzaIngredients(idx) {

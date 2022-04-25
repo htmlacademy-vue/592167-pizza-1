@@ -217,20 +217,20 @@ export default {
     },
     async onClosePopupClick() {
       this.isOpenPopup = false;
-      // let link = "/";
-      // if (this.isAuthenticated) {
-      //   if (+this.receivingOrder === NEW_ADDRESS) {
-      //     this.addAddress({
-      //       street: this.$refs.street.value,
-      //       building: this.$refs.building.value,
-      //       flat: this.$refs.flat.value,
-      //     });
-      //   }
-      //   link = "/orders";
-      //   await this.addOrder();
-      // }
-      // this.resetCartState();
-      // await this.$router.push(link);
+      let link = "/";
+      if (this.isAuthenticated) {
+        if (+this.receivingOrder === NEW_ADDRESS) {
+          this.addAddress({
+            street: this.$refs.street.value,
+            building: this.$refs.building.value,
+            flat: this.$refs.flat.value,
+          });
+        }
+        link = "/orders";
+        await this.addOrder();
+      }
+      this.resetCartState();
+      await this.$router.push(link);
     },
   },
 };

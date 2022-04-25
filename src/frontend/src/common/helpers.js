@@ -1,6 +1,7 @@
 import { AuthApiService, CrudApiService } from "@/services/api.service";
 import resources from "@/common/enums/resources";
 import { NEW_ADDRESS } from "@/constants";
+import { uniqueId } from "lodash";
 
 const cutString = (data, start, end) => {
   return data.slice(start, end);
@@ -240,6 +241,7 @@ const prepareOrderForCart = (order) => {
     }));
 
     return {
+      id: uniqueId(),
       doughId: item.doughId,
       pizzaName: item.name,
       pizzaSizeId: item.sizeId,
