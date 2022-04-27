@@ -12,6 +12,7 @@
       type="text"
       name="counter"
       class="counter__input"
+      readonly
     />
     <app-button-counter
       :class="anotherClassButton"
