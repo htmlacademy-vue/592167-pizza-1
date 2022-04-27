@@ -53,12 +53,6 @@ export default {
       default: 0,
     },
   },
-  data() {
-    return {
-      count: 0,
-      isIngredients: false,
-    };
-  },
   computed: {
     isDisabledButtonPlus() {
       return this.ingredientCount >= this.maxCount;
