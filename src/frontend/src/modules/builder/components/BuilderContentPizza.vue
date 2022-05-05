@@ -10,7 +10,7 @@
         @input="inputChangeValue"
       />
     </label>
-    <builder-pizza-view @changeIngredientCount="changeIngredientCount" />
+    <builder-pizza-view />
     <builder-price-counter />
   </div>
 </template>
@@ -33,10 +33,6 @@ export default {
     ...mapActions("Builder", ["updatePizzaName"]),
     inputChangeValue(evt) {
       this.updatePizzaName(evt.target.value);
-    },
-
-    changeIngredientCount(data) {
-      this.$emit("changeIngredientCount", data);
     },
   },
 };
