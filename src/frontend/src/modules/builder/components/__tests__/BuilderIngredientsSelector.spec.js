@@ -27,11 +27,6 @@ describe("BuilderIngredientsSelector", () => {
     wrapper.destroy();
   });
 
-  // tests
-  // changeSauce
-  // getIngredientCount
-  // changeIngredientCount
-
   it("is render", () => {
     createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();

@@ -74,12 +74,6 @@ import { MAX_INGREDIENT_COUNT } from "@/constants";
 export default {
   name: "BuilderIngredientsSelector",
   components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
-  props: {
-    sauceInfo: {
-      type: String,
-      default: "",
-    },
-  },
   data() {
     return {
       maxCount: MAX_INGREDIENT_COUNT,
