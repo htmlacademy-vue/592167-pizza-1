@@ -46,7 +46,6 @@ describe("BuilderPizzaView", () => {
     store.state["Builder"].doughId = 2;
     store.state["Builder"].sauceId = 2;
     createComponent({ localVue, store });
-    console.log(wrapper.html());
     const div = wrapper.find(".pizza");
     expect(div.attributes("class")).toContain("pizza--foundation--big-creamy");
   });
