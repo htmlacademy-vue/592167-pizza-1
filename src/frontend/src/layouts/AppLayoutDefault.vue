@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-notifications />
-    <app-layout-header :sum="sum" />
+    <app-layout-header />
     <slot />
   </div>
 </template>
