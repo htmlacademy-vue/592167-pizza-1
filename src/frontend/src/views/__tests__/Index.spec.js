@@ -26,7 +26,6 @@ describe("Index", () => {
 
   it("is render", () => {
     createComponent({ localVue, store });
-    console.log(wrapper.html());
     expect(wrapper.exists()).toBeTruthy();
   });
 });
