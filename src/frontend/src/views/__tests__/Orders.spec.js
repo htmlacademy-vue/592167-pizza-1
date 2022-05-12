@@ -86,6 +86,12 @@ describe("Orders", () => {
       modules,
       plugins: [VuexPlugins],
     });
+    store.state["Builder"].sauces = pizza.sauces;
+    store.state["Builder"].doughs = pizza.dough;
+    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
+    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Cart"].additional = misc;
+    store.state["Orders"].orders = [order];
     router = new VueRouter();
   });
 
@@ -103,30 +109,19 @@ describe("Orders", () => {
   });
 
   it("if orders history is empty then should be div with class 'cart__empty'", () => {
+    store.state["Orders"].orders = [];
     createComponent({ localVue, store, router });
     const cartEmpty = wrapper.find(".cart__empty > p");
     expect(cartEmpty.element.textContent).toBe("История пока пуста");
   });
 
   it("if orders history is not empty should be sections with class 'sheet order'", () => {
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Builder"].pizzaSizes = pizza.sizes;
-    store.state["Cart"].additional = misc;
-    store.state["Orders"].orders = [order];
     createComponent({ localVue, store, router });
     const sheetOrder = wrapper.find(".sheet.order");
     expect(sheetOrder.exists()).toBeTruthy();
   });
 
   it("method deleteOrder should be called when on click delete button", async () => {
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].pizzaSizes = pizza.sizes;
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Cart"].additional = misc;
-    store.state["Orders"].orders = [order];
     createComponent({ localVue, store, router });
     const mockMethodDelete = jest.spyOn(wrapper.vm, "deleteOrder");
     const deleteButton = wrapper.find(".button--border");
@@ -135,12 +130,6 @@ describe("Orders", () => {
   });
 
   it("method onRepeatOrderClick should be called when on click repeat button", async () => {
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Cart"].additional = misc;
-    store.state["Orders"].orders = [order];
-    store.state["Builder"].pizzaSizes = pizza.sizes;
     createComponent({ localVue, store, router });
     const mockMethodRepeat = jest.spyOn(wrapper.vm, "onRepeatOrderClick");
     const repeatButton = wrapper.find("[data-test='repeat-button']");

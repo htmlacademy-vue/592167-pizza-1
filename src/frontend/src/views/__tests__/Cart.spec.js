@@ -36,6 +36,11 @@ describe("Cart", () => {
     store = new Vuex.Store({
       modules,
     });
+    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
+    store.state["Builder"].sauces = pizza.sauces;
+    store.state["Builder"].doughs = pizza.dough;
+    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Cart"].pizzas = [pizzaInfo];
     router = new VueRouter();
   });
 
@@ -49,16 +54,11 @@ describe("Cart", () => {
   });
 
   it("is render", () => {
-    createComponent({ localVue, store });
+    createComponent({ localVue, store, router });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   it("should be show popup when click submit button", async () => {
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].pizzaSizes = pizza.sizes;
-    store.state["Cart"].pizzas = [pizzaInfo];
     createComponent({ localVue, store, router });
     const tel = wrapper.find("input[type='tel']");
     tel.element.value = "4802384";
@@ -70,11 +70,6 @@ describe("Cart", () => {
   });
 
   it("should be error message when required field is empty", async () => {
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].pizzaSizes = pizza.sizes;
-    store.state["Cart"].pizzas = [pizzaInfo];
     createComponent({ localVue, store, router });
     const submit = wrapper.find("button[type='submit']");
     await submit.trigger("click");
