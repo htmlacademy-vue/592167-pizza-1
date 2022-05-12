@@ -38,5 +38,10 @@ export default {
   opacity: 0;
   margin-left: -100px;
 }
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 @import "./assets/scss/app";
 </style>

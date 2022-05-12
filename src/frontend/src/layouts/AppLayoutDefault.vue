@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout__default">
     <app-notifications />
     <app-layout-header />
     <slot />
@@ -15,3 +15,11 @@ export default {
   components: { AppNotifications, AppLayoutHeader },
 };
 </script>
+
+<style lang="scss" scoped>
+.layout__default {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+</style>
