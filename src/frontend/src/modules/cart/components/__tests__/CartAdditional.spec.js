@@ -2,10 +2,30 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import CartAdditional from "@/modules/cart/components/CartAdditional";
-import misc from "@/static/misc.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+const misc = [
+  {
+    id: 1,
+    name: "Cola-Cola 0,5 литра",
+    image: "/public/img/cola.svg",
+    price: 56,
+  },
+  {
+    id: 2,
+    name: "Острый соус",
+    image: "/public/img/sauce.svg",
+    price: 10,
+  },
+  {
+    id: 3,
+    name: "Картошка из печи",
+    image: "/public/img/potato.svg",
+    price: 170,
+  },
+];
 
 describe("CartAdditional", () => {
   let store;

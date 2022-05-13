@@ -2,10 +2,66 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import BuilderContentPizza from "@/modules/builder/components/BuilderContentPizza";
-import pizza from "@/static/pizza.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+const ingredients = [
+  {
+    id: 2,
+    name: "Чеддер",
+    image: "/public/img/filling/cheddar.svg",
+    price: 42,
+  },
+];
+const sizes = [
+  {
+    id: 1,
+    name: "23 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 1,
+  },
+  {
+    id: 2,
+    name: "32 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 2,
+  },
+  {
+    id: 3,
+    name: "45 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 3,
+  },
+];
+const dough = [
+  {
+    id: 1,
+    name: "Тонкое",
+    image: "/public/img/dough-light.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Толстое",
+    image: "/public/img/dough-large.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+];
+const sauces = [
+  {
+    id: 1,
+    name: "Томатный",
+    price: 50,
+  },
+  {
+    id: 2,
+    name: "Сливочный",
+    price: 50,
+  },
+];
 
 describe("BuilderContentPizza", () => {
   let store;
@@ -16,10 +72,10 @@ describe("BuilderContentPizza", () => {
       modules,
     });
 
-    store.state["Builder"].ingredients = pizza.ingredients;
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Builder"].ingredients = ingredients;
+    store.state["Builder"].doughs = dough;
+    store.state["Builder"].sauces = sauces;
+    store.state["Builder"].pizzaSizes = sizes;
   });
 
   const createComponent = (options) => {

@@ -27,7 +27,8 @@ describe("AppButtonCounter", () => {
 
   it("raises the click event on button", async () => {
     createComponent({ localVue });
-    wrapper.vm.$emit("changeCount");
+    const button = wrapper.find(".counter__button");
+    button.trigger("click");
     expect(wrapper.emitted().changeCount).toBeTruthy();
   });
 
@@ -42,7 +43,7 @@ describe("AppButtonCounter", () => {
     expect(button.attributes("class")).toContain("some-class");
   });
 
-  it("button must be disabled", () => {
+  it("button should not contain attribute disabled", () => {
     createComponent({
       localVue,
       propsData: {

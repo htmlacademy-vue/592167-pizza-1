@@ -2,10 +2,26 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
-import pizza from "@/static/pizza.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+const dough = [
+  {
+    id: 1,
+    name: "Тонкое",
+    image: "/public/img/dough-light.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Толстое",
+    image: "/public/img/dough-large.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+];
 
 describe("BuilderDoughSelector", () => {
   let store;
@@ -37,7 +53,7 @@ describe("BuilderDoughSelector", () => {
   });
 
   it("dough list should not be empty when 'Builder/doughs' is not empty", () => {
-    store.state["Builder"].doughs = pizza.dough;
+    store.state["Builder"].doughs = dough;
     createComponent({ localVue, store });
     const doughList = wrapper.find(".dough");
     expect(Array.from(doughList.element.children).length > 0).toBeTruthy();

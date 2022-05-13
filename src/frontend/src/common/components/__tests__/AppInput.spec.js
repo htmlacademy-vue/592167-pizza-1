@@ -9,11 +9,6 @@ describe("AppInput", () => {
     name: "name",
     value: "",
   };
-  const computed = {
-    showError() {
-      return true;
-    },
-  };
 
   const createComponent = (options) => {
     wrapper = mount(AppInput, options);
@@ -29,18 +24,23 @@ describe("AppInput", () => {
   });
 
   it("show error message", () => {
-    createComponent({ localVue, propsData, computed });
-    expect(wrapper.vm.showError).toBeTruthy();
+    propsData.errorText = "Some error text";
+    createComponent({ localVue, propsData });
+    const spanError = wrapper.find(".text-field__text--error");
+    expect(spanError.exists()).toBeTruthy();
   });
 
   it("raises input event", () => {
     createComponent({ localVue, propsData });
-    wrapper.vm.$emit("input");
+    const input = wrapper.find("input");
+    input.element.value = "some text";
+    input.trigger("input");
     expect(wrapper.emitted().input).toBeTruthy();
   });
 
   it("className must contain 'text-field__input--error' if showError is true", () => {
-    createComponent({ localVue, propsData, computed });
+    propsData.errorText = "Some error text";
+    createComponent({ localVue, propsData });
     const input = wrapper.find("input");
     expect(input.attributes("class")).toContain("text-field__input--error");
   });

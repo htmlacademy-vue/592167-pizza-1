@@ -30,6 +30,6 @@ describe("BuilderIngredientPicture", () => {
 
   it("element should contain 'Грибы'", () => {
     createComponent({ localVue, propsData });
-    expect(wrapper.element.textContent.trim()).toBe("Грибы");
+    expect(wrapper.text().trim()).toBe("Грибы");
   });
 });

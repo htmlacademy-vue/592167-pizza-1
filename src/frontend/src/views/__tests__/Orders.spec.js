@@ -4,13 +4,85 @@ import VuexPlugins from "@/plugins/vuexPlugins";
 import VueRouter from "vue-router";
 import modules from "@/store/modules";
 import Orders from "@/views/Orders";
-import pizza from "@/static/pizza.json";
 import { prepareIngredients } from "@/common/helpers";
-import misc from "@/static/misc.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueRouter);
+
+const ingredients = [
+  { id: 3, name: "Салями", image: "/public/img/filling/salami.svg", price: 42 },
+  { id: 4, name: "Ветчина", image: "/public/img/filling/ham.svg", price: 42 },
+  { id: 7, name: "Лук", image: "/public/img/filling/onion.svg", price: 21 },
+];
+const sizes = [
+  {
+    id: 1,
+    name: "23 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 1,
+  },
+  {
+    id: 2,
+    name: "32 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 2,
+  },
+  {
+    id: 3,
+    name: "45 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 3,
+  },
+];
+const dough = [
+  {
+    id: 1,
+    name: "Тонкое",
+    image: "/public/img/dough-light.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Толстое",
+    image: "/public/img/dough-large.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+];
+const sauces = [
+  {
+    id: 1,
+    name: "Томатный",
+    price: 50,
+  },
+  {
+    id: 2,
+    name: "Сливочный",
+    price: 50,
+  },
+];
+const misc = [
+  {
+    id: 1,
+    name: "Cola-Cola 0,5 литра",
+    image: "/public/img/cola.svg",
+    price: 56,
+  },
+  {
+    id: 2,
+    name: "Острый соус",
+    image: "/public/img/sauce.svg",
+    price: 10,
+  },
+  {
+    id: 3,
+    name: "Картошка из печи",
+    image: "/public/img/potato.svg",
+    price: 170,
+  },
+];
 
 const order = {
   id: 1,
@@ -50,7 +122,7 @@ const order = {
       doughView: "толстом",
       sauceView: "сливочный",
       ingredientsForView: "томаты, лосось, блю чиз",
-      sum: 970,
+      sum: 910,
     },
   ],
   orderMisc: [
@@ -86,10 +158,10 @@ describe("Orders", () => {
       modules,
       plugins: [VuexPlugins],
     });
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Builder"].sauces = sauces;
+    store.state["Builder"].doughs = dough;
+    store.state["Builder"].ingredients = prepareIngredients(ingredients);
+    store.state["Builder"].pizzaSizes = sizes;
     store.state["Cart"].additional = misc;
     store.state["Orders"].orders = [order];
     router = new VueRouter();
@@ -112,7 +184,7 @@ describe("Orders", () => {
     store.state["Orders"].orders = [];
     createComponent({ localVue, store, router });
     const cartEmpty = wrapper.find(".cart__empty > p");
-    expect(cartEmpty.element.textContent).toBe("История пока пуста");
+    expect(cartEmpty.text()).toBe("История пока пуста");
   });
 
   it("if orders history is not empty should be sections with class 'sheet order'", () => {
@@ -130,10 +202,54 @@ describe("Orders", () => {
   });
 
   it("method onRepeatOrderClick should be called when on click repeat button", async () => {
+    const cartInfo = {
+      pizzas: [
+        {
+          id: "1",
+          pizzaName: "awesome pizza",
+          quantity: 2,
+          sauceId: 2,
+          doughId: 2,
+          pizzaSizeId: 2,
+          selectedIngredients: [
+            {
+              ingredientId: 4,
+              quantity: 1,
+            },
+            {
+              ingredientId: 3,
+              quantity: 1,
+            },
+            {
+              ingredientId: 7,
+              quantity: 1,
+            },
+          ],
+          sum: 910,
+        },
+      ],
+      selectedAdditional: [
+        {
+          miscId: 2,
+          quantity: 1,
+        },
+      ],
+      receivingOrder: 3,
+      phone: order.phone,
+      address: {
+        street: "Филатова",
+        building: "8",
+        flat: "38",
+        comment: "Наберите за 20 мин до приезда",
+      },
+      totalPrice: order.totalPrice,
+      additional: misc,
+    };
     createComponent({ localVue, store, router });
     const mockMethodRepeat = jest.spyOn(wrapper.vm, "onRepeatOrderClick");
     const repeatButton = wrapper.find("[data-test='repeat-button']");
     await repeatButton.trigger("click");
+    expect(store.state["Cart"]).toEqual(cartInfo);
     expect(mockMethodRepeat).toHaveBeenCalled();
     expect(wrapper.vm.$route.path).toBe("/cart");
   });

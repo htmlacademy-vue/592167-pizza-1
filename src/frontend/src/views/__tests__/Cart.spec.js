@@ -5,7 +5,6 @@ import modules from "@/store/modules";
 import validator from "@/common/mixins/validator";
 import Cart from "@/views/Cart";
 import { prepareIngredients } from "@/common/helpers";
-import pizza from "@/static/pizza.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -26,6 +25,64 @@ const pizzaInfo = {
     { ingredientId: 12, quantity: 1 },
   ],
 };
+const ingredients = [
+  { id: 4, name: "Ветчина", image: "/public/img/filling/ham.svg", price: 42 },
+  { id: 8, name: "Чили", image: "/public/img/filling/chile.svg", price: 21 },
+  {
+    id: 12,
+    name: "Лосось",
+    image: "/public/img/filling/salmon.svg",
+    price: 50,
+  },
+];
+const sizes = [
+  {
+    id: 1,
+    name: "23 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 1,
+  },
+  {
+    id: 2,
+    name: "32 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 2,
+  },
+  {
+    id: 3,
+    name: "45 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 3,
+  },
+];
+const dough = [
+  {
+    id: 1,
+    name: "Тонкое",
+    image: "/public/img/dough-light.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Толстое",
+    image: "/public/img/dough-large.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+  },
+];
+const sauces = [
+  {
+    id: 1,
+    name: "Томатный",
+    price: 50,
+  },
+  {
+    id: 2,
+    name: "Сливочный",
+    price: 50,
+  },
+];
 
 describe("Cart", () => {
   let store;
@@ -36,10 +93,10 @@ describe("Cart", () => {
     store = new Vuex.Store({
       modules,
     });
-    store.state["Builder"].ingredients = prepareIngredients(pizza.ingredients);
-    store.state["Builder"].sauces = pizza.sauces;
-    store.state["Builder"].doughs = pizza.dough;
-    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Builder"].ingredients = prepareIngredients(ingredients);
+    store.state["Builder"].sauces = sauces;
+    store.state["Builder"].doughs = dough;
+    store.state["Builder"].pizzaSizes = sizes;
     store.state["Cart"].pizzas = [pizzaInfo];
     router = new VueRouter();
   });
@@ -74,8 +131,6 @@ describe("Cart", () => {
     const submit = wrapper.find("button[type='submit']");
     await submit.trigger("click");
     const errorMessage = wrapper.find("input[type='tel'] + span");
-    expect(errorMessage.element.textContent).toBe(
-      "Поле обязательно для заполнения"
-    );
+    expect(errorMessage.text()).toBe("Поле обязательно для заполнения");
   });
 });

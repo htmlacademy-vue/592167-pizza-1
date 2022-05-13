@@ -2,10 +2,30 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
-import pizza from "@/static/pizza.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+const sizes = [
+  {
+    id: 1,
+    name: "23 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 1,
+  },
+  {
+    id: 2,
+    name: "32 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 2,
+  },
+  {
+    id: 3,
+    name: "45 см",
+    image: "/public/img/diameter.svg",
+    multiplier: 3,
+  },
+];
 
 describe("BuilderSizeSelector", () => {
   let store;
@@ -15,7 +35,7 @@ describe("BuilderSizeSelector", () => {
     store = new Vuex.Store({
       modules,
     });
-    store.state["Builder"].pizzaSizes = pizza.sizes;
+    store.state["Builder"].pizzaSizes = sizes;
   });
 
   const createComponent = (options) => {

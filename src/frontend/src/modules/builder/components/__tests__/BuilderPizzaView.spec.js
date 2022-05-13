@@ -2,10 +2,30 @@ import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import pizza from "@/static/pizza.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+const ingredients = [
+  {
+    id: 1,
+    name: "Грибы",
+    image: "/public/img/filling/mushrooms.svg",
+    price: 33,
+  },
+];
+const sauces = [
+  {
+    id: 1,
+    name: "Томатный",
+    price: 50,
+  },
+  {
+    id: 2,
+    name: "Сливочный",
+    price: 50,
+  },
+];
 
 describe("BuilderPizzaView", () => {
   let store;
@@ -15,8 +35,8 @@ describe("BuilderPizzaView", () => {
     store = new Vuex.Store({
       modules,
     });
-    store.state["Builder"].ingredients = pizza.ingredients;
-    store.state["Builder"].sauces = pizza.sauces;
+    store.state["Builder"].ingredients = ingredients;
+    store.state["Builder"].sauces = sauces;
   });
 
   const createComponent = (options) => {
