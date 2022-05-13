@@ -63,7 +63,6 @@ describe("Login", () => {
 
   it("if email and password valid then form should be successfully send", async () => {
     createComponent({ localVue, store, router });
-    // wrapper.vm.$api.auth.login = jest.fn;
     const spyLogin = jest.spyOn(wrapper.vm, "loginUser");
     await wrapper.find("input[type='text']").setValue("user@example.com");
     await wrapper.find("input[type='password']").setValue("user@example.com");
