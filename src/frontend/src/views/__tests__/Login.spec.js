@@ -16,6 +16,11 @@ describe("Login", () => {
   let store;
   let wrapper;
   let router;
+  let loginUser;
+
+  const methods = {
+    loginUser,
+  };
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -23,6 +28,8 @@ describe("Login", () => {
       plugins: [VuexPlugins],
     });
     router = new VueRouter();
+    loginUser = jest.fn();
+    methods.loginUser = jest.fn();
   });
 
   const createComponent = (options) => {
@@ -68,5 +75,6 @@ describe("Login", () => {
     await wrapper.find("input[type='password']").setValue("user@example.com");
     await wrapper.find("form").trigger("submit");
     expect(spyLogin).toHaveBeenCalled();
+    expect(wrapper.vm.$route.path).toBe("/");
   });
 });
