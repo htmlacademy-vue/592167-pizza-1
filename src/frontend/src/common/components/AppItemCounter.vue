@@ -3,6 +3,7 @@
     <app-button-counter
       :differential="'counter__button--minus'"
       :is-disabled="isDisabledButtonMinus"
+      data-test="button-minus"
       @changeCount="$emit('changeIngredientCount', ingredientCount - 1)"
     >
       <span class="visually-hidden">Меньше</span>
@@ -12,11 +13,13 @@
       type="text"
       name="counter"
       class="counter__input"
+      readonly
     />
     <app-button-counter
       :class="anotherClassButton"
       :differential="'counter__button--plus'"
       :is-disabled="isDisabledButtonPlus"
+      data-test="button-plus"
       @changeCount="$emit('changeIngredientCount', ingredientCount + 1)"
     >
       <span class="visually-hidden">Больше</span>
@@ -52,12 +55,6 @@ export default {
       type: Number,
       default: 0,
     },
-  },
-  data() {
-    return {
-      count: 0,
-      isIngredients: false,
-    };
   },
   computed: {
     isDisabledButtonPlus() {

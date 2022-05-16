@@ -53,6 +53,7 @@
               <b>{{ address.name }}</b>
               <div class="address-form__edit">
                 <button
+                  data-test="button-change"
                   type="button"
                   class="icon"
                   @click="editAddress(address.id)"
@@ -61,7 +62,7 @@
                 </button>
               </div>
             </div>
-            <p>
+            <p data-test="address-full-name">
               Ул. {{ address.street }}, д.{{ address.building }}
               {{ address.flat ? ", кв." + address.flat : "" }}
             </p>
@@ -69,7 +70,11 @@
           </div>
         </div>
 
-        <div v-if="showForm" class="layout__address">
+        <div
+          v-if="showForm"
+          class="layout__address"
+          data-test="new-address-form"
+        >
           <form
             action="#"
             method="post"
@@ -146,6 +151,7 @@
             <div class="address-form__buttons">
               <button
                 v-if="showDeleteButton"
+                data-test="button-delete-address"
                 type="button"
                 class="button button--transparent"
                 @click="onDeleteAddress"
@@ -159,6 +165,7 @@
 
         <div class="layout__button">
           <button
+            data-test="add-address"
             type="button"
             class="button button--border"
             @click="showFormAddNewAddress"

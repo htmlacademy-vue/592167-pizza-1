@@ -44,6 +44,7 @@
               </div>
               <div class="order__button">
                 <button
+                  data-test="repeat-button"
                   type="button"
                   class="button"
                   @click="onRepeatOrderClick(order.id)"

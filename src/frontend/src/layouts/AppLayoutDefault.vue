@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="layout__default">
     <app-notifications />
-    <app-layout-header :sum="sum" />
+    <app-layout-header />
     <slot />
   </div>
 </template>
@@ -13,11 +13,13 @@ import AppNotifications from "@/common/components/AppNotifications";
 export default {
   name: "AppLayoutDefault",
   components: { AppNotifications, AppLayoutHeader },
-  props: {
-    sum: {
-      type: Number,
-      default: 0,
-    },
-  },
 };
 </script>
+
+<style lang="scss" scoped>
+.layout__default {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+</style>
