@@ -29,7 +29,6 @@ describe("AppDrag", () => {
         template: "<span class='filling filling--mushrooms'>Грибы</span>",
       },
     };
-    // const slots = {};
     createComponent({ localVue, propsData, slots });
     const spyDrag = jest.spyOn(wrapper.vm, "onDrag");
     const dataTransfer = {
