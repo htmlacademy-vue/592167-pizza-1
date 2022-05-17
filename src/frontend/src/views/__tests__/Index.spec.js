@@ -1,7 +1,7 @@
 import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import modules from "@/store/modules";
-import Index from "@/views/Index";
+import Index from "@/views/index/Index";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
