@@ -50,7 +50,7 @@
         <div v-for="(address, i) in addresses" :key="i" class="layout__address">
           <div class="sheet address-form">
             <div class="address-form__header">
-              <b>{{ address.name }}</b>
+              <b>Адрес №{{ address.id }}. {{ address.name }}</b>
               <div class="address-form__edit">
                 <button
                   data-test="button-change"
