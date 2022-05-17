@@ -50,7 +50,6 @@
 <script>
 import AppItemCounter from "@/common/components/AppItemCounter";
 import { mapActions, mapGetters } from "vuex";
-import router from "@/router";
 
 export default {
   name: "CartList",
@@ -68,7 +67,7 @@ export default {
       const data = { id, quantity };
       this.changePizzaCount(data);
     },
-    changePizzaIngredients(idx) {
+    async changePizzaIngredients(idx) {
       const pizzaInfo = this.pizzas[idx];
       const pizzaState = {
         doughId: pizzaInfo.doughId,
@@ -79,7 +78,7 @@ export default {
         selectedIngredients: pizzaInfo.selectedIngredients,
       };
       this.changePizza(pizzaState);
-      router.push("/");
+      await this.$router.push("/");
     },
   },
 };
