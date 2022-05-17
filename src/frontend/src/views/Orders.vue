@@ -127,9 +127,11 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { prepareOrderForCart } from "@/common/helpers";
+import { auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+  middlewares: [auth],
   computed: {
     ...mapGetters("Orders", ["isOrders", "orders"]),
   },

@@ -180,9 +180,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { auth } from "@/middlewares";
 
 export default {
   name: "Profile",
+  middlewares: [auth],
   data() {
     return {
       name: "",
