@@ -24,6 +24,9 @@ export default {
     isOrders({ orders }) {
       return orders.length > 0;
     },
+    isLoaded({ orders }) {
+      return !orders.length > 0;
+    },
   },
 
   actions: {

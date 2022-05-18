@@ -8,6 +8,9 @@ export default {
     addresses({ addresses }) {
       return addresses;
     },
+    isLoaded({ addresses }) {
+      return !addresses.length > 0;
+    },
   },
 
   actions: {
