@@ -2,14 +2,15 @@ export default {
   namespaced: true,
   state: {
     addresses: [],
+    isLoaded: false,
   },
 
   getters: {
     addresses({ addresses }) {
       return addresses;
     },
-    isLoaded({ addresses }) {
-      return !addresses.length > 0;
+    isLoaded({ isLoaded }) {
+      return isLoaded;
     },
   },
 
@@ -25,6 +26,9 @@ export default {
     },
     deleteAddress({ commit }, id) {
       commit("DELETE_ADDRESS", id);
+    },
+    changeIsLoaded({ commit }, data) {
+      commit("CHANGE_IS_LOADED", data);
     },
   },
 
@@ -52,6 +56,9 @@ export default {
       await this.$api.addresses.delete(id);
 
       state.addresses = state.addresses.filter((it) => it.id !== id);
+    },
+    CHANGE_IS_LOADED(state, isLoaded) {
+      state.isLoaded = isLoaded;
     },
   },
 };

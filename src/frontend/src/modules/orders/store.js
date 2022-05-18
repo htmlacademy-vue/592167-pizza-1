@@ -8,6 +8,7 @@ export default {
   namespaced: true,
   state: {
     orders: [],
+    isLoaded: false,
   },
 
   getters: {
@@ -24,8 +25,8 @@ export default {
     isOrders({ orders }) {
       return orders.length > 0;
     },
-    isLoaded({ orders }) {
-      return !orders.length > 0;
+    isLoaded({ isLoaded }) {
+      return isLoaded;
     },
   },
 
@@ -56,6 +57,10 @@ export default {
       await this.$api.orders.delete(id);
       commit("DELETE_ORDER", id);
     },
+
+    changeIsLoaded({ commit }, data) {
+      commit("CHANGE_IS_LOADED", data);
+    },
   },
 
   mutations: {
@@ -70,6 +75,10 @@ export default {
 
     DELETE_ORDER(state, id) {
       state.orders = state.orders.filter((it) => it.id !== id);
+    },
+
+    CHANGE_IS_LOADED(state, isLoaded) {
+      state.isLoaded = isLoaded;
     },
   },
 };

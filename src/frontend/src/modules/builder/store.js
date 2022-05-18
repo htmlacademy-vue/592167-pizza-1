@@ -118,12 +118,13 @@ export default {
   },
 
   actions: {
-    async initBuilderState({ commit }) {
+    async initBuilderState({ commit, dispatch }) {
       DICTIONARIES.ingredients = await this.$api.ingredients.get();
       DICTIONARIES.doughs = await this.$api.dough.get();
       DICTIONARIES.sauces = await this.$api.sauces.get();
       DICTIONARIES.pizzaSizes = await this.$api.sizes.get();
 
+      dispatch("Orders/changeIsLoaded", false, { root: true });
       commit("DEFAULT_VALUE");
     },
 
