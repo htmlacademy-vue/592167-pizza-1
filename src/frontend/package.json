@@ -13,7 +13,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test:only": "vue-cli-service test:unit --testPathPattern=Orders.spec",
+    "test:only": "vue-cli-service test:unit --testPathPattern=Profile.spec",
     "lint": "vue-cli-service lint"
   },
   "husky": {

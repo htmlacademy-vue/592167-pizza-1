@@ -34,17 +34,16 @@ export default {
       try {
         const data = await this.$api.auth.getMe();
         commit("LOG_IN", data);
-        dispatch("Profile/changeIsLoaded", true, { root: true });
         const profile = await this.$api.addresses.get();
         if (profile.length > 0) {
           dispatch("Profile/initAddresses", [...profile], { root: true });
         }
         dispatch("Profile/changeIsLoaded", false, { root: true });
-        dispatch("Orders/changeIsLoaded", true, { root: true });
         const orders = await this.$api.orders.get();
         if (orders.length > 0) {
           dispatch("Orders/initState", [...orders], { root: true });
         }
+        dispatch("Orders/changeIsLoaded", false, { root: true });
       } catch {
         dispatch("logout", false);
       }

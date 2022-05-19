@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     addresses: [],
-    isLoaded: false,
+    isLoaded: true,
   },
 
   getters: {
