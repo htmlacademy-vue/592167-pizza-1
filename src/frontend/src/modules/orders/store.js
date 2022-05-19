@@ -1,5 +1,6 @@
 import {
   prepareAddressForOrder,
+  prepareIngredients,
   prepareOrdersForView,
   preparePizzaForOrder,
 } from "@/common/helpers";
@@ -8,21 +9,36 @@ export default {
   namespaced: true,
   state: {
     orders: [],
+    isLoaded: true,
   },
 
   getters: {
-    orders({ orders }, _, rootState) {
-      return prepareOrdersForView(
-        orders,
-        rootState.Builder.pizzaSizes,
-        rootState.Builder.doughs,
-        rootState.Builder.sauces,
-        rootState.Builder.ingredients,
-        rootState.Cart.additional
-      );
+    orders({ orders }, _, rootGetters) {
+      let prepare = [];
+
+      if (rootGetters.Builder.ingredients.length > 0) {
+        const ingredient = rootGetters.Builder.ingredients[0];
+        let ingredients = !Object.keys(ingredient).includes("rusName")
+          ? prepareIngredients(rootGetters.Builder.ingredients)
+          : rootGetters.Builder.ingredients;
+
+        prepare = prepareOrdersForView(
+          orders,
+          rootGetters.Builder.pizzaSizes,
+          rootGetters.Builder.doughs,
+          rootGetters.Builder.sauces,
+          ingredients,
+          rootGetters.Cart.additional
+        );
+      }
+
+      return prepare;
     },
     isOrders({ orders }) {
       return orders.length > 0;
+    },
+    isLoaded({ isLoaded }) {
+      return isLoaded;
     },
   },
 
@@ -53,6 +69,10 @@ export default {
       await this.$api.orders.delete(id);
       commit("DELETE_ORDER", id);
     },
+
+    changeIsLoaded({ commit }, data) {
+      commit("CHANGE_IS_LOADED", data);
+    },
   },
 
   mutations: {
@@ -67,6 +87,10 @@ export default {
 
     DELETE_ORDER(state, id) {
       state.orders = state.orders.filter((it) => it.id !== id);
+    },
+
+    CHANGE_IS_LOADED(state, isLoaded) {
+      state.isLoaded = isLoaded;
     },
   },
 };

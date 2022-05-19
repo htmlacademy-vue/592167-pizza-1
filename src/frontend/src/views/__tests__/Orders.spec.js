@@ -164,6 +164,7 @@ describe("Orders", () => {
     store.state["Builder"].pizzaSizes = sizes;
     store.state["Cart"].additional = misc;
     store.state["Orders"].orders = [order];
+    store.state["Orders"].isLoaded = false;
     router = new VueRouter();
   });
 

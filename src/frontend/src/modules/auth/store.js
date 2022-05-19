@@ -38,8 +38,12 @@ export default {
         if (profile.length > 0) {
           dispatch("Profile/initAddresses", [...profile], { root: true });
         }
+        dispatch("Profile/changeIsLoaded", false, { root: true });
         const orders = await this.$api.orders.get();
-        dispatch("Orders/initState", [...orders], { root: true });
+        if (orders.length > 0) {
+          dispatch("Orders/initState", [...orders], { root: true });
+        }
+        dispatch("Orders/changeIsLoaded", false, { root: true });
       } catch {
         dispatch("logout", false);
       }
