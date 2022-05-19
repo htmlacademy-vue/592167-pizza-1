@@ -32,6 +32,7 @@ describe("Profile", () => {
     });
     router = new VueRouter();
     store.state["Auth"].user = user;
+    store.state["Profile"].isLoaded = false;
   });
 
   const createComponent = (options) => {
