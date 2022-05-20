@@ -85,58 +85,70 @@
             <div class="address-form__input">
               <label class="input">
                 <span>Название адреса*</span>
-                <input
-                  v-model="name"
+                <app-input
+                  ref="name"
+                  :value="name"
                   type="text"
-                  name="addr-name"
+                  name="name"
+                  :error-text="validations.name.error"
                   placeholder="Введите название адреса"
-                  required
+                  @input="changeName"
                 />
               </label>
             </div>
             <div class="address-form__input address-form__input--size--normal">
               <label class="input">
                 <span>Улица*</span>
-                <input
-                  v-model="street"
+                <app-input
+                  ref="street"
+                  :value="street"
                   type="text"
-                  name="addr-street"
+                  name="street"
+                  :error-text="validations.street.error"
                   placeholder="Введите название улицы"
-                  required
+                  @input="changeStreet"
                 />
               </label>
             </div>
             <div class="address-form__input address-form__input--size--small">
               <label class="input">
                 <span>Дом*</span>
-                <input
-                  v-model="building"
+                <app-input
+                  ref="building"
+                  :value="building"
                   type="text"
-                  name="addr-house"
-                  placeholder="Введите номер дома"
-                  required
+                  name="building"
+                  :error-text="validations.building.error"
+                  placeholder="Введите № дома"
+                  @input="changeBuilding"
                 />
               </label>
             </div>
             <div class="address-form__input address-form__input--size--small">
               <label class="input">
                 <span>Квартира</span>
-                <input
-                  v-model="flat"
+                <app-input
+                  ref="flat"
+                  :value="flat"
                   type="text"
-                  name="addr-apartment"
+                  name="apartment"
+                  :error-text="validations.flat.error"
                   placeholder="Введите № квартиры"
+                  @input="changeFlat"
                 />
               </label>
             </div>
             <div class="address-form__input">
               <label class="input">
                 <span>Комментарий</span>
-                <input
-                  v-model="comment"
+                <app-input
+                  ref="comment"
+                  :value="comment"
                   type="text"
-                  name="addr-comment"
+                  name="comment"
+                  :error-text="validations.comment.error"
                   placeholder="Введите комментарий"
+                  @input="changeComment"
                 />
               </label>
             </div>
@@ -174,12 +186,16 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import AppLoader from "@/common/components/AppLoader";
+import AppInput from "@/common/components/AppInput";
 import { auth } from "@/middlewares";
+import validator from "@/common/mixins/validator";
 
 export default {
   name: "Profile",
 
-  components: { AppLoader },
+  components: { AppLoader, AppInput },
+
+  mixins: [validator],
 
   middlewares: [auth],
 
@@ -194,6 +210,32 @@ export default {
       showForm: false,
       showDeleteButton: false,
       addressId: null,
+      validations: {
+        name: {
+          error: "",
+          rules: ["required"],
+        },
+
+        street: {
+          error: "",
+          rules: ["required"],
+        },
+
+        building: {
+          error: "",
+          rules: ["required"],
+        },
+
+        flat: {
+          error: "",
+          rules: [""],
+        },
+
+        comment: {
+          error: "",
+          rules: [""],
+        },
+      },
     };
   },
 
@@ -201,6 +243,20 @@ export default {
     ...mapGetters("Auth", ["userInfo"]),
 
     ...mapGetters("Profile", ["addresses", "isLoaded"]),
+  },
+
+  watch: {
+    name() {
+      this.$clearValidationErrors();
+    },
+
+    street() {
+      this.$clearValidationErrors();
+    },
+
+    building() {
+      this.$clearValidationErrors();
+    },
   },
 
   methods: {
@@ -213,25 +269,36 @@ export default {
       this.clearFormFields();
     },
 
-    saveAddress() {
-      const address = {
+    validationFields() {
+      const fields = {
         name: this.name,
         street: this.street,
         building: this.building,
-        flat: this.flat,
-        comment: this.comment,
-        userId: this.userInfo.id,
       };
+      return this.$validateFields(fields, this.validations);
+    },
 
-      if (this.showDeleteButton) {
-        address.id = this.addressId;
-        this.changeAddress(address);
-      } else {
-        this.addAddress(address);
+    saveAddress() {
+      if (this.validationFields()) {
+        const address = {
+          name: this.name,
+          street: this.street,
+          building: this.building,
+          flat: this.flat,
+          comment: this.comment,
+          userId: this.userInfo.id,
+        };
+
+        if (this.showDeleteButton) {
+          address.id = this.addressId;
+          this.changeAddress(address);
+        } else {
+          this.addAddress(address);
+        }
+
+        this.clearFormFields();
+        this.closeAddressForm();
       }
-
-      this.clearFormFields();
-      this.closeAddressForm();
     },
 
     editAddress(id) {
@@ -243,8 +310,8 @@ export default {
       this.name = address.name;
       this.street = address.street;
       this.building = address.building;
-      this.flat = address.flat;
-      this.comment = address.comment;
+      this.flat = address.flat || "";
+      this.comment = address.comment || "";
 
       this.addressId = id;
     },
@@ -268,6 +335,26 @@ export default {
 
     closeAddressForm() {
       this.showForm = false;
+    },
+
+    changeName(name) {
+      this.name = name;
+    },
+
+    changeStreet(street) {
+      this.street = street;
+    },
+
+    changeBuilding(building) {
+      this.building = building;
+    },
+
+    changeFlat(flat) {
+      this.flat = flat;
+    },
+
+    changeComment(comment) {
+      this.comment = comment;
     },
   },
 };
