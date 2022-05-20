@@ -7,6 +7,7 @@
 <script>
 export default {
   name: "BuilderIngredientPicture",
+
   props: {
     ingredientName: {
       type: String,
