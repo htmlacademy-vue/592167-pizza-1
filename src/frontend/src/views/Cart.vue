@@ -90,10 +90,7 @@
         </div>
       </template>
     </cart-main>
-    <cart-footer
-      v-if="pizzas.length > 0"
-      @makeOrder="onOrderClick"
-    ></cart-footer>
+    <cart-footer v-if="pizzas.length > 0" @makeOrder="onOrderClick" />
     <transition name="slide-popup" mode="out-in">
       <app-popup v-if="isOpenPopup" @closePopup="onClosePopupClick" />
     </transition>
