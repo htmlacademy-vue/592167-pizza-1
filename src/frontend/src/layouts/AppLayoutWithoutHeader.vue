@@ -9,6 +9,7 @@
 import AppNotifications from "@/common/components/AppNotifications";
 export default {
   name: "AppLayoutWithoutHeader",
+
   components: { AppNotifications },
 };
 </script>

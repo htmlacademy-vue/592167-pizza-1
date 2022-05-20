@@ -7,6 +7,7 @@ import {
 
 export default {
   namespaced: true,
+
   state: {
     orders: [],
     isLoaded: true,
@@ -34,9 +35,11 @@ export default {
 
       return prepare;
     },
+
     isOrders({ orders }) {
       return orders.length > 0;
     },
+
     isLoaded({ isLoaded }) {
       return isLoaded;
     },

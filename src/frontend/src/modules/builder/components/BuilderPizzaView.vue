@@ -25,7 +25,9 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
+
   components: { AppDrop },
+
   computed: {
     ...mapGetters("Builder", [
       "selectedIngredients",
@@ -34,6 +36,7 @@ export default {
       "sauceId",
       "sauces",
     ]),
+
     pizzaSize() {
       const sauceName = this.sauces.find((it) => it.id === this.sauceId).slug;
       return `pizza--foundation--${
@@ -41,8 +44,10 @@ export default {
       }-${sauceName}`;
     },
   },
+
   methods: {
     ...mapActions("Builder", ["updateSelectedIngredients"]),
+
     moveIngredient(id) {
       const ingredient = this.selectedIngredients.find(
         (it) => it.ingredientId === id
@@ -64,6 +69,7 @@ export default {
           return "";
       }
     },
+
     getIngredientName(id) {
       const ingredient = this.ingredients.find((it) => it.id === id)?.name;
       return ingredient ? ingredient : "";

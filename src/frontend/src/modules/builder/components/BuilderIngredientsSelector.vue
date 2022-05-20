@@ -73,12 +73,15 @@ import { MAX_INGREDIENT_COUNT } from "@/constants";
 
 export default {
   name: "BuilderIngredientsSelector",
+
   components: { AppItemCounter, AppDrag, AppDrop, BuilderIngredientPicture },
+
   data() {
     return {
       maxCount: MAX_INGREDIENT_COUNT,
     };
   },
+
   computed: {
     ...mapGetters("Builder", [
       "ingredients",
@@ -87,8 +90,10 @@ export default {
       "sauceId",
     ]),
   },
+
   methods: {
     ...mapActions("Builder", ["updateSauce", "updateSelectedIngredients"]),
+
     changeSauce(id) {
       this.updateSauce(id);
     },
@@ -99,9 +104,11 @@ export default {
       );
       return ingredient ? ingredient.quantity : 0;
     },
+
     isChecked(id) {
       return id === this.sauceId;
     },
+
     changeIngredientCount(count, id) {
       this.updateSelectedIngredients({
         ingredientId: id,

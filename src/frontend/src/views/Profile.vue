@@ -178,8 +178,11 @@ import { auth } from "@/middlewares";
 
 export default {
   name: "Profile",
+
   components: { AppLoader },
+
   middlewares: [auth],
+
   data() {
     return {
       name: "",
@@ -193,18 +196,23 @@ export default {
       addressId: null,
     };
   },
+
   computed: {
     ...mapGetters("Auth", ["userInfo"]),
+
     ...mapGetters("Profile", ["addresses", "isLoaded"]),
   },
+
   methods: {
     ...mapActions("Profile", ["addAddress", "changeAddress", "deleteAddress"]),
+
     showFormAddNewAddress() {
       this.showForm = true;
       this.showDeleteButton = false;
       this.addressCount = this.addresses.length + 1;
       this.clearFormFields();
     },
+
     saveAddress() {
       const address = {
         name: this.name,
@@ -225,6 +233,7 @@ export default {
       this.clearFormFields();
       this.closeAddressForm();
     },
+
     editAddress(id) {
       this.openAddressForm();
       this.showDeleteButton = true;
@@ -239,10 +248,12 @@ export default {
 
       this.addressId = id;
     },
+
     onDeleteAddress() {
       this.deleteAddress(this.addressId);
       this.closeAddressForm();
     },
+
     clearFormFields() {
       this.name = "";
       this.street = "";
@@ -250,9 +261,11 @@ export default {
       this.flat = "";
       this.comment = "";
     },
+
     openAddressForm() {
       this.showForm = true;
     },
+
     closeAddressForm() {
       this.showForm = false;
     },

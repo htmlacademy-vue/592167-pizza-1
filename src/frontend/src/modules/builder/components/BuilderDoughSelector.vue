@@ -31,15 +31,18 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
+
   computed: {
     ...mapGetters("Builder", ["doughs", "doughId"]),
   },
+
   methods: {
     ...mapActions("Builder", ["updateDough"]),
 
     isChecked(doughId) {
       return doughId === this.doughId;
     },
+
     changeDough(id) {
       this.updateDough(id);
     },

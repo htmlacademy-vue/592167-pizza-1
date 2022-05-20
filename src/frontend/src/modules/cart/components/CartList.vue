@@ -53,20 +53,27 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CartList",
+
   components: { AppItemCounter },
+
   computed: {
     ...mapGetters("Cart", ["pizzas"]),
   },
+
   methods: {
     ...mapActions("Cart", ["changePizzaCount"]),
+
     ...mapActions("Builder", ["changePizza"]),
+
     getPizzaPrice(sum, quantity) {
       return sum * quantity;
     },
+
     changeCount(quantity, id) {
       const data = { id, quantity };
       this.changePizzaCount(data);
     },
+
     async changePizzaIngredients(idx) {
       const pizzaInfo = this.pizzas[idx];
       const pizzaState = {

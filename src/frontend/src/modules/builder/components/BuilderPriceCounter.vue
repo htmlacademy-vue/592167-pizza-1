@@ -17,16 +17,20 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
+
   computed: {
     ...mapGetters("Builder", ["pizzaSum", "isButtonCookDisable", "pizzaInfo"]),
   },
+
   methods: {
     ...mapActions("Cart", ["addPizza"]),
+
     ...mapActions("Builder", [
       "resetBuilderState",
       "initBuilderState",
       "addSum",
     ]),
+
     makePizza() {
       this.addSum(this.pizzaSum);
       this.addPizza(this.pizzaInfo);

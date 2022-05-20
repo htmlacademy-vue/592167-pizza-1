@@ -12,6 +12,7 @@ import AppNotifications from "@/common/components/AppNotifications";
 
 export default {
   name: "AppLayoutDefault",
+
   components: { AppNotifications, AppLayoutHeader },
 };
 </script>

@@ -5,6 +5,7 @@ const rules = {
     rule: (value) => !!value?.trim(),
     message: "Поле обязательно для заполнения",
   },
+
   email: {
     rule: (value) =>
       value ? emailRegex.test(String(value).toLowerCase()) : true,
@@ -45,6 +46,7 @@ export default {
       });
       return isValid;
     },
+
     $clearValidationErrors() {
       if (!this.validations) {
         return;

@@ -8,6 +8,7 @@ export default {
     isAuthenticated({ user }) {
       return !!user;
     },
+
     userInfo({ user }) {
       return user;
     },

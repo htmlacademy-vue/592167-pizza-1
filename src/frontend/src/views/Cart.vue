@@ -111,8 +111,11 @@ import validator from "@/common/mixins/validator";
 
 export default {
   name: "Cart",
+
   components: { CartMain, CartFooter, AppPopup, AppInput },
+
   mixins: [validator],
+
   data() {
     return {
       startPersonalAddressIndex: MY_FIRST_ADDRESS,
@@ -122,14 +125,17 @@ export default {
           error: "",
           rules: ["required"],
         },
+
         street: {
           error: "",
           rules: ["required"],
         },
+
         building: {
           error: "",
           rules: ["required"],
         },
+
         flat: {
           error: "",
           rules: [""],
@@ -137,17 +143,23 @@ export default {
       },
     };
   },
+
   computed: {
     ...mapGetters("Cart", ["receivingOrder", "pizzas", "address", "phone"]),
+
     ...mapGetters("Auth", ["isAuthenticated"]),
+
     ...mapGetters("Profile", ["addresses"]),
+
     isDisabled() {
       return this.receivingOrder > NEW_ADDRESS;
     },
+
     isShowAddressForm() {
       return this.receivingOrder > PICK_UP_MYSELF;
     },
   },
+
   watch: {
     receivingOrder() {
       this.addAddressFromUserAddresses(this.receivingOrder);
@@ -155,16 +167,20 @@ export default {
         this.$clearValidationErrors();
       }
     },
+
     phone() {
       this.$clearValidationErrors();
     },
+
     "address.street"() {
       this.$clearValidationErrors();
     },
+
     "address.building"() {
       this.$clearValidationErrors();
     },
   },
+
   methods: {
     ...mapActions("Cart", [
       "changeAddressField",
@@ -174,35 +190,43 @@ export default {
       "resetCartState",
       "addAddress",
     ]),
+
     ...mapActions("Orders", ["addOrder"]),
+
     onOrderClick() {
       if (this.validationFields()) {
         this.isOpenPopup = true;
       }
     },
+
     onReceivingOrderChange(evt) {
       this.changeReceivingOrder(
         +evt.target.options[[evt.target.options.selectedIndex]].value
       );
     },
+
     changePhone(phone) {
       this.addPhone(phone);
     },
+
     changeStreet(street) {
       this.changeAddressField({
         street,
       });
     },
+
     changeBuilding(building) {
       this.changeAddressField({
         building,
       });
     },
+
     changeFlat(flat) {
       this.changeAddressField({
         flat,
       });
     },
+
     validationFields() {
       const fields = {
         phone: this.phone,
@@ -215,6 +239,7 @@ export default {
         +this.receivingOrder === NEW_ADDRESS;
       return this.$validateFields(fields, this.validations);
     },
+
     async onClosePopupClick() {
       this.isOpenPopup = false;
       let link = "/";

@@ -12,6 +12,7 @@ export default {
       type: String,
       default: "",
     },
+
     ingredientRusName: {
       type: String,
       default: "",

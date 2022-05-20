@@ -30,11 +30,14 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
+
   computed: {
     ...mapGetters("Builder", ["pizzaSizes", "pizzaSizeId"]),
   },
+
   methods: {
     ...mapActions("Builder", ["updateSize"]),
+
     updatePizzaSize(id) {
       this.updateSize(id);
     },
