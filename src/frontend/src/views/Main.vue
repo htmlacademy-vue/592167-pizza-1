@@ -23,6 +23,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Main",
+
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,
@@ -30,6 +31,7 @@ export default {
     BuilderContentPizza,
     AppLoader,
   },
+
   computed: {
     ...mapGetters("Builder", ["isLoaded"]),
   },

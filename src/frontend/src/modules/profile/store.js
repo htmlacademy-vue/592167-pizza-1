@@ -1,5 +1,6 @@
 export default {
   namespaced: true,
+
   state: {
     addresses: [],
     isLoaded: true,
@@ -9,6 +10,7 @@ export default {
     addresses({ addresses }) {
       return addresses;
     },
+
     isLoaded({ isLoaded }) {
       return isLoaded;
     },
@@ -18,17 +20,25 @@ export default {
     addAddress({ commit }, data) {
       commit("ADD_ADDRESS", data);
     },
+
     initAddresses({ commit }, data) {
       commit("ADD_ADDRESSES", data);
     },
+
     changeAddress({ commit }, data) {
       commit("CHANGE_ADDRESS", data);
     },
+
     deleteAddress({ commit }, id) {
       commit("DELETE_ADDRESS", id);
     },
+
     changeIsLoaded({ commit }, data) {
       commit("CHANGE_IS_LOADED", data);
+    },
+
+    addNewAddressFromCart({ commit }, data) {
+      commit("ADD_NEW_ADDRESS_FROM_CART", data);
     },
   },
 
@@ -38,10 +48,12 @@ export default {
         state.addresses = data;
       }
     },
+
     async ADD_ADDRESS(state, data) {
       const address = await this.$api.addresses.post(data);
       state.addresses = [...state.addresses, address];
     },
+
     async CHANGE_ADDRESS(state, data) {
       await this.$api.addresses.put(data);
 
@@ -52,13 +64,19 @@ export default {
       address.flat = data.flat;
       address.comment = data.comment;
     },
+
     async DELETE_ADDRESS(state, id) {
       await this.$api.addresses.delete(id);
 
       state.addresses = state.addresses.filter((it) => it.id !== id);
     },
+
     CHANGE_IS_LOADED(state, isLoaded) {
       state.isLoaded = isLoaded;
+    },
+
+    ADD_NEW_ADDRESS_FROM_CART(state, data) {
+      state.addresses.push(data);
     },
   },
 };

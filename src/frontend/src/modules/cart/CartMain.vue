@@ -27,7 +27,9 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "CartMain",
+
   components: { CartList, CartAdditional },
+
   computed: {
     ...mapGetters("Cart", ["pizzas"]),
   },

@@ -9,6 +9,7 @@ import Main from "@/views/Main";
 
 export default {
   name: "Index",
+
   components: {
     Main,
   },

@@ -28,11 +28,14 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CartFooter",
+
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
   },
+
   methods: {
     ...mapActions("Builder", ["resetBuilderState"]),
+
     addNewPizza() {
       this.resetBuilderState();
     },

@@ -16,6 +16,7 @@ const DICTIONARIES = {
 
 export default {
   namespaced: true,
+
   state: {
     doughId: 1,
     sauceId: 1,

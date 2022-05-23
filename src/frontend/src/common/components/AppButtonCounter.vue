@@ -13,11 +13,13 @@
 <script>
 export default {
   name: "AppButtonCounter",
+
   props: {
     isDisabled: {
       type: Boolean,
       default: false,
     },
+
     differential: {
       type: String,
       default: "",

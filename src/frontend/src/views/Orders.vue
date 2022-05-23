@@ -129,14 +129,20 @@ import { auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+
   components: { AppLoader },
+
   middlewares: [auth],
+
   computed: {
     ...mapGetters("Orders", ["isOrders", "orders", "isLoaded"]),
   },
+
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
+
     ...mapActions("Cart", ["repeatOrder"]),
+
     onRepeatOrderClick(id) {
       this.repeatOrder(
         prepareOrderForCart(this.orders.find((it) => it.id === id))

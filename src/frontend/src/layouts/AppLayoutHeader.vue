@@ -51,9 +51,12 @@ import { logout } from "@/common/mixins";
 
 export default {
   name: "AppLayoutHeader",
+
   mixins: [logout],
+
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
+
     ...mapGetters("Auth", ["isAuthenticated", "userInfo"]),
   },
 };

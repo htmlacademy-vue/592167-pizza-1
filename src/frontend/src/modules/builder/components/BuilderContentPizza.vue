@@ -22,15 +22,19 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderContentPizza",
+
   components: {
     BuilderPizzaView,
     BuilderPriceCounter,
   },
+
   computed: {
     ...mapGetters("Builder", ["pizzaName"]),
   },
+
   methods: {
     ...mapActions("Builder", ["updatePizzaName"]),
+
     inputChangeValue(evt) {
       this.updatePizzaName(evt.target.value);
     },

@@ -47,10 +47,15 @@ import { isLoggedIn } from "@/middlewares";
 
 export default {
   name: "Login",
+
   layout: "AppLayoutWithoutHeader",
+
   middlewares: [isLoggedIn],
+
   components: { AppInput },
+
   mixins: [validator],
+
   data() {
     return {
       email: "",
@@ -60,6 +65,7 @@ export default {
           error: "",
           rules: ["required", "email"],
         },
+
         password: {
           error: "",
           rules: ["required"],
@@ -67,17 +73,21 @@ export default {
       },
     };
   },
+
   watch: {
     email() {
       this.$clearValidationErrors();
     },
+
     password() {
       this.$clearValidationErrors();
     },
   },
+
   mounted() {
     this.$refs.email.$refs.input.focus();
   },
+
   methods: {
     ...mapActions("Auth", ["login"]),
 

@@ -34,16 +34,21 @@ import AppItemCounter from "@/common/components/AppItemCounter";
 
 export default {
   name: "CartAdditional",
+
   components: { AppItemCounter },
+
   computed: {
     ...mapGetters("Cart", ["additional", "selectedAdditional"]),
   },
+
   methods: {
     ...mapActions("Cart", ["changeSelectedAdditional"]),
+
     getCount(id, selected) {
       const misc = selected?.find((it) => it.miscId === id);
       return misc ? misc.quantity : 0;
     },
+
     changeCount(count, id) {
       const data = {
         miscId: id,

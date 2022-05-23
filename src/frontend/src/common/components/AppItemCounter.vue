@@ -32,6 +32,7 @@ import AppButtonCounter from "@/common/components/AppButtonCounter";
 
 export default {
   name: "AppItemCounter",
+
   components: { AppButtonCounter },
 
   props: {
@@ -39,27 +40,33 @@ export default {
       type: Number,
       default: 0,
     },
+
     classCounter: {
       type: String,
       default: "",
     },
+
     anotherClassButton: {
       type: String,
       default: "",
     },
+
     maxCount: {
       type: Number,
       default: 100,
     },
+
     minCount: {
       type: Number,
       default: 0,
     },
   },
+
   computed: {
     isDisabledButtonPlus() {
       return this.ingredientCount >= this.maxCount;
     },
+
     isDisabledButtonMinus() {
       return this.ingredientCount === this.minCount;
     },
