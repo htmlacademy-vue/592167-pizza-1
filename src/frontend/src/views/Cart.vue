@@ -186,6 +186,7 @@ export default {
       "addAddressFromUserAddresses",
       "resetCartState",
       "addAddress",
+      "resetAddress",
     ]),
 
     ...mapActions("Orders", ["addOrder"]),
@@ -197,6 +198,7 @@ export default {
     },
 
     onReceivingOrderChange(evt) {
+      this.resetAddress();
       this.changeReceivingOrder(
         +evt.target.options[[evt.target.options.selectedIndex]].value
       );

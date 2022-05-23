@@ -36,6 +36,10 @@ export default {
     changeIsLoaded({ commit }, data) {
       commit("CHANGE_IS_LOADED", data);
     },
+
+    addNewAddressFromCart({ commit }, data) {
+      commit("ADD_NEW_ADDRESS_FROM_CART", data);
+    },
   },
 
   mutations: {
@@ -69,6 +73,10 @@ export default {
 
     CHANGE_IS_LOADED(state, isLoaded) {
       state.isLoaded = isLoaded;
+    },
+
+    ADD_NEW_ADDRESS_FROM_CART(state, data) {
+      state.addresses.push(data);
     },
   },
 };

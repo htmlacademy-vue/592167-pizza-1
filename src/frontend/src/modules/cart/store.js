@@ -106,8 +106,17 @@ export default {
       commit("RESET_STATE");
     },
 
-    addAddress({ commit }, data) {
+    addAddress({ commit, dispatch, rootState }, data) {
       commit("ADD_ADDRESS", data);
+      const listId = rootState.Profile.addresses.map((it) => it.id);
+      const maxId = Math.max(...listId);
+      const addressName = `${data.street} ${data.building}${
+        data.flat !== `` ? `, ${data.flat}` : ``
+      }`;
+      data.comment = "";
+      data.id = maxId + 1;
+      data.name = addressName;
+      dispatch("Profile/addNewAddressFromCart", data, { root: true });
     },
 
     addAddressFromUserAddresses({ commit, rootState }, receivingOrder) {
@@ -145,6 +154,10 @@ export default {
     changeReceivingOrder({ commit }, data) {
       commit("ADD_RECEIVING_ORDER", data);
     },
+
+    resetAddress({ commit }) {
+      commit("RESET_ADDRESS");
+    },
   },
 
   mutations: {
@@ -153,7 +166,6 @@ export default {
     },
 
     ADD_PIZZA(state, pizza) {
-      //todo с помощью lodash добавлять id для пиццы. Тоже самое делать для восстановления пиццы. Чтобы каждый раз были уникальные id.
       const pizzaInfo = state.pizzas.find(
         (it) => it.pizzaName === pizza.pizzaName
       );
@@ -234,6 +246,13 @@ export default {
     CHANGE_ADDRESS_FIELD(state, data) {
       const addressField = Object.keys(data)[0];
       state.address[addressField] = data[addressField];
+    },
+
+    RESET_ADDRESS(state) {
+      state.address.street = "";
+      state.address.building = "";
+      state.address.flat = "";
+      state.address.comment = "";
     },
   },
 };
